@@ -63,6 +63,9 @@ group :development, :test do
 
   # Fake data for seeds and tests
   gem "faker"
+
+  # Pin minitest for Rails 8 compatibility
+  gem "minitest", "~> 5.25"
 end
 
 group :development do

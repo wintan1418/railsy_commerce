@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html class="h-full bg-gray-50">
+  <head>
+    <title><%= content_for(:title) || "Admin - RailsyCommerce" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="h-full">
+    <div class="min-h-full">
+      <!-- Admin Nav -->
+      <nav class="bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex h-16 items-center justify-between">
+            <div class="flex items-center gap-8">
+              <%= link_to "RailsyCommerce", admin_root_path, class: "text-lg font-bold text-white" %>
+              <div class="hidden md:flex gap-4">
+                <%= link_to "Dashboard", admin_root_path, class: "text-sm text-gray-300 hover:text-white #{request.path == admin_root_path ? 'text-white' : ''}" %>
+                <%= link_to "Products", admin_products_path, class: "text-sm text-gray-300 hover:text-white #{request.path.start_with?('/admin/products') ? 'text-white' : ''}" %>
+                <%= link_to "Orders", admin_orders_path, class: "text-sm text-gray-300 hover:text-white #{request.path.start_with?('/admin/orders') ? 'text-white' : ''}" %>
+                <%= link_to "Categories", admin_categories_path, class: "text-sm text-gray-300 hover:text-white #{request.path.start_with?('/admin/categories') ? 'text-white' : ''}" %>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <%= link_to "View Store", root_path, class: "text-sm text-gray-300 hover:text-white", target: "_blank" %>
+              <span class="text-sm text-gray-400"><%= current_user&.email_address %></span>
+              <%= button_to "Sign out", session_path, method: :delete, class: "text-sm text-gray-300 hover:text-white cursor-pointer" %>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <% if flash[:notice] %>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          <div class="rounded-md bg-green-50 p-4">
+            <p class="text-sm text-green-700"><%= flash[:notice] %></p>
+          </div>
+        </div>
+      <% end %>
+
+      <% if flash[:alert] %>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          <div class="rounded-md bg-red-50 p-4">
+            <p class="text-sm text-red-700"><%= flash[:alert] %></p>
+          </div>
+        </div>
+      <% end %>
+
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <%= yield %>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+
+<!-- Stats Grid -->
+<div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="bg-white overflow-hidden rounded-lg shadow-sm border border-gray-200 p-5">
+    <dt class="text-sm font-medium text-gray-500 truncate">Total Revenue</dt>
+    <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= Money.new(@total_revenue, "USD").format %></dd>
+  </div>
+  <div class="bg-white overflow-hidden rounded-lg shadow-sm border border-gray-200 p-5">
+    <dt class="text-sm font-medium text-gray-500 truncate">Orders</dt>
+    <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= @order_count %></dd>
+  </div>
+  <div class="bg-white overflow-hidden rounded-lg shadow-sm border border-gray-200 p-5">
+    <dt class="text-sm font-medium text-gray-500 truncate">Products</dt>
+    <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= @product_count %></dd>
+  </div>
+  <div class="bg-white overflow-hidden rounded-lg shadow-sm border border-gray-200 p-5">
+    <dt class="text-sm font-medium text-gray-500 truncate">Customers</dt>
+    <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= @customer_count %></dd>
+  </div>
+</div>
+
+<!-- Recent Orders -->
+<div class="mt-8">
+  <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
+  <div class="mt-4 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <% @recent_orders.each do |order| %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 text-sm">
+              <%= link_to order.number, admin_order_path(order), class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-900"><%= order.email %></td>
+            <td class="px-6 py-4">
+              <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
+                <%= case order.status
+                    when 'pending' then 'bg-yellow-100 text-yellow-800'
+                    when 'confirmed' then 'bg-blue-100 text-blue-800'
+                    when 'processing' then 'bg-purple-100 text-purple-800'
+                    when 'shipped' then 'bg-indigo-100 text-indigo-800'
+                    when 'delivered' then 'bg-green-100 text-green-800'
+                    when 'cancelled' then 'bg-red-100 text-red-800'
+                    end %>">
+                <%= order.status.capitalize %>
+              </span>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-900"><%= order.total.format %></td>
+            <td class="px-6 py-4 text-sm text-gray-500"><%= order.created_at.strftime("%b %d, %Y") %></td>
+          </tr>
+        <% end %>
+        <% if @recent_orders.empty? %>
+          <tr>
+            <td colspan="5" class="px-6 py-12 text-center text-sm text-gray-500">No orders yet.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

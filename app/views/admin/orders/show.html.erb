@@ -1,0 +1,106 @@
+<div class="flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Order <%= @order.number %></h1>
+    <p class="text-sm text-gray-500 mt-1">Placed on <%= @order.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+  </div>
+  <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium
+    <%= case @order.status
+        when 'pending' then 'bg-yellow-100 text-yellow-800'
+        when 'confirmed' then 'bg-blue-100 text-blue-800'
+        when 'processing' then 'bg-purple-100 text-purple-800'
+        when 'shipped' then 'bg-indigo-100 text-indigo-800'
+        when 'delivered' then 'bg-green-100 text-green-800'
+        when 'cancelled' then 'bg-red-100 text-red-800'
+        end %>">
+    <%= @order.status.capitalize %>
+  </span>
+</div>
+
+<div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="lg:col-span-2 space-y-6">
+    <!-- Order Items -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900">Items</h2>
+      <div class="mt-4 divide-y divide-gray-200">
+        <% @order_items.each do |item| %>
+          <div class="flex justify-between py-4">
+            <div>
+              <p class="text-sm font-medium text-gray-900"><%= item.variant.product.name %></p>
+              <p class="text-xs text-gray-500">SKU: <%= item.variant.sku || "—" %> | Qty: <%= item.quantity %></p>
+            </div>
+            <p class="text-sm font-medium text-gray-900"><%= item.total.format %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Update Status -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900">Update Status</h2>
+      <%= form_with model: [:admin, @order], class: "mt-4 flex items-end gap-4" do |form| %>
+        <div class="flex-1">
+          <%= form.select :status, Order.statuses.keys.map { |s| [s.capitalize, s] },
+            {}, class: "block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+        <%= form.submit "Update", class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 cursor-pointer" %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="space-y-6">
+    <!-- Customer -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900">Customer</h2>
+      <dl class="mt-4 space-y-2">
+        <div>
+          <dt class="text-xs font-medium text-gray-500">Email</dt>
+          <dd class="text-sm text-gray-900"><%= @order.email %></dd>
+        </div>
+        <% if @order.user %>
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Name</dt>
+            <dd class="text-sm text-gray-900"><%= @order.user.full_name %></dd>
+          </div>
+        <% end %>
+      </dl>
+    </div>
+
+    <!-- Addresses -->
+    <% if @order.shipping_address %>
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h2 class="text-lg font-semibold text-gray-900">Shipping Address</h2>
+        <p class="mt-2 text-sm text-gray-600"><%= @order.shipping_address.one_line %></p>
+      </div>
+    <% end %>
+
+    <!-- Order Summary -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900">Summary</h2>
+      <dl class="mt-4 space-y-2">
+        <div class="flex justify-between text-sm">
+          <dt class="text-gray-500">Subtotal</dt>
+          <dd class="text-gray-900"><%= @order.subtotal.format %></dd>
+        </div>
+        <div class="flex justify-between text-sm">
+          <dt class="text-gray-500">Shipping</dt>
+          <dd class="text-gray-900"><%= @order.shipping_total.format %></dd>
+        </div>
+        <div class="flex justify-between text-sm">
+          <dt class="text-gray-500">Tax</dt>
+          <dd class="text-gray-900"><%= @order.tax_total.format %></dd>
+        </div>
+        <% if @order.discount_total_cents > 0 %>
+          <div class="flex justify-between text-sm">
+            <dt class="text-gray-500">Discount</dt>
+            <dd class="text-red-600">-<%= @order.discount_total.format %></dd>
+          </div>
+        <% end %>
+        <div class="flex justify-between text-sm font-medium border-t border-gray-200 pt-2 mt-2">
+          <dt class="text-gray-900">Total</dt>
+          <dd class="text-gray-900"><%= @order.total.format %></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>

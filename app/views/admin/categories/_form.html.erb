@@ -1,0 +1,57 @@
+<%= form_with model: [:admin, category], class: "space-y-6" do |form| %>
+  <% if category.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4">
+      <ul class="list-disc list-inside text-sm text-red-700">
+        <% category.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+    <div>
+      <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_field :name, required: true,
+        class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" %>
+    </div>
+
+    <div>
+      <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_area :description, rows: 3,
+        class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" %>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :parent_id, "Parent Category", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.select :parent_id, Category.where.not(id: category.id).ordered.pluck(:name, :id),
+          { include_blank: "None (top-level)" },
+          class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
+
+      <div>
+        <%= form.label :position, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.number_field :position, min: 0,
+          class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <%= form.check_box :active, class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" %>
+      <%= form.label :active, "Active", class: "text-sm font-medium text-gray-700" %>
+    </div>
+
+    <div>
+      <%= form.label :image, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.file_field :image, accept: "image/*",
+        class: "mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" %>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-3">
+    <%= link_to "Cancel", admin_categories_path, class: "rounded-lg bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+    <%= form.submit category.persisted? ? "Update Category" : "Create Category",
+      class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 cursor-pointer" %>
+  </div>
+<% end %>

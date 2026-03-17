@@ -90,6 +90,15 @@ body {
   transition: opacity 1.2s ease-in-out;
 }
 
+/* Ken Burns zoom on active hero slide image */
+@keyframes kenBurns {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+.slide-active .hero-slide-img {
+  animation: kenBurns 8s ease-in-out forwards;
+}
+
 /* Hero text transitions */
 .slide-active .hero-text {
   opacity: 1;

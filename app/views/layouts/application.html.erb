@@ -22,12 +22,22 @@
   </head>
 
   <body class="h-full antialiased">
-    <!-- Announcement Bar -->
-    <div style="background: var(--black);">
-      <div class="mx-auto max-w-7xl px-4 py-2.5 sm:px-6 lg:px-8">
-        <p class="text-center text-xs font-light tracking-wide text-white/80">
-          Free shipping on orders over <span style="color: var(--gold);">$75</span> &middot; New arrivals every Friday &middot; Use code <span style="color: var(--gold); font-weight: 500;">STYLE20</span> for 20% off
-        </p>
+    <!-- Announcement Ticker -->
+    <div class="relative overflow-hidden" style="background: var(--gold);" data-controller="ticker">
+      <div class="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
+        <div class="relative h-5 overflow-hidden">
+          <% [
+            "Free shipping on all orders over <strong>$75</strong> — no code needed",
+            "New arrivals every Friday — <strong>Shop the latest</strong>",
+            "Use code <strong>STYLE20</strong> for 20% off your first order"
+          ].each_with_index do |msg, i| %>
+            <p data-ticker-target="message"
+               class="absolute inset-0 flex items-center justify-center text-center text-xs font-medium tracking-wide transition-all duration-500 <%= i == 0 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full' %>"
+               style="color: var(--black);">
+              <%= raw msg %>
+            </p>
+          <% end %>
+        </div>
       </div>
     </div>
 

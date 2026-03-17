@@ -79,7 +79,8 @@ class CheckoutsController < ApplicationController
     shipping_method = session[:checkout_shipping_method_id] ? ShippingMethod.find(session[:checkout_shipping_method_id]) : nil
     email = session[:checkout_email]
 
-    result = Orders::CreateOrderService.call(
+    # Create the order
+    order_result = Orders::CreateOrderService.call(
       cart: current_cart,
       email: email,
       shipping_address: shipping_address,
@@ -88,15 +89,29 @@ class CheckoutsController < ApplicationController
       user: current_user
     )
 
-    if result.success?
-      order = result.payload[:order]
-      clear_checkout_session
-      cookies.delete(:cart_token)
-      redirect_to confirm_checkout_path(order_number: order.number)
-    else
+    unless order_result.success?
       @step = "payment"
       @shipping_methods = ShippingMethod.active
-      flash.now[:alert] = result.errors.join(", ")
+      flash.now[:alert] = order_result.errors.join(", ")
+      render :show, status: :unprocessable_entity
+      return
+    end
+
+    order = order_result.payload[:order]
+
+    # Create Stripe Payment Intent
+    payment_result = Payments::CreatePaymentIntentService.call(order: order)
+
+    if payment_result.success?
+      clear_checkout_session
+      cookies.delete(:cart_token)
+      # For now, mark as confirmed directly (Stripe webhook will handle in production)
+      order.update!(status: :confirmed, completed_at: Time.current)
+      redirect_to confirm_checkout_path(order_number: order.number)
+    else
+      flash.now[:alert] = payment_result.errors.join(", ")
+      @step = "payment"
+      @shipping_methods = ShippingMethod.active
       render :show, status: :unprocessable_entity
     end
   end

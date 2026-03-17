@@ -21,3 +21,6 @@ application.register("slideshow", SlideshowController)
 
 import TickerController from "./ticker_controller"
 application.register("ticker", TickerController)
+
+import StripePaymentController from "./stripe_payment_controller"
+application.register("stripe-payment", StripePaymentController)

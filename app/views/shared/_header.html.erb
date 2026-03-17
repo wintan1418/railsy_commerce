@@ -1,46 +1,52 @@
-<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100" data-controller="mobile-menu">
+<header class="sticky top-0 z-50 backdrop-blur-md border-b" style="background: rgba(250,249,247,0.95); border-color: var(--cream);" data-controller="mobile-menu">
   <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
       <!-- Logo -->
       <div class="flex-shrink-0">
-        <%= link_to root_path, class: "flex items-center gap-2" do %>
-          <svg class="h-8 w-8 text-indigo-600" viewBox="0 0 32 32" fill="currentColor">
-            <rect x="2" y="2" width="12" height="12" rx="3"/>
-            <rect x="18" y="2" width="12" height="12" rx="3" opacity="0.7"/>
-            <rect x="2" y="18" width="12" height="12" rx="3" opacity="0.7"/>
-            <rect x="18" y="18" width="12" height="12" rx="3" opacity="0.4"/>
-          </svg>
-          <span class="text-xl font-bold tracking-tight text-gray-900">RailsyCommerce</span>
+        <%= link_to root_path, class: "flex items-center gap-2.5" do %>
+          <div class="flex h-8 w-8 items-center justify-center rounded" style="background: var(--black);">
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="2" width="7" height="7" rx="1" fill="var(--gold)"/>
+              <rect x="11" y="2" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="2" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="11" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.4"/>
+            </svg>
+          </div>
+          <span class="font-display text-xl font-semibold tracking-tight" style="color: var(--black);">RailsyCommerce</span>
         <% end %>
       </div>
 
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex lg:items-center lg:gap-8">
         <%= link_to "Shop", products_path,
-          class: "text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors duration-200" %>
+          class: "nav-link-gold text-sm font-medium tracking-wide transition-colors duration-200",
+          style: "color: var(--black);" %>
 
         <!-- Categories Dropdown -->
         <div class="relative group">
-          <button type="button" class="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors duration-200">
+          <button type="button" class="nav-link-gold flex items-center gap-1 text-sm font-medium tracking-wide transition-colors duration-200" style="color: var(--black);">
             Categories
             <svg class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </button>
           <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute left-1/2 -translate-x-1/2 top-full pt-2 transition-all duration-200">
-            <div class="w-56 rounded-xl bg-white shadow-lg ring-1 ring-gray-900/5 p-2">
+            <div class="w-56 rounded-lg shadow-lg ring-1 ring-black/5 p-2" style="background: var(--warm-white);">
               <% Category.active.roots.ordered.each do |cat| %>
                 <%= link_to cat.name, category_path(slug: cat.slug),
-                  class: "block rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-150" %>
+                  class: "block rounded-md px-3 py-2 text-sm transition-colors duration-150 hover:text-[var(--gold)]",
+                  style: "color: var(--text-body);" %>
               <% end %>
             </div>
           </div>
         </div>
 
         <%= link_to "New Arrivals", products_path(sort: "newest"),
-          class: "text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors duration-200" %>
+          class: "nav-link-gold text-sm font-medium tracking-wide transition-colors duration-200",
+          style: "color: var(--black);" %>
         <%= link_to "Sale", products_path(on_sale: true),
-          class: "text-sm font-medium text-red-600 hover:text-red-700 transition-colors duration-200" %>
+          class: "nav-link-gold text-sm font-semibold tracking-wide transition-colors duration-200",
+          style: "color: var(--red);" %>
       </div>
 
       <!-- Right Actions -->
@@ -48,11 +54,12 @@
         <!-- Search -->
         <%= form_with url: products_path, method: :get, class: "hidden sm:block" do |f| %>
           <div class="relative">
-            <svg class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <svg class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style="color: var(--mid-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
             <%= f.search_field :q, value: params[:q], placeholder: "Search products...",
-              class: "w-44 rounded-full border border-gray-200 bg-gray-50 py-2 pl-9 pr-4 text-sm text-gray-900 placeholder:text-gray-400 focus:w-64 focus:border-indigo-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all duration-300" %>
+              class: "w-44 rounded-full py-2 pl-9 pr-4 text-sm placeholder:text-[var(--mid-gray)] focus:w-64 focus:outline-none focus:ring-2 transition-all duration-300",
+              style: "background: var(--cream); color: var(--black); border: none; --tw-ring-color: var(--gold);" %>
           </div>
         <% end %>
 
@@ -60,7 +67,7 @@
         <% if authenticated? %>
           <div class="hidden sm:flex items-center gap-2">
             <% if current_user&.admin? %>
-              <%= link_to admin_root_path, class: "rounded-full p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors duration-200", title: "Admin" do %>
+              <%= link_to admin_root_path, class: "rounded-full p-2 transition-colors duration-200 hover:opacity-70", style: "color: var(--black);", title: "Admin" do %>
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z" />
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -68,19 +75,20 @@
               <% end %>
             <% end %>
             <div class="relative group">
-              <button type="button" class="flex items-center gap-1 rounded-full p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors duration-200">
+              <button type="button" class="flex items-center gap-1 rounded-full p-2 transition-colors duration-200 hover:opacity-70" style="color: var(--black);">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                 </svg>
               </button>
               <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute right-0 top-full pt-2 transition-all duration-200">
-                <div class="w-48 rounded-xl bg-white shadow-lg ring-1 ring-gray-900/5 p-2">
-                  <div class="px-3 py-2 border-b border-gray-100 mb-1">
-                    <p class="text-sm font-medium text-gray-900"><%= current_user&.first_name %> <%= current_user&.last_name %></p>
-                    <p class="text-xs text-gray-500 truncate"><%= current_user&.email_address %></p>
+                <div class="w-48 rounded-lg shadow-lg ring-1 ring-black/5 p-2" style="background: var(--warm-white);">
+                  <div class="px-3 py-2 border-b mb-1" style="border-color: var(--cream);">
+                    <p class="text-sm font-medium" style="color: var(--black);"><%= current_user&.first_name %> <%= current_user&.last_name %></p>
+                    <p class="text-xs truncate" style="color: var(--mid-gray);"><%= current_user&.email_address %></p>
                   </div>
                   <%= button_to "Sign out", session_path, method: :delete,
-                    class: "w-full text-left rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150 cursor-pointer" %>
+                    class: "w-full text-left rounded-md px-3 py-2 text-sm transition-colors duration-150 cursor-pointer",
+                    style: "color: var(--red);" %>
                 </div>
               </div>
             </div>
@@ -88,20 +96,22 @@
         <% else %>
           <div class="hidden sm:flex items-center gap-2">
             <%= link_to "Sign in", new_session_path,
-              class: "text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors duration-200" %>
+              class: "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200 hover:opacity-80",
+              style: "color: var(--black); border-color: var(--black);" %>
             <%= link_to "Sign up", new_registration_path,
-              class: "rounded-full bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-colors duration-200" %>
+              class: "rounded-full px-4 py-2 text-sm font-medium shadow-sm transition-colors duration-200 hover:opacity-90",
+              style: "background: var(--gold); color: var(--black);" %>
           </div>
         <% end %>
 
         <!-- Cart -->
         <% if defined?(current_cart) %>
-          <%= link_to cart_path, class: "relative rounded-full p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors duration-200" do %>
+          <%= link_to cart_path, class: "relative rounded-full p-2 transition-colors duration-200 hover:opacity-70", style: "color: var(--black);" do %>
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
             </svg>
             <% if current_cart.item_count > 0 %>
-              <span class="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[11px] font-bold text-white" id="cart-count">
+              <span class="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold text-white" style="background: var(--red);" id="cart-count">
                 <%= current_cart.item_count %>
               </span>
             <% end %>
@@ -109,7 +119,7 @@
         <% end %>
 
         <!-- Mobile Menu Button -->
-        <button type="button" data-action="mobile-menu#toggle" class="lg:hidden rounded-full p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors duration-200">
+        <button type="button" data-action="mobile-menu#toggle" class="lg:hidden rounded-full p-2 transition-colors duration-200 hover:opacity-70" style="color: var(--black);">
           <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
           </svg>
@@ -124,12 +134,12 @@
 
   <!-- Mobile Slide-out Menu -->
   <div data-mobile-menu-target="menu"
-    class="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
+    class="fixed inset-y-0 right-0 z-50 w-full max-w-sm shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out lg:hidden" style="background: var(--warm-white);">
     <div class="flex h-full flex-col overflow-y-auto">
       <!-- Close Button -->
-      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-        <span class="text-lg font-bold text-gray-900">Menu</span>
-        <button type="button" data-action="mobile-menu#close" class="rounded-full p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200">
+      <div class="flex items-center justify-between px-6 py-4 border-b" style="border-color: var(--cream);">
+        <span class="font-display text-lg font-semibold" style="color: var(--black);">Menu</span>
+        <button type="button" data-action="mobile-menu#close" class="rounded-full p-2 transition-colors duration-200 hover:opacity-70" style="color: var(--mid-gray);">
           <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -140,11 +150,12 @@
       <div class="px-6 py-4">
         <%= form_with url: products_path, method: :get do |f| %>
           <div class="relative">
-            <svg class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <svg class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style="color: var(--mid-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
             <%= f.search_field :q, placeholder: "Search products...",
-              class: "w-full rounded-full border border-gray-200 bg-gray-50 py-2.5 pl-10 pr-4 text-sm placeholder:text-gray-400 focus:border-indigo-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600/20" %>
+              class: "w-full rounded-full py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2",
+              style: "background: var(--cream); color: var(--black); border: none; --tw-ring-color: var(--gold);" %>
           </div>
         <% end %>
       </div>
@@ -152,39 +163,47 @@
       <!-- Mobile Nav Links -->
       <nav class="flex-1 px-6 space-y-1">
         <%= link_to "Shop All", products_path,
-          class: "flex items-center rounded-lg px-3 py-3 text-base font-medium text-gray-900 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-150" %>
+          class: "flex items-center rounded-md px-3 py-3 text-base font-medium transition-colors duration-150 hover:text-[var(--gold)]",
+          style: "color: var(--black);" %>
         <%= link_to "New Arrivals", products_path(sort: "newest"),
-          class: "flex items-center rounded-lg px-3 py-3 text-base font-medium text-gray-900 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-150" %>
+          class: "flex items-center rounded-md px-3 py-3 text-base font-medium transition-colors duration-150 hover:text-[var(--gold)]",
+          style: "color: var(--black);" %>
         <%= link_to "Sale", products_path(on_sale: true),
-          class: "flex items-center rounded-lg px-3 py-3 text-base font-medium text-red-600 hover:bg-red-50 transition-colors duration-150" %>
+          class: "flex items-center rounded-md px-3 py-3 text-base font-medium transition-colors duration-150",
+          style: "color: var(--red);" %>
 
         <div class="pt-4 pb-2">
-          <p class="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400">Categories</p>
+          <p class="px-3 text-xs font-semibold uppercase tracking-wider" style="color: var(--mid-gray);">Categories</p>
         </div>
         <% Category.active.roots.ordered.each do |cat| %>
           <%= link_to cat.name, category_path(slug: cat.slug),
-            class: "flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-150" %>
+            class: "flex items-center rounded-md px-3 py-2.5 text-sm font-medium transition-colors duration-150 hover:text-[var(--gold)]",
+            style: "color: var(--text-body);" %>
         <% end %>
       </nav>
 
       <!-- Mobile Auth -->
-      <div class="border-t border-gray-100 px-6 py-4 space-y-2">
+      <div class="border-t px-6 py-4 space-y-2" style="border-color: var(--cream);">
         <% if authenticated? %>
           <div class="px-3 py-2">
-            <p class="text-sm font-medium text-gray-900"><%= current_user&.first_name %> <%= current_user&.last_name %></p>
-            <p class="text-xs text-gray-500"><%= current_user&.email_address %></p>
+            <p class="text-sm font-medium" style="color: var(--black);"><%= current_user&.first_name %> <%= current_user&.last_name %></p>
+            <p class="text-xs" style="color: var(--mid-gray);"><%= current_user&.email_address %></p>
           </div>
           <% if current_user&.admin? %>
             <%= link_to "Admin Dashboard", admin_root_path,
-              class: "block rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-150" %>
+              class: "block rounded-md px-3 py-2.5 text-sm font-medium transition-colors duration-150 hover:opacity-80",
+              style: "color: var(--text-body);" %>
           <% end %>
           <%= button_to "Sign out", session_path, method: :delete,
-            class: "w-full text-left rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors duration-150 cursor-pointer" %>
+            class: "w-full text-left rounded-md px-3 py-2.5 text-sm font-medium transition-colors duration-150 cursor-pointer",
+            style: "color: var(--red);" %>
         <% else %>
           <%= link_to "Sign in", new_session_path,
-            class: "block rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 text-center transition-colors duration-150" %>
+            class: "block rounded-md px-3 py-2.5 text-sm font-medium text-center transition-colors duration-150",
+            style: "color: var(--black);" %>
           <%= link_to "Create account", new_registration_path,
-            class: "block rounded-full bg-indigo-600 px-3 py-2.5 text-sm font-medium text-white text-center hover:bg-indigo-700 transition-colors duration-200" %>
+            class: "block rounded-full px-3 py-2.5 text-sm font-medium text-center transition-colors duration-200",
+            style: "background: var(--gold); color: var(--black);" %>
         <% end %>
       </div>
     </div>

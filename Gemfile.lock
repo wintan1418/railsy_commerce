@@ -187,9 +187,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (6.0.2)
-      drb (~> 2.0)
-      prism (~> 1.5)
+    minitest (5.27.0)
     monetize (2.0.0)
       money (~> 7.0)
     money (7.0.2)
@@ -436,6 +434,7 @@ DEPENDENCIES
   jsbundling-rails
   kamal
   letter_opener
+  minitest (~> 5.25)
   money-rails
   pagy
   pg (~> 1.1)

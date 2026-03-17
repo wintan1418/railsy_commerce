@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     resources :categories
     resources :reviews, only: %i[index update destroy]
     resources :discounts
+    resource :settings, only: %i[show update], controller: "settings"
   end
 
   # Webhooks

@@ -1,0 +1,14 @@
+default: &default
+  store_name: "RailsyCommerce"
+  store_currency: "USD"
+  store_email: "hello@railsycommerce.com"
+  free_shipping_threshold: "7500"
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

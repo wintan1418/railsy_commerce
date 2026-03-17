@@ -16,6 +16,19 @@ module RailsyCommerce
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # OmniAuth Google OAuth
+    config.middleware.use OmniAuth::Builder do
+      provider :google_oauth2,
+        ENV["GOOGLE_CLIENT_ID"],
+        ENV["GOOGLE_CLIENT_SECRET"],
+        {
+          scope: "email,profile",
+          prompt: "select_account",
+          image_aspect_ratio: "square",
+          image_size: 96
+        }
+    end
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

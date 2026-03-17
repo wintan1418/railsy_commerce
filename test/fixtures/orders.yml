@@ -1,0 +1,27 @@
+pending_order:
+  number: RC-20260317-ABC123
+  user: customer
+  email: customer@example.com
+  status: pending
+  shipping_address: customer_shipping
+  billing_address: customer_billing
+  subtotal_cents: 5998
+  shipping_total_cents: 999
+  tax_total_cents: 480
+  discount_total_cents: 0
+  total_cents: 7477
+  currency: USD
+
+confirmed_order:
+  number: RC-20260317-DEF456
+  user: customer
+  email: customer@example.com
+  status: confirmed
+  shipping_address: customer_shipping
+  billing_address: customer_billing
+  subtotal_cents: 149900
+  shipping_total_cents: 0
+  tax_total_cents: 11992
+  discount_total_cents: 0
+  total_cents: 161892
+  currency: USD

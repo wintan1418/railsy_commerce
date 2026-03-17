@@ -40,7 +40,7 @@ Rails 8 e-commerce template kit. Clean, fast, simple alternative to Spree/Solidu
 
 ## Commit Conventions
 - Conventional commits: `feat:`, `fix:`, `refactor:`, `test:`, `docs:`
-- Co-authored with Claude.
+- never use ..never and wherever you have used co authored with claude remove it Co-authored with Claude.
 - Commit after each meaningful, testable unit of work.
 
 ## Commands

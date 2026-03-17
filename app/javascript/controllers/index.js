@@ -6,3 +6,12 @@ import { application } from "./application"
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import MobileMenuController from "./mobile_menu_controller"
+application.register("mobile-menu", MobileMenuController)
+
+import QuantityController from "./quantity_controller"
+application.register("quantity", QuantityController)
+
+import ImageGalleryController from "./image_gallery_controller"
+application.register("image-gallery", ImageGalleryController)

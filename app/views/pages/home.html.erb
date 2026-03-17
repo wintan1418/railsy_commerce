@@ -1,45 +1,182 @@
 <div class="bg-white">
-  <!-- Hero -->
-  <div class="relative bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-      <div class="text-center">
-        <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-          RailsyCommerce
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900">
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute inset-0" style="background-image: radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.3) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(99, 102, 241, 0.2) 0%, transparent 50%);"></div>
+    </div>
+    <div class="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="text-sm font-medium uppercase tracking-widest text-indigo-300">New Collection 2026</p>
+        <h1 class="mt-4 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+          Curated for the
+          <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">modern life</span>
         </h1>
-        <p class="mt-6 text-lg leading-8 text-gray-300">
-          A modern e-commerce template built with Rails 8, Hotwire, and Tailwind CSS.
+        <p class="mt-6 text-lg leading-relaxed text-gray-300 sm:text-xl">
+          Discover premium products thoughtfully designed and crafted to elevate your everyday experience.
         </p>
-        <div class="mt-10">
-          <%= link_to "Shop Now", products_path, class: "rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+        <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <%= link_to "Shop Collection", products_path,
+            class: "rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-gray-900 shadow-lg hover:bg-gray-100 transition-all duration-200 hover:shadow-xl" %>
+          <%= link_to "View Sale Items", products_path(on_sale: true),
+            class: "rounded-full border border-white/30 px-8 py-3.5 text-sm font-semibold text-white hover:bg-white/10 transition-all duration-200" %>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Categories -->
+  <!-- Shop by Category -->
   <% if @categories.any? %>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h2 class="text-2xl font-bold text-gray-900">Shop by Category</h2>
-      <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Shop by Category</h2>
+        <p class="mt-3 text-gray-500">Find exactly what you're looking for</p>
+      </div>
+      <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         <% @categories.each do |category| %>
-          <%= link_to category_path(slug: category.slug), class: "group relative rounded-lg bg-gray-100 p-6 hover:bg-gray-200 transition" do %>
-            <h3 class="text-sm font-semibold text-gray-900 group-hover:text-indigo-600"><%= category.name %></h3>
+          <%= link_to category_path(slug: category.slug),
+            class: "group relative flex flex-col items-center rounded-2xl bg-gray-50 p-6 text-center hover:bg-indigo-50 hover:shadow-lg transition-all duration-300" do %>
+            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-indigo-100 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016A3.001 3.001 0 0021 9.349m-18 0a2.987 2.987 0 00.75 2.004c.55.623 1.354 1.016 2.25 1.016.896 0 1.7-.393 2.25-1.016M3 9.349L4.5 4.5h15L21 9.349" />
+              </svg>
+            </div>
+            <h3 class="mt-4 text-sm font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors duration-200"><%= category.name %></h3>
             <p class="mt-1 text-xs text-gray-500"><%= category.products.active.count %> products</p>
           <% end %>
         <% end %>
       </div>
-    </div>
+    </section>
   <% end %>
 
-  <!-- Featured Products -->
+  <!-- New Arrivals -->
   <% if @featured_products.any? %>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h2 class="text-2xl font-bold text-gray-900">Featured Products</h2>
-      <div class="mt-6 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
-        <% @featured_products.each do |product| %>
+    <section class="bg-gray-50">
+      <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div class="flex items-end justify-between">
+          <div>
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">New Arrivals</h2>
+            <p class="mt-3 text-gray-500">The latest additions to our collection</p>
+          </div>
+          <%= link_to "View all", products_path(sort: "newest"),
+            class: "hidden sm:flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors duration-200" %>
+        </div>
+        <div class="mt-12 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+          <% @featured_products.first(8).each do |product| %>
+            <%= render "storefront/products/product_card", product: product %>
+          <% end %>
+        </div>
+        <div class="mt-10 text-center sm:hidden">
+          <%= link_to "View all products", products_path,
+            class: "text-sm font-medium text-indigo-600 hover:text-indigo-700" %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- On Sale -->
+  <% sale_products = @featured_products.select { |p| p.master_variant&.on_sale? } %>
+  <% if sale_products.any? %>
+    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">On Sale</h2>
+          <p class="mt-3 text-gray-500">Great products at exceptional prices</p>
+        </div>
+        <%= link_to "View all sale items", products_path(on_sale: true),
+          class: "hidden sm:flex items-center gap-1 text-sm font-medium text-red-600 hover:text-red-700 transition-colors duration-200" %>
+      </div>
+      <div class="mt-12 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+        <% sale_products.first(4).each do |product| %>
           <%= render "storefront/products/product_card", product: product %>
         <% end %>
       </div>
-    </div>
+    </section>
   <% end %>
+
+  <!-- Promotional Banner -->
+  <section class="relative overflow-hidden bg-indigo-600">
+    <div class="absolute inset-0 opacity-10">
+      <svg class="h-full w-full" preserveAspectRatio="none" viewBox="0 0 1200 400" fill="none">
+        <path d="M0 200C300 100 600 300 1200 200V400H0Z" fill="white"/>
+      </svg>
+    </div>
+    <div class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div class="flex flex-col items-center gap-6 text-center lg:flex-row lg:justify-between lg:text-left">
+        <div>
+          <h2 class="text-3xl font-bold text-white sm:text-4xl">Members get 15% off</h2>
+          <p class="mt-2 text-lg text-indigo-100">Create a free account and enjoy exclusive discounts on your first order.</p>
+        </div>
+        <%= link_to "Create Free Account", new_registration_path,
+          class: "rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-indigo-600 shadow-lg hover:bg-indigo-50 transition-all duration-200 whitespace-nowrap" %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Why Choose RailsyCommerce</h2>
+      <p class="mt-3 text-gray-500">We go above and beyond for every customer</p>
+    </div>
+    <div class="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- Free Shipping -->
+      <div class="flex flex-col items-center text-center">
+        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+          </svg>
+        </div>
+        <h3 class="mt-5 text-base font-semibold text-gray-900">Free Shipping</h3>
+        <p class="mt-2 text-sm text-gray-500">Complimentary shipping on all orders over $50. No hidden fees.</p>
+      </div>
+      <!-- Secure Payments -->
+      <div class="flex flex-col items-center text-center">
+        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+          </svg>
+        </div>
+        <h3 class="mt-5 text-base font-semibold text-gray-900">Secure Payments</h3>
+        <p class="mt-2 text-sm text-gray-500">256-bit SSL encryption. Your payment information is always protected.</p>
+      </div>
+      <!-- Easy Returns -->
+      <div class="flex flex-col items-center text-center">
+        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
+          </svg>
+        </div>
+        <h3 class="mt-5 text-base font-semibold text-gray-900">Easy Returns</h3>
+        <p class="mt-2 text-sm text-gray-500">30-day hassle-free return policy. No questions asked.</p>
+      </div>
+      <!-- Premium Quality -->
+      <div class="flex flex-col items-center text-center">
+        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+          </svg>
+        </div>
+        <h3 class="mt-5 text-base font-semibold text-gray-900">Premium Quality</h3>
+        <p class="mt-2 text-sm text-gray-500">Every product is carefully curated and quality-tested before it reaches you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="bg-gray-50">
+    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Stay Updated</h2>
+        <p class="mt-3 text-gray-500">Be the first to know about new collections, exclusive deals, and style tips.</p>
+        <form class="mt-8 flex flex-col gap-3 sm:flex-row" action="#" method="post">
+          <input type="email" placeholder="Enter your email address" required
+            class="flex-1 rounded-full border border-gray-300 bg-white px-5 py-3 text-sm placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600/20">
+          <button type="submit" class="rounded-full bg-indigo-600 px-8 py-3 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors duration-200">
+            Subscribe
+          </button>
+        </form>
+        <p class="mt-4 text-xs text-gray-400">We respect your privacy. Unsubscribe at any time.</p>
+      </div>
+    </div>
+  </section>
 </div>

@@ -1,0 +1,25 @@
+YOUR ORDER HAS SHIPPED
+======================
+
+Order Number: <%= @order.number %>
+<% if @shipment.tracking_number.present? %>
+Tracking Number: <%= @shipment.tracking_number %>
+<% end %>
+
+Shipping Method: <%= @shipment.shipping_method.name %>
+<% if @shipment.shipping_method.delivery_estimate %>Estimated Delivery: <%= @shipment.shipping_method.delivery_estimate %>
+<% end %>
+<% if @order.shipping_address %>
+DELIVERING TO
+<%= @order.shipping_address.full_name %>
+<%= @order.shipping_address.one_line %>
+<% end %>
+
+ITEMS IN THIS SHIPMENT
+<% @order.order_items.includes(variant: :product).each do |item| %>
+- <%= item.variant.product.name %> (x<%= item.quantity %>)
+<% end %>
+
+Questions about your shipment? Reply to this email or contact us at support@railsycommerce.com
+
+(c) <%= Date.current.year %> RailsyCommerce. All rights reserved.

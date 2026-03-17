@@ -42,6 +42,8 @@ module Orders
         @cart.complete!
       end
 
+      OrderMailer.confirmation(order).deliver_later
+
       success(order: order)
     rescue ActiveRecord::RecordInvalid => e
       failure(e.message)

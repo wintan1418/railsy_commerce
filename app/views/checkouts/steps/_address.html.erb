@@ -1,0 +1,129 @@
+<div class="rounded-xl p-6 lg:p-8" style="background-color: var(--white); border: 1px solid var(--warm-gray);">
+  <h2 class="font-display text-2xl font-semibold mb-2" style="color: var(--black);">Shipping Address</h2>
+  <p class="text-sm mb-8" style="color: var(--medium-gray);">Where should we send your order?</p>
+
+  <%= form_with url: checkout_path, method: :patch, data: { turbo_frame: "checkout_steps" } do |f| %>
+    <%= f.hidden_field :step, value: "address" %>
+
+    <div class="space-y-5">
+      <% unless current_user %>
+        <div>
+          <label for="email" class="block text-sm font-medium mb-1.5" style="color: var(--black);">Email address</label>
+          <input type="email" name="email" id="email" required
+            class="block w-full rounded-lg px-4 py-3 text-sm transition-colors focus:outline-none"
+            style="border: 1px solid var(--warm-gray); color: var(--black); background-color: var(--white);"
+            placeholder="your@email.com"
+            value="<%= params[:email] %>">
+        </div>
+      <% end %>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="address_first_name" class="block text-sm font-medium mb-1.5" style="color: var(--black);">First name</label>
+          <input type="text" name="address[first_name]" id="address_first_name" required
+            class="block w-full rounded-lg px-4 py-3 text-sm transition-colors focus:outline-none"
+            style="border: 1px solid var(--warm-gray); color: var(--black);"
+            value="<%= address.first_name || current_user&.first_name %>">
+          <% if address.errors[:first_name].any? %>
+            <p class="mt-1 text-xs text-red-600"><%= address.errors[:first_name].first %></p>
+          <% end %>
+        </div>
+        <div>
+          <label for="address_last_name" class="block text-sm font-medium mb-1.5" style="color: var(--black);">Last name</label>
+          <input type="text" name="address[last_name]" id="address_last_name" required
+            class="block w-full rounded-lg px-4 py-3 text-sm transition-colors focus:outline-none"
+            style="border: 1px solid var(--warm-gray); color: var(--black);"
+            value="<%= address.last_name || current_user&.last_name %>">
+          <% if address.errors[:last_name].any? %>
+            <p class="mt-1 text-xs text-red-600"><%= address.errors[:last_name].first %></p>
+          <% end %>
+        </div>
+      </div>
+
+      <div>
+        <label for="address_address_line_1" class="block text-sm font-medium mb-1.5" style="color: var(--black);">Address</label>
+        <input type="text" name="address[address_line_1]" id="address_address_line_1" required
+          class="block w-full rounded-lg px-4 py-3 text-sm transition-colors focus:outline-none"
+          style="border: 1px solid var(--warm-gray); color: var(--black);"
+          placeholder="123 Main Street"
+          value="<%= address.address_line_1 %>">
+        <% if address.errors[:address_line_1].any? %>
+          <p class="mt-1 text-xs text-red-600"><%= address.errors[:address_line_1].first %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <label for="address_address_line_2" class="block text-sm font-medium mb-1.5" style="color: var(--black);">Apartment, suite, etc. <span style="color: var(--medium-gray);">(optional)</span></label>
+        <input type="text" name="address[address_line_2]" id="address_address_line_2"
+          class="block w-full rounded-lg px-4 py-3 text-sm transition-colors focus:outline-none"
+          style="border: 1px solid var(--warm-gray); color: var(--black);"
+          value="<%= address.address_line_2 %>">
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="address_city" class="block text-sm font-medium mb-1.5" style="color: var(--black);">City</label>
+          <input type="text" name="address[city]" id="address_city" required
+            class="block w-full rounded-lg px-4 py-3 text-sm transition-colors focus:outline-none"
+            style="border: 1px solid var(--warm-gray); color: var(--black);"
+            value="<%= address.city %>">
+          <% if address.errors[:city].any? %>
+            <p class="mt-1 text-xs text-red-600"><%= address.errors[:city].first %></p>
+          <% end %>
+        </div>
+        <div>
+          <label for="address_state" class="block text-sm font-medium mb-1.5" style="color: var(--black);">State / Province</label>
+          <input type="text" name="address[state]" id="address_state"
+            class="block w-full rounded-lg px-4 py-3 text-sm transition-colors focus:outline-none"
+            style="border: 1px solid var(--warm-gray); color: var(--black);"
+            value="<%= address.state %>">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="address_postal_code" class="block text-sm font-medium mb-1.5" style="color: var(--black);">Postal code</label>
+          <input type="text" name="address[postal_code]" id="address_postal_code" required
+            class="block w-full rounded-lg px-4 py-3 text-sm transition-colors focus:outline-none"
+            style="border: 1px solid var(--warm-gray); color: var(--black);"
+            value="<%= address.postal_code %>">
+          <% if address.errors[:postal_code].any? %>
+            <p class="mt-1 text-xs text-red-600"><%= address.errors[:postal_code].first %></p>
+          <% end %>
+        </div>
+        <div>
+          <label for="address_country_code" class="block text-sm font-medium mb-1.5" style="color: var(--black);">Country</label>
+          <select name="address[country_code]" id="address_country_code" required
+            class="block w-full rounded-lg px-4 py-3 text-sm transition-colors focus:outline-none"
+            style="border: 1px solid var(--warm-gray); color: var(--black);">
+            <option value="US" <%= "selected" if address.country_code == "US" || address.country_code.blank? %>>United States</option>
+            <option value="CA" <%= "selected" if address.country_code == "CA" %>>Canada</option>
+            <option value="GB" <%= "selected" if address.country_code == "GB" %>>United Kingdom</option>
+            <option value="AU" <%= "selected" if address.country_code == "AU" %>>Australia</option>
+            <option value="DE" <%= "selected" if address.country_code == "DE" %>>Germany</option>
+            <option value="FR" <%= "selected" if address.country_code == "FR" %>>France</option>
+          </select>
+          <% if address.errors[:country_code].any? %>
+            <p class="mt-1 text-xs text-red-600"><%= address.errors[:country_code].first %></p>
+          <% end %>
+        </div>
+      </div>
+
+      <div>
+        <label for="address_phone" class="block text-sm font-medium mb-1.5" style="color: var(--black);">Phone <span style="color: var(--medium-gray);">(optional)</span></label>
+        <input type="tel" name="address[phone]" id="address_phone"
+          class="block w-full rounded-lg px-4 py-3 text-sm transition-colors focus:outline-none"
+          style="border: 1px solid var(--warm-gray); color: var(--black);"
+          value="<%= address.try(:phone) %>">
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <button type="submit"
+        class="w-full rounded-lg px-6 py-3.5 text-sm font-semibold tracking-wide uppercase transition-all duration-300 hover:opacity-90 cursor-pointer"
+        style="background-color: var(--gold); color: var(--white);">
+        Continue to Shipping
+      </button>
+    </div>
+  <% end %>
+</div>

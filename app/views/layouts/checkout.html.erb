@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html class="h-full scroll-smooth">
+  <head>
+    <title>Checkout - RailsyCommerce</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="h-full antialiased" style="background-color: var(--cream);">
+    <!-- Checkout Header -->
+    <header style="border-bottom: 1px solid var(--warm-gray);">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+          <%= link_to root_path, class: "flex items-center gap-2" do %>
+            <span class="font-display text-2xl font-semibold tracking-tight" style="color: var(--black);">RailsyCommerce</span>
+          <% end %>
+
+          <%= link_to cart_path, class: "flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-75", style: "color: var(--gold);" do %>
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to cart
+          <% end %>
+        </div>
+      </div>
+    </header>
+
+    <% if flash[:alert] %>
+      <div class="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
+        <div class="rounded-lg bg-red-50 border border-red-200 px-4 py-3">
+          <p class="text-sm text-red-800"><%= flash[:alert] %></p>
+        </div>
+      </div>
+    <% end %>
+
+    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <%= yield %>
+    </main>
+
+    <!-- Checkout Footer -->
+    <footer class="mt-auto py-6" style="border-top: 1px solid var(--warm-gray);">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-xs" style="color: var(--medium-gray);">
+          Secure checkout powered by RailsyCommerce. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

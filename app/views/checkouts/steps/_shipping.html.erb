@@ -1,0 +1,39 @@
+<div class="rounded-xl p-6 lg:p-8" style="background-color: var(--white); border: 1px solid var(--warm-gray);">
+  <h2 class="font-display text-2xl font-semibold mb-2" style="color: var(--black);">Shipping Method</h2>
+  <p class="text-sm mb-8" style="color: var(--medium-gray);">Choose how you'd like your order delivered.</p>
+
+  <%= form_with url: checkout_path, method: :patch, data: { turbo_frame: "checkout_steps" } do |f| %>
+    <%= f.hidden_field :step, value: "shipping" %>
+
+    <div class="space-y-3">
+      <% shipping_methods.each_with_index do |method, index| %>
+        <label class="flex items-center gap-4 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-sm"
+          style="border: 1px solid var(--warm-gray);">
+          <input type="radio" name="shipping_method_id" value="<%= method.id %>"
+            class="h-4 w-4 cursor-pointer" style="accent-color: var(--gold);"
+            <%= "checked" if index == 0 %> required>
+          <div class="flex-1">
+            <p class="text-sm font-medium" style="color: var(--black);"><%= method.name %></p>
+            <% if method.delivery_estimate %>
+              <p class="text-xs mt-0.5" style="color: var(--medium-gray);"><%= method.delivery_estimate %></p>
+            <% end %>
+          </div>
+          <p class="text-sm font-semibold" style="color: var(--black);">
+            <%= method.price_cents.zero? ? "Free" : method.price.format %>
+          </p>
+        </label>
+      <% end %>
+    </div>
+
+    <div class="mt-8 flex gap-4">
+      <%= link_to checkout_path, class: "flex-1 rounded-lg px-6 py-3.5 text-center text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-75", style: "border: 1px solid var(--warm-gray); color: var(--black);" do %>
+        Back
+      <% end %>
+      <button type="submit"
+        class="flex-1 rounded-lg px-6 py-3.5 text-sm font-semibold tracking-wide uppercase transition-all duration-300 hover:opacity-90 cursor-pointer"
+        style="background-color: var(--gold); color: var(--white);">
+        Continue to Payment
+      </button>
+    </div>
+  <% end %>
+</div>

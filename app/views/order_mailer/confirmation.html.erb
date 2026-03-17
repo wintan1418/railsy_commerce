@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; background-color: #faf9f6; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #faf9f6;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%;">
+
+          <!-- Header -->
+          <tr>
+            <td align="center" style="padding-bottom: 32px;">
+              <h1 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 28px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.5px;">RailsyCommerce</h1>
+            </td>
+          </tr>
+
+          <!-- Main Content -->
+          <tr>
+            <td style="background-color: #ffffff; border-radius: 12px; padding: 40px; border: 1px solid #e8e5e0;">
+
+              <!-- Thank You -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="padding-bottom: 24px;">
+                    <div style="width: 56px; height: 56px; background-color: #c9a96e; border-radius: 50%; text-align: center; line-height: 56px;">
+                      <span style="color: #ffffff; font-size: 24px;">&#10003;</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom: 8px;">
+                    <h2 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 24px; font-weight: 600; color: #1a1a1a;">Thank You for Your Order</h2>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom: 32px;">
+                    <p style="margin: 0; font-size: 14px; color: #888888;">Order <strong style="color: #c9a96e;"><%= @order.number %></strong> has been confirmed.</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Order Items -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top: 1px solid #e8e5e0; padding-top: 24px;">
+                <tr>
+                  <td style="padding-bottom: 16px;">
+                    <h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 1px;">Items Ordered</h3>
+                  </td>
+                </tr>
+                <% @order.order_items.includes(variant: :product).each do |item| %>
+                  <tr>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #f0ede8;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td style="font-size: 14px; color: #1a1a1a; font-weight: 500;">
+                            <%= item.variant.product.name %>
+                            <% if item.variant.options_text.present? %>
+                              <br><span style="font-size: 12px; color: #888888; font-weight: 400;"><%= item.variant.options_text %></span>
+                            <% end %>
+                            <br><span style="font-size: 12px; color: #888888; font-weight: 400;">Qty: <%= item.quantity %></span>
+                          </td>
+                          <td align="right" style="font-size: 14px; color: #1a1a1a; font-weight: 500; vertical-align: top;">
+                            <%= item.total.format %>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                <% end %>
+              </table>
+
+              <!-- Totals -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 24px;">
+                <tr>
+                  <td style="font-size: 14px; color: #888888; padding: 6px 0;">Subtotal</td>
+                  <td align="right" style="font-size: 14px; color: #1a1a1a; font-weight: 500;"><%= @order.subtotal.format %></td>
+                </tr>
+                <tr>
+                  <td style="font-size: 14px; color: #888888; padding: 6px 0;">Shipping</td>
+                  <td align="right" style="font-size: 14px; color: #1a1a1a; font-weight: 500;"><%= @order.shipping_total.format %></td>
+                </tr>
+                <% if @order.tax_total_cents > 0 %>
+                  <tr>
+                    <td style="font-size: 14px; color: #888888; padding: 6px 0;">Tax</td>
+                    <td align="right" style="font-size: 14px; color: #1a1a1a; font-weight: 500;"><%= @order.tax_total.format %></td>
+                  </tr>
+                <% end %>
+                <% if @order.discount_total_cents > 0 %>
+                  <tr>
+                    <td style="font-size: 14px; color: #888888; padding: 6px 0;">Discount</td>
+                    <td align="right" style="font-size: 14px; color: #2d8a4e; font-weight: 500;">-<%= @order.discount_total.format %></td>
+                  </tr>
+                <% end %>
+                <tr>
+                  <td colspan="2" style="padding-top: 12px; border-top: 1px solid #e8e5e0;"></td>
+                </tr>
+                <tr>
+                  <td style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #1a1a1a; font-weight: 600; padding: 6px 0;">Total</td>
+                  <td align="right" style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #1a1a1a; font-weight: 600;"><%= @order.total.format %></td>
+                </tr>
+              </table>
+
+              <% if @order.shipping_address %>
+                <!-- Shipping Address -->
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 32px; border-top: 1px solid #e8e5e0; padding-top: 24px;">
+                  <tr>
+                    <td>
+                      <h3 style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 1px;">Shipping Address</h3>
+                      <p style="margin: 0; font-size: 14px; color: #888888; line-height: 1.6;">
+                        <%= @order.shipping_address.full_name %><br>
+                        <%= @order.shipping_address.one_line %>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              <% end %>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="center" style="padding-top: 32px;">
+              <p style="margin: 0; font-size: 12px; color: #888888;">
+                Questions about your order? Reply to this email or contact us at support@railsycommerce.com
+              </p>
+              <p style="margin: 8px 0 0; font-size: 12px; color: #cccccc;">
+                &copy; <%= Date.current.year %> RailsyCommerce. All rights reserved.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

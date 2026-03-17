@@ -1,0 +1,28 @@
+THANK YOU FOR YOUR ORDER
+========================
+
+Order Number: <%= @order.number %>
+
+ITEMS ORDERED
+<% @order.order_items.includes(variant: :product).each do |item| %>
+- <%= item.variant.product.name %><%= " (#{item.variant.options_text})" if item.variant.options_text.present? %>
+  Qty: <%= item.quantity %> | <%= item.total.format %>
+<% end %>
+
+TOTALS
+------
+Subtotal:  <%= @order.subtotal.format %>
+Shipping:  <%= @order.shipping_total.format %>
+<% if @order.tax_total_cents > 0 %>Tax:       <%= @order.tax_total.format %>
+<% end %><% if @order.discount_total_cents > 0 %>Discount:  -<%= @order.discount_total.format %>
+<% end %>Total:     <%= @order.total.format %>
+<% if @order.shipping_address %>
+
+SHIPPING ADDRESS
+<%= @order.shipping_address.full_name %>
+<%= @order.shipping_address.one_line %>
+<% end %>
+
+Questions about your order? Reply to this email or contact us at support@railsycommerce.com
+
+(c) <%= Date.current.year %> RailsyCommerce. All rights reserved.

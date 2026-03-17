@@ -1,0 +1,48 @@
+<div class="rounded-xl p-6 lg:p-8" style="background-color: var(--white); border: 1px solid var(--warm-gray);">
+  <h2 class="font-display text-2xl font-semibold mb-2" style="color: var(--black);">Payment</h2>
+  <p class="text-sm mb-8" style="color: var(--medium-gray);">Review your order and complete your purchase.</p>
+
+  <!-- Order Review -->
+  <div class="mb-8 rounded-lg p-4" style="background-color: var(--cream);">
+    <h3 class="text-sm font-semibold mb-3" style="color: var(--black);">Shipping to</h3>
+    <% if session[:checkout_shipping_address_id] %>
+      <% address = Address.find(session[:checkout_shipping_address_id]) %>
+      <p class="text-sm" style="color: var(--dark-gray);"><%= address.full_name %></p>
+      <p class="text-sm" style="color: var(--medium-gray);"><%= address.one_line %></p>
+    <% end %>
+
+    <% if shipping_method %>
+      <h3 class="text-sm font-semibold mt-4 mb-1" style="color: var(--black);">Shipping method</h3>
+      <p class="text-sm" style="color: var(--medium-gray);">
+        <%= shipping_method.name %>
+        <% if shipping_method.delivery_estimate %>
+          &mdash; <%= shipping_method.delivery_estimate %>
+        <% end %>
+      </p>
+    <% end %>
+  </div>
+
+  <!-- Stripe Elements Placeholder -->
+  <div class="mb-8 rounded-lg p-6 text-center" style="border: 2px dashed var(--warm-gray);">
+    <svg class="mx-auto h-10 w-10 mb-3" style="color: var(--medium-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+    </svg>
+    <p class="text-sm font-medium" style="color: var(--medium-gray);">Stripe Elements will be integrated here</p>
+    <p class="text-xs mt-1" style="color: var(--medium-gray);">Card payment form placeholder</p>
+  </div>
+
+  <%= form_with url: checkout_path, method: :patch do |f| %>
+    <%= f.hidden_field :step, value: "payment" %>
+
+    <div class="flex gap-4">
+      <%= link_to checkout_path, class: "flex-1 rounded-lg px-6 py-3.5 text-center text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-75", style: "border: 1px solid var(--warm-gray); color: var(--black);" do %>
+        Back
+      <% end %>
+      <button type="submit"
+        class="flex-1 rounded-lg px-6 py-3.5 text-sm font-semibold tracking-wide uppercase transition-all duration-300 hover:opacity-90 cursor-pointer"
+        style="background-color: var(--black); color: var(--white);">
+        Place Order
+      </button>
+    </div>
+  <% end %>
+</div>

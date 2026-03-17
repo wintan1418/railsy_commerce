@@ -16,6 +16,11 @@ Rails.application.routes.draw do
   resource :cart, only: %i[show]
   resources :cart_items, only: %i[create update destroy]
 
+  # Checkout
+  resource :checkout, only: %i[show update], controller: "checkouts" do
+    get :confirm
+  end
+
   # Customer Account
   namespace :account do
     root "orders#index"

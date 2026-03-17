@@ -11,6 +11,7 @@ class RegistrationsController < ApplicationController
 
     if @user.save
       start_new_session_for @user
+      UserMailer.welcome(@user).deliver_later
       redirect_to root_path, notice: "Welcome to RailsyCommerce!"
     else
       render :new, status: :unprocessable_entity

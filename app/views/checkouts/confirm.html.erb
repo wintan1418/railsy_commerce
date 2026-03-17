@@ -1,0 +1,98 @@
+<% content_for(:title, "Order Confirmed - RailsyCommerce") %>
+
+<div class="mx-auto max-w-2xl py-8">
+  <!-- Success Icon -->
+  <div class="text-center mb-10">
+    <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full" style="background-color: var(--gold); opacity: 0.9;">
+      <svg class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+      </svg>
+    </div>
+    <h1 class="font-display text-3xl font-semibold mb-2" style="color: var(--black);">Thank You for Your Order</h1>
+    <p class="text-sm" style="color: var(--medium-gray);">
+      Order <span class="font-semibold" style="color: var(--gold);"><%= @order.number %></span> has been placed successfully.
+    </p>
+    <% if @order.email.present? %>
+      <p class="text-sm mt-1" style="color: var(--medium-gray);">
+        A confirmation email has been sent to <strong><%= @order.email %></strong>.
+      </p>
+    <% end %>
+  </div>
+
+  <!-- Order Details -->
+  <div class="rounded-xl p-6 lg:p-8 mb-8" style="background-color: var(--white); border: 1px solid var(--warm-gray);">
+    <h2 class="font-display text-xl font-semibold mb-6" style="color: var(--black);">Order Details</h2>
+
+    <!-- Items -->
+    <div class="space-y-4 mb-6" style="border-bottom: 1px solid var(--warm-gray); padding-bottom: 1.5rem;">
+      <% @order.order_items.includes(variant: :product).each do |item| %>
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-sm font-medium" style="color: var(--black);"><%= item.variant.product.name %></p>
+            <% if item.variant.options_text.present? %>
+              <p class="text-xs mt-0.5" style="color: var(--medium-gray);"><%= item.variant.options_text %></p>
+            <% end %>
+            <p class="text-xs mt-0.5" style="color: var(--medium-gray);">Qty: <%= item.quantity %></p>
+          </div>
+          <p class="text-sm font-medium" style="color: var(--black);"><%= item.total.format %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Totals -->
+    <div class="space-y-2 text-sm">
+      <div class="flex justify-between">
+        <span style="color: var(--medium-gray);">Subtotal</span>
+        <span class="font-medium" style="color: var(--black);"><%= @order.subtotal.format %></span>
+      </div>
+      <div class="flex justify-between">
+        <span style="color: var(--medium-gray);">Shipping</span>
+        <span class="font-medium" style="color: var(--black);"><%= @order.shipping_total.format %></span>
+      </div>
+      <% if @order.tax_total_cents > 0 %>
+        <div class="flex justify-between">
+          <span style="color: var(--medium-gray);">Tax</span>
+          <span class="font-medium" style="color: var(--black);"><%= @order.tax_total.format %></span>
+        </div>
+      <% end %>
+      <% if @order.discount_total_cents > 0 %>
+        <div class="flex justify-between">
+          <span style="color: var(--medium-gray);">Discount</span>
+          <span class="font-medium text-green-600">-<%= @order.discount_total.format %></span>
+        </div>
+      <% end %>
+      <div class="flex justify-between pt-3 mt-3" style="border-top: 1px solid var(--warm-gray);">
+        <span class="font-display text-lg font-semibold" style="color: var(--black);">Total</span>
+        <span class="font-display text-lg font-semibold" style="color: var(--black);"><%= @order.total.format %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shipping Address -->
+  <% if @order.shipping_address %>
+    <div class="rounded-xl p-6 mb-8" style="background-color: var(--white); border: 1px solid var(--warm-gray);">
+      <h3 class="text-sm font-semibold mb-2" style="color: var(--black);">Shipping Address</h3>
+      <p class="text-sm" style="color: var(--medium-gray);">
+        <%= @order.shipping_address.full_name %><br>
+        <%= @order.shipping_address.one_line %>
+      </p>
+    </div>
+  <% end %>
+
+  <!-- Actions -->
+  <div class="flex flex-col sm:flex-row gap-4">
+    <%= link_to products_path,
+      class: "flex-1 rounded-lg px-6 py-3.5 text-center text-sm font-semibold tracking-wide uppercase transition-all duration-300 hover:opacity-90",
+      style: "background-color: var(--gold); color: var(--white);" do %>
+      Continue Shopping
+    <% end %>
+
+    <% if current_user %>
+      <%= link_to account_order_path(@order),
+        class: "flex-1 rounded-lg px-6 py-3.5 text-center text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-75",
+        style: "border: 1px solid var(--warm-gray); color: var(--black);" do %>
+        View Order
+      <% end %>
+    <% end %>
+  </div>
+</div>

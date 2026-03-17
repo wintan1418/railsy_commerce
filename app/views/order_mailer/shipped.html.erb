@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; background-color: #faf9f6; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #faf9f6;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%;">
+
+          <!-- Header -->
+          <tr>
+            <td align="center" style="padding-bottom: 32px;">
+              <h1 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 28px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.5px;">RailsyCommerce</h1>
+            </td>
+          </tr>
+
+          <!-- Main Content -->
+          <tr>
+            <td style="background-color: #ffffff; border-radius: 12px; padding: 40px; border: 1px solid #e8e5e0;">
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="padding-bottom: 24px;">
+                    <div style="width: 56px; height: 56px; background-color: #c9a96e; border-radius: 50%; text-align: center; line-height: 56px;">
+                      <span style="color: #ffffff; font-size: 24px;">&#128230;</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom: 8px;">
+                    <h2 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 24px; font-weight: 600; color: #1a1a1a;">Your Order Has Shipped</h2>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-bottom: 32px;">
+                    <p style="margin: 0; font-size: 14px; color: #888888;">
+                      Great news! Order <strong style="color: #c9a96e;"><%= @order.number %></strong> is on its way.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Tracking Info -->
+              <% if @shipment.tracking_number.present? %>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #faf9f6; border-radius: 8px; margin-bottom: 24px;">
+                  <tr>
+                    <td style="padding: 20px;">
+                      <h3 style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 1px;">Tracking Number</h3>
+                      <p style="margin: 0; font-size: 16px; color: #c9a96e; font-weight: 600; font-family: monospace;"><%= @shipment.tracking_number %></p>
+                    </td>
+                  </tr>
+                </table>
+              <% end %>
+
+              <!-- Shipping Method -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top: 1px solid #e8e5e0; padding-top: 24px;">
+                <tr>
+                  <td>
+                    <h3 style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 1px;">Shipping Details</h3>
+                    <p style="margin: 0; font-size: 14px; color: #888888; line-height: 1.6;">
+                      Method: <%= @shipment.shipping_method.name %>
+                      <% if @shipment.shipping_method.delivery_estimate %>
+                        <br>Estimated delivery: <%= @shipment.shipping_method.delivery_estimate %>
+                      <% end %>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <% if @order.shipping_address %>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 24px; border-top: 1px solid #e8e5e0; padding-top: 24px;">
+                  <tr>
+                    <td>
+                      <h3 style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 1px;">Delivering To</h3>
+                      <p style="margin: 0; font-size: 14px; color: #888888; line-height: 1.6;">
+                        <%= @order.shipping_address.full_name %><br>
+                        <%= @order.shipping_address.one_line %>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              <% end %>
+
+              <!-- Order Items -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 24px; border-top: 1px solid #e8e5e0; padding-top: 24px;">
+                <tr>
+                  <td style="padding-bottom: 12px;">
+                    <h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 1px;">Items in This Shipment</h3>
+                  </td>
+                </tr>
+                <% @order.order_items.includes(variant: :product).each do |item| %>
+                  <tr>
+                    <td style="padding: 8px 0; font-size: 14px; color: #1a1a1a;">
+                      <%= item.variant.product.name %> (x<%= item.quantity %>)
+                    </td>
+                  </tr>
+                <% end %>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="center" style="padding-top: 32px;">
+              <p style="margin: 0; font-size: 12px; color: #888888;">
+                Questions about your shipment? Reply to this email or contact us at support@railsycommerce.com
+              </p>
+              <p style="margin: 8px 0 0; font-size: 12px; color: #cccccc;">
+                &copy; <%= Date.current.year %> RailsyCommerce. All rights reserved.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

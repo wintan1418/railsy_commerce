@@ -18,3 +18,6 @@ application.register("image-gallery", ImageGalleryController)
 
 import SlideshowController from "./slideshow_controller"
 application.register("slideshow", SlideshowController)
+
+import TickerController from "./ticker_controller"
+application.register("ticker", TickerController)

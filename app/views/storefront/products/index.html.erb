@@ -1,32 +1,141 @@
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div class="flex items-center justify-between">
-    <h1 class="text-2xl font-bold text-gray-900">
+<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+  <!-- Page Header -->
+  <div class="border-b border-gray-200 pb-6">
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900">
       <% if params[:q].present? %>
         Search results for "<%= params[:q] %>"
+      <% elsif params[:on_sale] %>
+        Sale Items
       <% else %>
         All Products
       <% end %>
     </h1>
+    <p class="mt-2 text-sm text-gray-500"><%= @products.count %> products</p>
   </div>
 
-  <!-- Categories filter -->
-  <div class="mt-4 flex flex-wrap gap-2">
-    <%= link_to "All", products_path, class: "px-3 py-1.5 text-sm rounded-full #{params[:category_id].blank? ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
-    <% @categories.each do |category| %>
-      <%= link_to category.name, products_path(category_id: category.id),
-        class: "px-3 py-1.5 text-sm rounded-full #{params[:category_id].to_s == category.id.to_s ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
-    <% end %>
-  </div>
+  <div class="mt-8 lg:grid lg:grid-cols-4 lg:gap-x-8">
+    <!-- Sidebar Filters -->
+    <aside class="hidden lg:block">
+      <div class="sticky top-24 space-y-8">
+        <!-- Category Filter -->
+        <div>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-900">Categories</h3>
+          <ul class="mt-4 space-y-2">
+            <%= link_to products_path(params.permit(:q, :sort, :on_sale)),
+              class: "block text-sm #{params[:category_id].blank? ? 'font-semibold text-indigo-600' : 'text-gray-600 hover:text-gray-900'} transition-colors duration-200" do %>
+              All Categories
+            <% end %>
+            <% @categories.each do |category| %>
+              <li>
+                <%= link_to category.name,
+                  products_path(params.permit(:q, :sort, :on_sale).merge(category_id: category.id)),
+                  class: "block text-sm #{params[:category_id].to_s == category.id.to_s ? 'font-semibold text-indigo-600' : 'text-gray-600 hover:text-gray-900'} transition-colors duration-200" %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
 
-  <% if @products.any? %>
-    <div class="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
-      <% @products.each do |product| %>
-        <%= render "storefront/products/product_card", product: product %>
+        <!-- Price Range Filter -->
+        <div>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-900">Price Range</h3>
+          <ul class="mt-4 space-y-2">
+            <li><a href="#" class="block text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Under $50</a></li>
+            <li><a href="#" class="block text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">$50 - $100</a></li>
+            <li><a href="#" class="block text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">$100 - $200</a></li>
+            <li><a href="#" class="block text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">$200 - $500</a></li>
+            <li><a href="#" class="block text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">Over $500</a></li>
+          </ul>
+        </div>
+
+        <!-- Color Swatches -->
+        <div>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-900">Colors</h3>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <% { "Black" => "bg-gray-900", "White" => "bg-white border border-gray-300", "Navy" => "bg-blue-900", "Red" => "bg-red-500", "Blue" => "bg-blue-500", "Green" => "bg-green-600", "Olive" => "bg-green-800", "Sand" => "bg-amber-200" }.each do |name, classes| %>
+              <button type="button" title="<%= name %>" class="h-7 w-7 rounded-full <%= classes %> ring-offset-2 hover:ring-2 hover:ring-indigo-400 transition-all duration-200"></button>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Sale Filter -->
+        <div>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-900">Deals</h3>
+          <div class="mt-4">
+            <%= link_to "On Sale", products_path(params.permit(:q, :sort, :category_id).merge(on_sale: true)),
+              class: "inline-flex items-center gap-2 text-sm #{params[:on_sale] ? 'font-semibold text-red-600' : 'text-gray-600 hover:text-gray-900'} transition-colors duration-200" %>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Product Grid -->
+    <div class="lg:col-span-3">
+      <!-- Sort & Active Filters -->
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <!-- Active Filter Chips -->
+        <div class="flex flex-wrap items-center gap-2">
+          <% if params[:category_id].present? %>
+            <% cat = Category.find_by(id: params[:category_id]) %>
+            <% if cat %>
+              <%= link_to products_path(params.permit(:q, :sort, :on_sale)),
+                class: "inline-flex items-center gap-1 rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-200" do %>
+                <%= cat.name %>
+                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <% end %>
+            <% end %>
+          <% end %>
+          <% if params[:on_sale] %>
+            <%= link_to products_path(params.permit(:q, :sort, :category_id)),
+              class: "inline-flex items-center gap-1 rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-700 hover:bg-red-100 transition-colors duration-200" do %>
+              On Sale
+              <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            <% end %>
+          <% end %>
+        </div>
+
+        <!-- Sort Dropdown -->
+        <div class="flex items-center gap-2">
+          <label for="sort" class="text-sm text-gray-500">Sort by:</label>
+          <select id="sort" onchange="window.location.href = this.value"
+            class="rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-8 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+            <option value="<%= products_path(params.permit(:q, :category_id, :on_sale).merge(sort: 'newest')) %>" <%= 'selected' if params[:sort] == 'newest' || params[:sort].blank? %>>Newest</option>
+            <option value="<%= products_path(params.permit(:q, :category_id, :on_sale).merge(sort: 'price_asc')) %>" <%= 'selected' if params[:sort] == 'price_asc' %>>Price: Low to High</option>
+            <option value="<%= products_path(params.permit(:q, :category_id, :on_sale).merge(sort: 'price_desc')) %>" <%= 'selected' if params[:sort] == 'price_desc' %>>Price: High to Low</option>
+            <option value="<%= products_path(params.permit(:q, :category_id, :on_sale).merge(sort: 'name_asc')) %>" <%= 'selected' if params[:sort] == 'name_asc' %>>Name: A-Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Mobile Category Pills -->
+      <div class="mb-6 flex overflow-x-auto gap-2 pb-2 lg:hidden scrollbar-hide">
+        <%= link_to "All", products_path(params.permit(:q, :sort, :on_sale)),
+          class: "flex-shrink-0 rounded-full px-4 py-2 text-sm font-medium #{params[:category_id].blank? ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors duration-200" %>
+        <% @categories.each do |category| %>
+          <%= link_to category.name,
+            products_path(params.permit(:q, :sort, :on_sale).merge(category_id: category.id)),
+            class: "flex-shrink-0 rounded-full px-4 py-2 text-sm font-medium #{params[:category_id].to_s == category.id.to_s ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors duration-200" %>
+        <% end %>
+      </div>
+
+      <% if @products.any? %>
+        <div class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-6">
+          <% @products.each do |product| %>
+            <%= render "storefront/products/product_card", product: product %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="py-24 text-center">
+          <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          <h3 class="mt-4 text-lg font-medium text-gray-900">No products found</h3>
+          <p class="mt-2 text-sm text-gray-500">Try adjusting your search or filters to find what you're looking for.</p>
+          <div class="mt-6">
+            <%= link_to "Clear all filters", products_path,
+              class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+          </div>
+        </div>
       <% end %>
     </div>
-  <% else %>
-    <div class="mt-16 text-center">
-      <p class="text-gray-500">No products found.</p>
-    </div>
-  <% end %>
+  </div>
 </div>

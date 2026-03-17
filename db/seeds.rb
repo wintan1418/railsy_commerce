@@ -1,6 +1,8 @@
+require "open-uri"
+
 puts "Seeding RailsyCommerce..."
 
-# Users
+# ─── Users ──────────────────────────────────────────────────────────
 admin = User.find_or_create_by!(email_address: "admin@railsycommerce.com") do |u|
   u.password = "password"
   u.first_name = "Admin"
@@ -9,76 +11,94 @@ admin = User.find_or_create_by!(email_address: "admin@railsycommerce.com") do |u
 end
 puts "  Admin: admin@railsycommerce.com / password"
 
-customer = User.find_or_create_by!(email_address: "customer@example.com") do |u|
-  u.password = "password"
-  u.first_name = "Jane"
-  u.last_name = "Doe"
-  u.role = :customer
-end
-puts "  Customer: customer@example.com / password"
-
-# Categories
-categories_data = [
-  { name: "Clothing", description: "Apparel, fashion, and accessories" },
-  { name: "Electronics", description: "Gadgets, devices, and tech" },
-  { name: "Home & Garden", description: "Everything for your home" },
-  { name: "Sports & Outdoors", description: "Active lifestyle gear" },
-  { name: "Books", description: "Fiction, non-fiction, and more" }
+customers_data = [
+  { email: "jane.doe@example.com", first: "Jane", last: "Doe" },
+  { email: "john.smith@example.com", first: "John", last: "Smith" },
+  { email: "sarah.chen@example.com", first: "Sarah", last: "Chen" },
+  { email: "marcus.johnson@example.com", first: "Marcus", last: "Johnson" },
+  { email: "emily.williams@example.com", first: "Emily", last: "Williams" },
+  { email: "david.brown@example.com", first: "David", last: "Brown" },
+  { email: "lisa.martinez@example.com", first: "Lisa", last: "Martinez" },
+  { email: "customer@example.com", first: "Alex", last: "Taylor" }
 ]
 
-categories = categories_data.map do |data|
+customers = customers_data.map do |data|
+  User.find_or_create_by!(email_address: data[:email]) do |u|
+    u.password = "password"
+    u.first_name = data[:first]
+    u.last_name = data[:last]
+    u.role = :customer
+  end
+end
+puts "  #{customers.count} customers created"
+
+# ─── Categories (roots) ────────────────────────────────────────────
+root_categories_data = [
+  { name: "Clothing", description: "Premium apparel and fashion essentials for every occasion" },
+  { name: "Electronics", description: "Cutting-edge gadgets, devices, and tech accessories" },
+  { name: "Home & Living", description: "Curated home decor, furniture, and lifestyle products" },
+  { name: "Sports & Outdoors", description: "Performance gear for active lifestyles" },
+  { name: "Accessories", description: "Bags, watches, jewelry, and finishing touches" },
+  { name: "Beauty & Wellness", description: "Skincare, grooming, and wellness essentials" }
+]
+
+root_categories = root_categories_data.each_with_index.map do |data, i|
   Category.find_or_create_by!(name: data[:name]) do |c|
     c.description = data[:description]
-    c.active = true
-  end
-end
-puts "  #{categories.count} categories created"
-
-# Subcategories
-clothing = Category.find_by!(name: "Clothing")
-%w[T-Shirts Hoodies Pants Jackets].each_with_index do |name, i|
-  Category.find_or_create_by!(name: name) do |c|
-    c.parent = clothing
     c.position = i
     c.active = true
   end
 end
+puts "  #{root_categories.count} root categories created"
 
-electronics = Category.find_by!(name: "Electronics")
-%w[Laptops Phones Headphones Accessories].each_with_index do |name, i|
-  Category.find_or_create_by!(name: name) do |c|
-    c.parent = electronics
-    c.position = i
-    c.active = true
+# ─── Subcategories ─────────────────────────────────────────────────
+subcategories_map = {
+  "Clothing" => ["T-Shirts", "Hoodies & Sweaters", "Pants & Jeans", "Jackets & Coats", "Dresses", "Activewear"],
+  "Electronics" => ["Laptops", "Smartphones", "Headphones & Audio", "Wearables", "Cameras"],
+  "Home & Living" => ["Decor", "Kitchen", "Bedding", "Lighting", "Plants & Garden"],
+  "Sports & Outdoors" => ["Running", "Yoga & Fitness", "Hiking & Camping", "Cycling", "Swimming"],
+  "Accessories" => ["Bags & Backpacks", "Watches", "Sunglasses", "Jewelry", "Hats & Scarves"],
+  "Beauty & Wellness" => ["Skincare", "Fragrances", "Hair Care", "Supplements"]
+}
+
+subcategories_map.each do |parent_name, children|
+  parent = Category.find_by!(name: parent_name)
+  children.each_with_index do |name, i|
+    Category.find_or_create_by!(name: name) do |c|
+      c.parent = parent
+      c.position = i
+      c.active = true
+    end
   end
 end
+puts "  Subcategories created"
 
-# Option Types
-size = OptionType.find_or_create_by!(name: "size") { |ot| ot.presentation = "Size" }
-color = OptionType.find_or_create_by!(name: "color") { |ot| ot.presentation = "Color" }
+# ─── Option Types & Values ─────────────────────────────────────────
+size_type = OptionType.find_or_create_by!(name: "size") { |ot| ot.presentation = "Size" }
+color_type = OptionType.find_or_create_by!(name: "color") { |ot| ot.presentation = "Color" }
 
-# Option Values
 sizes = %w[XS S M L XL XXL].each_with_index.map do |name, i|
-  OptionValue.find_or_create_by!(option_type: size, name: name.downcase) do |ov|
+  OptionValue.find_or_create_by!(option_type: size_type, name: name.downcase) do |ov|
     ov.presentation = name
     ov.position = i
   end
 end
 
-colors = %w[Black White Navy Red Blue Green].each_with_index.map do |name, i|
-  OptionValue.find_or_create_by!(option_type: color, name: name.downcase) do |ov|
+color_names = %w[Black White Navy Red Blue Green Olive Burgundy Charcoal Sand]
+colors = color_names.each_with_index.map do |name, i|
+  OptionValue.find_or_create_by!(option_type: color_type, name: name.downcase) do |ov|
     ov.presentation = name
     ov.position = i
   end
 end
 
-# Stock Location
+# ─── Stock Location ────────────────────────────────────────────────
 warehouse = StockLocation.find_or_create_by!(name: "Main Warehouse") do |sl|
   sl.active = true
   sl.default = true
 end
 
-# Shipping Methods
+# ─── Shipping Methods ──────────────────────────────────────────────
 ShippingMethod.find_or_create_by!(name: "Standard Shipping") do |sm|
   sm.description = "Delivered in 5-7 business days"
   sm.price_cents = 999
@@ -103,107 +123,291 @@ ShippingMethod.find_or_create_by!(name: "Free Shipping") do |sm|
   sm.active = true
 end
 
-# Products
+# ─── Helper: Attach image from picsum ──────────────────────────────
+def attach_product_image(product, keyword, index = 1)
+  return if product.images.attached?
+
+  begin
+    url = "https://picsum.photos/seed/#{keyword}#{index}/800/800"
+    image = URI.open(url)
+    product.images.attach(
+      io: image,
+      filename: "#{product.slug}-#{index}.jpg",
+      content_type: "image/jpeg"
+    )
+    puts "    Attached image for #{product.name}"
+  rescue => e
+    puts "    Could not attach image for #{product.name}: #{e.message}"
+  end
+end
+
+# ─── Products ──────────────────────────────────────────────────────
 products_data = [
+  # ── Clothing: T-Shirts ──
   {
-    name: "Classic Cotton T-Shirt",
-    description: "A premium cotton t-shirt with a comfortable fit. Made from 100% organic cotton for breathability and softness. Available in multiple sizes and colors.",
+    name: "Essential Cotton Crew Tee",
+    description: "Crafted from 100% organic Pima cotton, this essential crew neck t-shirt offers an incredibly soft hand feel and a relaxed yet refined silhouette. Pre-washed for zero shrinkage. Reinforced collar and double-stitched hems ensure lasting wear. A wardrobe foundation piece.",
     category: "T-Shirts",
-    price: 2999,
-    compare_at: 3999,
-    has_options: true
+    price: 3900,
+    compare_at: 5500,
+    image_seed: "cotton-tshirt",
+    has_sizes: true,
+    has_colors: true
   },
   {
-    name: "Premium Hoodie",
-    description: "Stay warm and stylish with our premium fleece-lined hoodie. Features a kangaroo pocket and adjustable drawstring hood.",
-    category: "Hoodies",
-    price: 5999,
+    name: "Merino Wool V-Neck Tee",
+    description: "Lightweight 150gsm merino wool blended with organic cotton for a breathable, temperature-regulating tee. Naturally odor-resistant and moisture-wicking. Perfect for travel and layering. Slim fit with a modern V-neck cut.",
+    category: "T-Shirts",
+    price: 6800,
     compare_at: nil,
-    has_options: true
+    image_seed: "vneck-merino",
+    has_sizes: true,
+    has_colors: true
   },
+  # ── Clothing: Hoodies & Sweaters ──
   {
-    name: "Slim Fit Jeans",
-    description: "Modern slim fit jeans crafted from premium stretch denim. Comfortable all-day wear with a contemporary silhouette.",
-    category: "Pants",
-    price: 7999,
-    compare_at: 9999,
-    has_options: true
-  },
-  {
-    name: "Lightweight Jacket",
-    description: "A versatile lightweight jacket perfect for layering. Water-resistant shell with breathable lining.",
-    category: "Jackets",
-    price: 12999,
+    name: "Heavyweight French Terry Hoodie",
+    description: "A premium 400gsm French terry hoodie with a relaxed oversized fit. Features a lined kangaroo pocket, brushed interior, and YKK zipper at the collar. Raglan sleeves for unrestricted movement. The kind of hoodie you reach for every day.",
+    category: "Hoodies & Sweaters",
+    price: 8900,
     compare_at: nil,
-    has_options: false
+    image_seed: "premium-hoodie",
+    has_sizes: true,
+    has_colors: true
   },
   {
-    name: "Pro Laptop 15\"",
-    description: "High-performance laptop with a 15-inch Retina display. Features the latest processor, 16GB RAM, and 512GB SSD storage. Perfect for professionals and creators.",
+    name: "Cashmere Blend Crewneck Sweater",
+    description: "Luxuriously soft cashmere-wool blend knit in a classic crewneck silhouette. 7-gauge knit with ribbed cuffs and hem. Minimal branding for a clean, versatile look that pairs with everything from jeans to tailored trousers.",
+    category: "Hoodies & Sweaters",
+    price: 14900,
+    compare_at: 18900,
+    image_seed: "cashmere-sweater",
+    has_sizes: true,
+    has_colors: true
+  },
+  # ── Clothing: Pants & Jeans ──
+  {
+    name: "Selvedge Slim Fit Denim",
+    description: "14oz Japanese selvedge denim with a modern slim taper. Raw indigo with natural fading potential. Five-pocket construction with copper rivets and YKK brass zipper. Chain-stitched hem. Will develop unique character with every wear.",
+    category: "Pants & Jeans",
+    price: 12900,
+    compare_at: 16500,
+    image_seed: "selvedge-jeans",
+    has_sizes: true,
+    has_colors: false
+  },
+  {
+    name: "Tailored Chino Pants",
+    description: "Garment-dyed stretch cotton chinos with a tailored fit through the thigh and a slight taper to the ankle. Features a hook-and-bar closure, French fly, and rear welt pockets. Perfect for smart-casual occasions.",
+    category: "Pants & Jeans",
+    price: 8900,
+    compare_at: nil,
+    image_seed: "chino-pants",
+    has_sizes: true,
+    has_colors: true
+  },
+  # ── Clothing: Jackets ──
+  {
+    name: "Water-Resistant Field Jacket",
+    description: "A modern take on the military field jacket. DWR-coated cotton-nylon shell with a warm quilted lining. Four flap pockets, internal media pocket, and adjustable drawcord waist. Ideal for transitional weather.",
+    category: "Jackets & Coats",
+    price: 22900,
+    compare_at: nil,
+    image_seed: "field-jacket",
+    has_sizes: true,
+    has_colors: false
+  },
+  # ── Electronics: Laptops ──
+  {
+    name: "ProBook Ultra 15\" Laptop",
+    description: "Powerhouse performance in a slim aluminum chassis. Features a 15.6\" 3K OLED display, latest-gen processor, 32GB unified memory, and 1TB NVMe SSD. Thunderbolt 4 ports, Wi-Fi 7, and 18-hour battery life. Built for creators and professionals.",
     category: "Laptops",
-    price: 149900,
+    price: 189900,
     compare_at: nil,
-    has_options: false
+    image_seed: "laptop-pro",
+    has_sizes: false,
+    has_colors: false
+  },
+  # ── Electronics: Headphones ──
+  {
+    name: "AeroSound Pro Wireless Headphones",
+    description: "Immersive listening with hybrid active noise cancellation and spatial audio. 40mm custom drivers deliver studio-quality sound. 30-hour battery life, multipoint Bluetooth 5.3 connection, and ultra-comfortable memory foam ear cushions.",
+    category: "Headphones & Audio",
+    price: 29900,
+    compare_at: 34900,
+    image_seed: "headphones-wireless",
+    has_sizes: false,
+    has_colors: false
   },
   {
-    name: "Wireless Earbuds Pro",
-    description: "Premium wireless earbuds with active noise cancellation. Up to 8 hours of battery life with the charging case extending to 32 hours total.",
-    category: "Headphones",
+    name: "Studio Monitor Earbuds",
+    description: "True wireless earbuds engineered for audiophiles. Dual balanced-armature drivers with a dynamic driver for deep bass. ANC with transparency mode, wireless charging case, and IPX5 water resistance. 8 hours playback, 32 hours total with case.",
+    category: "Headphones & Audio",
     price: 19900,
     compare_at: 24900,
-    has_options: false
+    image_seed: "earbuds-studio",
+    has_sizes: false,
+    has_colors: false
   },
+  # ── Electronics: Wearables ──
   {
-    name: "Smart Watch Series X",
-    description: "Advanced smartwatch with health monitoring, GPS, and 5-day battery life. Water resistant to 50 meters.",
-    category: "Accessories",
-    price: 34900,
+    name: "Apex Smart Watch Series 5",
+    description: "Your comprehensive health and fitness companion. Always-on AMOLED display, advanced heart rate and SpO2 monitoring, built-in GPS, and 7-day battery life. 100+ workout modes, sleep tracking, and stress management tools. 5ATM water resistance.",
+    category: "Wearables",
+    price: 39900,
     compare_at: nil,
-    has_options: false
+    image_seed: "smartwatch-apex",
+    has_sizes: false,
+    has_colors: false
   },
+  # ── Electronics: Cameras ──
   {
-    name: "Ceramic Plant Pot Set",
-    description: "Set of 3 minimalist ceramic plant pots in graduating sizes. Perfect for indoor plants and succulents.",
-    category: "Home & Garden",
-    price: 4999,
-    compare_at: 6999,
-    has_options: false
-  },
-  {
-    name: "Yoga Mat Premium",
-    description: "Extra thick 6mm yoga mat with non-slip texture. Made from eco-friendly TPE material with carrying strap included.",
-    category: "Sports & Outdoors",
-    price: 3999,
+    name: "Mirrorless Camera Kit 28mm",
+    description: "Compact full-frame mirrorless camera with a 28mm f/2.0 prime lens. 45MP sensor, 5-axis IBIS, 4K 120fps video capability, and dual card slots. Weather-sealed magnesium alloy body. Perfect for street photography and travel.",
+    category: "Cameras",
+    price: 249900,
     compare_at: nil,
-    has_options: false
+    image_seed: "camera-mirrorless",
+    has_sizes: false,
+    has_colors: false
+  },
+  # ── Home & Living ──
+  {
+    name: "Artisan Ceramic Vase Set",
+    description: "Set of three hand-thrown ceramic vases in graduating sizes. Matte glaze finish in earthy tones. Each piece is unique with subtle variations. Perfect for dried botanicals or as sculptural accents. Tallest vase stands at 14 inches.",
+    category: "Decor",
+    price: 7900,
+    compare_at: 9900,
+    image_seed: "ceramic-vase",
+    has_sizes: false,
+    has_colors: false
   },
   {
-    name: "The Art of Rails",
-    description: "Master Ruby on Rails with this comprehensive guide covering everything from basics to advanced patterns. 500+ pages of practical knowledge.",
-    category: "Books",
-    price: 4999,
+    name: "Linen Blend Throw Blanket",
+    description: "Woven from a luxurious linen-cotton blend, this throw adds texture and warmth to any space. Fringe edge detail and subtle heathered pattern. 50\" x 70\". Machine washable and gets softer with every wash.",
+    category: "Bedding",
+    price: 8900,
     compare_at: nil,
-    has_options: false
+    image_seed: "linen-throw",
+    has_sizes: false,
+    has_colors: false
   },
   {
-    name: "USB-C Hub 7-in-1",
-    description: "Expand your laptop connectivity with this compact USB-C hub featuring HDMI, USB-A, SD card reader, and ethernet port.",
-    category: "Accessories",
-    price: 5999,
-    compare_at: 7999,
-    has_options: false
+    name: "Pour-Over Coffee Set",
+    description: "Complete pour-over coffee brewing set including a hand-blown borosilicate glass carafe, reusable stainless steel filter, and walnut wood collar with leather tie. Brews 4 cups. A ritual worth savoring.",
+    category: "Kitchen",
+    price: 6400,
+    compare_at: 7900,
+    image_seed: "pourover-coffee",
+    has_sizes: false,
+    has_colors: false
   },
   {
-    name: "Running Shoes Ultra",
-    description: "Lightweight running shoes with responsive cushioning and breathable mesh upper. Designed for road running and daily training.",
-    category: "Sports & Outdoors",
-    price: 12999,
-    compare_at: 15999,
-    has_options: true
+    name: "Sculptural Table Lamp",
+    description: "A statement lighting piece with an organic sculptural base in brushed brass and a linen drum shade. 18 inches tall. Dimmable with a touch sensor. Creates warm ambient lighting for living rooms and bedrooms.",
+    category: "Lighting",
+    price: 14900,
+    compare_at: nil,
+    image_seed: "table-lamp-brass",
+    has_sizes: false,
+    has_colors: false
+  },
+  # ── Sports & Outdoors ──
+  {
+    name: "Carbon Plate Running Shoes",
+    description: "Elite performance running shoes with a full-length carbon fiber plate and nitrogen-infused foam midsole. Engineered mesh upper provides targeted breathability and lockdown fit. 7.8oz for men's size 10. Built for race day and speed sessions.",
+    category: "Running",
+    price: 17900,
+    compare_at: 21900,
+    image_seed: "running-shoes-carbon",
+    has_sizes: true,
+    has_colors: false
+  },
+  {
+    name: "Performance Yoga Mat 6mm",
+    description: "Professional-grade yoga mat with a dual-texture surface: microfiber top for grip and natural rubber base for cushioning. 6mm thick, 72\" x 26\". Includes carrying strap. Free from PVC, latex, and toxic chemicals.",
+    category: "Yoga & Fitness",
+    price: 7900,
+    compare_at: nil,
+    image_seed: "yoga-mat-premium",
+    has_sizes: false,
+    has_colors: false
+  },
+  {
+    name: "Ultralight Down Jacket",
+    description: "Packable 800-fill power goose down jacket weighing just 10oz. Water-resistant Pertex Quantum shell with welded baffles to prevent cold spots. Stuff sack included. Perfect as a standalone piece or mid-layer.",
+    category: "Hiking & Camping",
+    price: 19900,
+    compare_at: 24900,
+    image_seed: "down-jacket-light",
+    has_sizes: true,
+    has_colors: true
+  },
+  # ── Accessories ──
+  {
+    name: "Heritage Leather Tote",
+    description: "Full-grain vegetable-tanned leather tote bag with brass hardware. Unlined interior with one zip pocket and two slip pockets. Reinforced handles and riveted stress points. Develops a beautiful patina over time. 14\" x 12\" x 5\".",
+    category: "Bags & Backpacks",
+    price: 24900,
+    compare_at: nil,
+    image_seed: "leather-tote-bag",
+    has_sizes: false,
+    has_colors: false
+  },
+  {
+    name: "Titanium Chronograph Watch",
+    description: "Swiss automatic movement housed in a grade-2 titanium case. Sapphire crystal with anti-reflective coating. Water resistant to 100m. 42mm case diameter with a quick-release Italian leather strap. Minimal dial with applied indices.",
+    category: "Watches",
+    price: 49900,
+    compare_at: nil,
+    image_seed: "titanium-watch",
+    has_sizes: false,
+    has_colors: false
+  },
+  {
+    name: "Polarized Aviator Sunglasses",
+    description: "Classic aviator frame in lightweight titanium with polarized CR-39 lenses providing 100% UV protection. Spring hinges for a comfortable fit. Includes a leather hard case and microfiber cleaning cloth. Lens width 58mm.",
+    category: "Sunglasses",
+    price: 16900,
+    compare_at: 19900,
+    image_seed: "aviator-sunglasses",
+    has_sizes: false,
+    has_colors: false
+  },
+  # ── Beauty & Wellness ──
+  {
+    name: "Botanical Face Serum",
+    description: "Concentrated face serum with hyaluronic acid, vitamin C, and botanical extracts. Lightweight, fast-absorbing formula hydrates and brightens skin. Dermatologist tested. Free from parabens, sulfates, and synthetic fragrances. 1 fl oz.",
+    category: "Skincare",
+    price: 5400,
+    compare_at: 6800,
+    image_seed: "face-serum-botanical",
+    has_sizes: false,
+    has_colors: false
+  },
+  {
+    name: "Eau de Parfum - Coastal Cedar",
+    description: "An evocative fragrance built on Virginia cedar and sea salt, layered with bergamot, ambrette seed, and driftwood accord. Long-lasting sillage with a natural, unforced character. 50ml glass bottle with wooden cap.",
+    category: "Fragrances",
+    price: 9800,
+    compare_at: nil,
+    image_seed: "cologne-cedar",
+    has_sizes: false,
+    has_colors: false
+  },
+  {
+    name: "Daily Wellness Capsules",
+    description: "Comprehensive daily multivitamin with adaptogens, probiotics, and omega-3s. Third-party tested for purity and potency. Plant-based capsules with no fillers or artificial ingredients. 60-day supply.",
+    category: "Supplements",
+    price: 3900,
+    compare_at: 4900,
+    image_seed: "wellness-supplements",
+    has_sizes: false,
+    has_colors: false
   }
 ]
 
-products_data.each do |data|
+products_data.each_with_index do |data, idx|
   category = Category.find_by(name: data[:category])
   product = Product.find_or_create_by!(name: data[:name]) do |p|
     p.description = data[:description]
@@ -211,73 +415,120 @@ products_data.each do |data|
     p.status = :active
   end
 
-  # Create master variant
   if product.variants.empty?
     master = product.variants.create!(
       is_master: true,
       price_cents: data[:price],
       compare_at_price_cents: data[:compare_at],
-      sku: "#{product.slug.upcase.tr('-', '')}-001"
+      sku: "RC-#{(idx + 1).to_s.rjust(4, '0')}-MST"
     )
 
-    # Stock for master
     StockItem.find_or_create_by!(variant: master, stock_location: warehouse) do |si|
-      si.available_quantity = rand(20..200)
+      si.available_quantity = rand(15..300)
     end
 
-    # Create option variants for clothing items
-    if data[:has_options]
-      product.product_option_types.find_or_create_by!(option_type: size)
+    # Size variants for clothing items
+    if data[:has_sizes]
+      product.product_option_types.find_or_create_by!(option_type: size_type)
 
-      selected_sizes = sizes.sample(4).sort_by(&:position)
+      selected_sizes = sizes.sample(rand(4..6)).sort_by(&:position)
       selected_sizes.each_with_index do |size_val, i|
-        variant = product.variants.create!(
-          is_master: false,
-          price_cents: data[:price],
-          compare_at_price_cents: data[:compare_at],
-          sku: "#{product.slug.upcase.tr('-', '')}-#{size_val.name.upcase}",
-          position: i + 1
-        )
-        variant.option_values << size_val
+        sku = "RC-#{(idx + 1).to_s.rjust(4, '0')}-#{size_val.name.upcase}"
 
-        StockItem.find_or_create_by!(variant: variant, stock_location: warehouse) do |si|
-          si.available_quantity = rand(10..100)
+        # If also has colors, create size+color combos
+        if data[:has_colors]
+          product.product_option_types.find_or_create_by!(option_type: color_type)
+          selected_colors = colors.sample(rand(3..5)).sort_by(&:position)
+
+          selected_colors.each_with_index do |color_val, j|
+            variant_sku = "#{sku}-#{color_val.name.upcase[0..2]}"
+            variant = product.variants.create!(
+              is_master: false,
+              price_cents: data[:price],
+              compare_at_price_cents: data[:compare_at],
+              sku: variant_sku,
+              position: (i * selected_colors.length) + j + 1
+            )
+            variant.option_values << size_val
+            variant.option_values << color_val
+
+            StockItem.find_or_create_by!(variant: variant, stock_location: warehouse) do |si|
+              si.available_quantity = rand(5..80)
+            end
+          end
+        else
+          variant = product.variants.create!(
+            is_master: false,
+            price_cents: data[:price],
+            compare_at_price_cents: data[:compare_at],
+            sku: sku,
+            position: i + 1
+          )
+          variant.option_values << size_val
+
+          StockItem.find_or_create_by!(variant: variant, stock_location: warehouse) do |si|
+            si.available_quantity = rand(5..80)
+          end
         end
       end
     end
   end
+
+  # Attach product images (2 per product for gallery)
+  attach_product_image(product, data[:image_seed], 1)
+  attach_product_image(product, "#{data[:image_seed]}-alt", 2)
 end
 puts "  #{Product.count} products created"
 
-# Sample orders
-address = Address.find_or_create_by!(user: customer, address_line_1: "123 Main St") do |a|
-  a.first_name = "Jane"
-  a.last_name = "Doe"
-  a.city = "New York"
-  a.state = "NY"
-  a.postal_code = "10001"
-  a.country_code = "US"
-  a.phone = "555-0100"
+# ─── Sample Addresses ──────────────────────────────────────────────
+addresses_data = [
+  { user: customers[0], line1: "123 Main Street", city: "New York", state: "NY", zip: "10001", phone: "555-0100" },
+  { user: customers[1], line1: "456 Oak Avenue", city: "Los Angeles", state: "CA", zip: "90001", phone: "555-0200" },
+  { user: customers[2], line1: "789 Pine Road", city: "San Francisco", state: "CA", zip: "94102", phone: "555-0300" },
+  { user: customers[3], line1: "321 Elm Street", city: "Chicago", state: "IL", zip: "60601", phone: "555-0400" },
+  { user: customers[4], line1: "654 Maple Drive", city: "Austin", state: "TX", zip: "73301", phone: "555-0500" },
+  { user: customers[5], line1: "987 Cedar Lane", city: "Seattle", state: "WA", zip: "98101", phone: "555-0600" },
+  { user: customers[6], line1: "159 Birch Court", city: "Miami", state: "FL", zip: "33101", phone: "555-0700" },
+  { user: customers[7], line1: "753 Walnut Way", city: "Denver", state: "CO", zip: "80201", phone: "555-0800" }
+]
+
+addresses = addresses_data.map do |data|
+  Address.find_or_create_by!(user: data[:user], address_line_1: data[:line1]) do |a|
+    a.first_name = data[:user].first_name
+    a.last_name = data[:user].last_name
+    a.city = data[:city]
+    a.state = data[:state]
+    a.postal_code = data[:zip]
+    a.country_code = "US"
+    a.phone = data[:phone]
+  end
 end
 
+# ─── Sample Orders ─────────────────────────────────────────────────
 if Order.count == 0
-  5.times do |i|
+  statuses = %w[pending confirmed processing shipped delivered delivered delivered]
+  master_variants = Variant.where(is_master: true).to_a
+
+  12.times do |i|
+    customer = customers.sample
+    address = addresses.detect { |a| a.user_id == customer.id } || addresses.first
+
     order = Order.create!(
       user: customer,
       email: customer.email_address,
       shipping_address: address,
       billing_address: address,
-      status: %w[pending confirmed processing shipped delivered].sample,
-      subtotal_cents: rand(2999..20000),
-      shipping_total_cents: [ 0, 999, 2499 ].sample,
-      tax_total_cents: rand(200..1600),
-      currency: "USD"
+      status: statuses.sample,
+      subtotal_cents: 0,
+      shipping_total_cents: [0, 999, 2499].sample,
+      tax_total_cents: 0,
+      currency: "USD",
+      created_at: rand(30).days.ago
     )
-    order.recalculate_totals!
 
-    # Add 1-3 items
-    variants = Variant.where(is_master: true).sample(rand(1..3))
-    variants.each do |variant|
+    # Add 1-4 items
+    selected_variants = master_variants.sample(rand(1..4))
+    selected_variants.each do |variant|
       qty = rand(1..3)
       order.order_items.create!(
         variant: variant,
@@ -291,4 +542,10 @@ if Order.count == 0
   puts "  #{Order.count} sample orders created"
 end
 
+puts ""
 puts "Seeding complete!"
+puts "  Products: #{Product.count}"
+puts "  Categories: #{Category.count} (#{Category.roots.count} root)"
+puts "  Variants: #{Variant.count}"
+puts "  Orders: #{Order.count}"
+puts "  Users: #{User.count} (#{User.customer.count} customers)"

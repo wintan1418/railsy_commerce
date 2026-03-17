@@ -45,6 +45,11 @@ gem "image_processing", "~> 1.2"
 # Environment variables
 gem "dotenv-rails", groups: [:development, :test]
 
+# OAuth / Google Sign-In
+gem "omniauth"
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
+
 # E-commerce essentials
 gem "pg_search"                     # PostgreSQL full-text search
 gem "pagy"                          # Fast pagination

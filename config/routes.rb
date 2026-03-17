@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   resource :registration, only: %i[new create]
   resources :passwords, param: :token
 
+  # OAuth
+  get "auth/:provider/callback", to: "omniauth_callbacks#google_oauth2", as: :omniauth_callback
+  get "auth/failure", to: "omniauth_callbacks#failure"
+
   # Storefront
   root "pages#home"
 

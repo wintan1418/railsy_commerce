@@ -1,0 +1,17 @@
+standard:
+  name: Standard Shipping
+  description: 5-7 business days
+  price_cents: 999
+  currency: USD
+  min_delivery_days: 5
+  max_delivery_days: 7
+  active: true
+
+express:
+  name: Express Shipping
+  description: 1-2 business days
+  price_cents: 2499
+  currency: USD
+  min_delivery_days: 1
+  max_delivery_days: 2
+  active: true

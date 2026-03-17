@@ -1,0 +1,4 @@
+tshirt_in_cart:
+  cart: customer_cart
+  variant: tshirt_master
+  quantity: 2

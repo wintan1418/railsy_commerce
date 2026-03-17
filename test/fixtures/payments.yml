@@ -1,0 +1,7 @@
+pending_payment:
+  order: pending_order
+  amount_cents: 7477
+  currency: USD
+  status: pending
+  payment_method: stripe
+  stripe_payment_intent_id: pi_test_123

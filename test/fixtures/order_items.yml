@@ -1,0 +1,6 @@
+tshirt_order_item:
+  order: pending_order
+  variant: tshirt_master
+  quantity: 2
+  unit_price_cents: 2999
+  total_cents: 5998

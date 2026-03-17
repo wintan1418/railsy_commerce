@@ -10,9 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_17_112837) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_17_113200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "address_line_1", null: false
+    t.string "address_line_2"
+    t.string "city", null: false
+    t.string "state"
+    t.string "postal_code", null: false
+    t.string "country_code", default: "US", null: false
+    t.string "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "cart_items", force: :cascade do |t|
+    t.bigint "cart_id", null: false
+    t.bigint "variant_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id", "variant_id"], name: "index_cart_items_on_cart_id_and_variant_id", unique: true
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["variant_id"], name: "index_cart_items_on_variant_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.string "token", null: false
+    t.bigint "user_id"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_carts_on_token", unique: true
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false
@@ -56,6 +93,55 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_112837) do
     t.index ["option_type_id"], name: "index_option_values_on_option_type_id"
   end
 
+  create_table "order_items", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "variant_id", null: false
+    t.integer "quantity", null: false
+    t.integer "unit_price_cents", null: false
+    t.integer "total_cents", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["variant_id"], name: "index_order_items_on_variant_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string "number", null: false
+    t.bigint "user_id"
+    t.string "email", null: false
+    t.string "status", default: "pending", null: false
+    t.bigint "billing_address_id"
+    t.bigint "shipping_address_id"
+    t.integer "subtotal_cents", default: 0, null: false
+    t.integer "shipping_total_cents", default: 0, null: false
+    t.integer "tax_total_cents", default: 0, null: false
+    t.integer "discount_total_cents", default: 0, null: false
+    t.integer "total_cents", default: 0, null: false
+    t.string "currency", default: "USD", null: false
+    t.text "notes"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_orders_on_number", unique: true
+    t.index ["status"], name: "index_orders_on_status"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.integer "amount_cents", null: false
+    t.string "currency", default: "USD", null: false
+    t.string "status", default: "pending", null: false
+    t.string "payment_method", null: false
+    t.string "stripe_payment_intent_id"
+    t.string "stripe_charge_id"
+    t.jsonb "response_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_payments_on_order_id"
+    t.index ["stripe_payment_intent_id"], name: "index_payments_on_stripe_payment_intent_id"
+  end
+
   create_table "product_option_types", force: :cascade do |t|
     t.bigint "product_id", null: false
     t.bigint "option_type_id", null: false
@@ -89,6 +175,31 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_112837) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "shipments", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "shipping_method_id", null: false
+    t.string "tracking_number"
+    t.string "status", default: "pending", null: false
+    t.datetime "shipped_at"
+    t.datetime "delivered_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_shipments_on_order_id"
+    t.index ["shipping_method_id"], name: "index_shipments_on_shipping_method_id"
+  end
+
+  create_table "shipping_methods", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.integer "price_cents", default: 0, null: false
+    t.string "currency", default: "USD", null: false
+    t.integer "min_delivery_days"
+    t.integer "max_delivery_days"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "stock_items", force: :cascade do |t|
@@ -142,13 +253,25 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_112837) do
     t.index ["sku"], name: "index_variants_on_sku", unique: true, where: "(sku IS NOT NULL)"
   end
 
+  add_foreign_key "addresses", "users"
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "variants"
+  add_foreign_key "carts", "users"
   add_foreign_key "option_value_variants", "option_values"
   add_foreign_key "option_value_variants", "variants"
   add_foreign_key "option_values", "option_types"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "variants"
+  add_foreign_key "orders", "addresses", column: "billing_address_id"
+  add_foreign_key "orders", "addresses", column: "shipping_address_id"
+  add_foreign_key "orders", "users"
+  add_foreign_key "payments", "orders"
   add_foreign_key "product_option_types", "option_types"
   add_foreign_key "product_option_types", "products"
   add_foreign_key "products", "categories"
   add_foreign_key "sessions", "users"
+  add_foreign_key "shipments", "orders"
+  add_foreign_key "shipments", "shipping_methods"
   add_foreign_key "stock_items", "stock_locations"
   add_foreign_key "stock_items", "variants"
   add_foreign_key "variants", "products"

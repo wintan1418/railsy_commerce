@@ -1,0 +1,6 @@
+customer_cart:
+  token: customer_cart_token_123
+  user: customer
+
+guest_cart:
+  token: guest_cart_token_456

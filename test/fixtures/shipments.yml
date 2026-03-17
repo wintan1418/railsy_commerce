@@ -1,0 +1,4 @@
+pending_shipment:
+  order: pending_order
+  shipping_method: standard
+  status: pending

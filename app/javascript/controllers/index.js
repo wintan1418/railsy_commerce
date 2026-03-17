@@ -15,3 +15,6 @@ application.register("quantity", QuantityController)
 
 import ImageGalleryController from "./image_gallery_controller"
 application.register("image-gallery", ImageGalleryController)
+
+import SlideshowController from "./slideshow_controller"
+application.register("slideshow", SlideshowController)

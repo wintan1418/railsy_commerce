@@ -123,21 +123,21 @@ ShippingMethod.find_or_create_by!(name: "Free Shipping") do |sm|
   sm.active = true
 end
 
-# ─── Helper: Attach image from picsum ──────────────────────────────
-def attach_product_image(product, keyword, index = 1)
-  return if product.images.attached?
+# ─── Helper: Attach image from URL ────────────────────────────────
+def attach_product_image(product, url, index = 1)
+  # Skip if product already has enough images
+  return if product.images.attached? && product.images.count >= index
 
   begin
-    url = "https://picsum.photos/seed/#{keyword}#{index}/800/800"
     image = URI.open(url)
     product.images.attach(
       io: image,
       filename: "#{product.slug}-#{index}.jpg",
       content_type: "image/jpeg"
     )
-    puts "    Attached image for #{product.name}"
+    puts "    Attached image #{index} for #{product.name}"
   rescue => e
-    puts "    Could not attach image for #{product.name}: #{e.message}"
+    puts "    Could not attach image #{index} for #{product.name}: #{e.message}"
   end
 end
 
@@ -150,7 +150,8 @@ products_data = [
     category: "T-Shirts",
     price: 3900,
     compare_at: 5500,
-    image_seed: "cotton-tshirt",
+    image_url: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80&fit=crop&crop=center",
     has_sizes: true,
     has_colors: true
   },
@@ -160,7 +161,8 @@ products_data = [
     category: "T-Shirts",
     price: 6800,
     compare_at: nil,
-    image_seed: "vneck-merino",
+    image_url: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&q=80&fit=crop&crop=top",
     has_sizes: true,
     has_colors: true
   },
@@ -171,7 +173,8 @@ products_data = [
     category: "Hoodies & Sweaters",
     price: 8900,
     compare_at: nil,
-    image_seed: "premium-hoodie",
+    image_url: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80&fit=crop&crop=center",
     has_sizes: true,
     has_colors: true
   },
@@ -181,7 +184,8 @@ products_data = [
     category: "Hoodies & Sweaters",
     price: 14900,
     compare_at: 18900,
-    image_seed: "cashmere-sweater",
+    image_url: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&q=80&fit=crop&crop=top",
     has_sizes: true,
     has_colors: true
   },
@@ -192,7 +196,8 @@ products_data = [
     category: "Pants & Jeans",
     price: 12900,
     compare_at: 16500,
-    image_seed: "selvedge-jeans",
+    image_url: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&q=80&fit=crop&crop=bottom",
     has_sizes: true,
     has_colors: false
   },
@@ -202,7 +207,8 @@ products_data = [
     category: "Pants & Jeans",
     price: 8900,
     compare_at: nil,
-    image_seed: "chino-pants",
+    image_url: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&q=80&fit=crop&crop=center",
     has_sizes: true,
     has_colors: true
   },
@@ -213,7 +219,8 @@ products_data = [
     category: "Jackets & Coats",
     price: 22900,
     compare_at: nil,
-    image_seed: "field-jacket",
+    image_url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80&fit=crop&crop=top",
     has_sizes: true,
     has_colors: false
   },
@@ -224,7 +231,8 @@ products_data = [
     category: "Laptops",
     price: 189900,
     compare_at: nil,
-    image_seed: "laptop-pro",
+    image_url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -235,7 +243,8 @@ products_data = [
     category: "Headphones & Audio",
     price: 29900,
     compare_at: 34900,
-    image_seed: "headphones-wireless",
+    image_url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -245,7 +254,8 @@ products_data = [
     category: "Headphones & Audio",
     price: 19900,
     compare_at: 24900,
-    image_seed: "earbuds-studio",
+    image_url: "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=800&q=80&fit=crop&crop=top",
     has_sizes: false,
     has_colors: false
   },
@@ -256,7 +266,8 @@ products_data = [
     category: "Wearables",
     price: 39900,
     compare_at: nil,
-    image_seed: "smartwatch-apex",
+    image_url: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -267,7 +278,8 @@ products_data = [
     category: "Cameras",
     price: 249900,
     compare_at: nil,
-    image_seed: "camera-mirrorless",
+    image_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -278,7 +290,8 @@ products_data = [
     category: "Decor",
     price: 7900,
     compare_at: 9900,
-    image_seed: "ceramic-vase",
+    image_url: "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -288,7 +301,8 @@ products_data = [
     category: "Bedding",
     price: 8900,
     compare_at: nil,
-    image_seed: "linen-throw",
+    image_url: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -298,7 +312,8 @@ products_data = [
     category: "Kitchen",
     price: 6400,
     compare_at: 7900,
-    image_seed: "pourover-coffee",
+    image_url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -308,7 +323,8 @@ products_data = [
     category: "Lighting",
     price: 14900,
     compare_at: nil,
-    image_seed: "table-lamp-brass",
+    image_url: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=800&q=80&fit=crop&crop=top",
     has_sizes: false,
     has_colors: false
   },
@@ -319,7 +335,8 @@ products_data = [
     category: "Running",
     price: 17900,
     compare_at: 21900,
-    image_seed: "running-shoes-carbon",
+    image_url: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80&fit=crop&crop=center",
     has_sizes: true,
     has_colors: false
   },
@@ -329,7 +346,8 @@ products_data = [
     category: "Yoga & Fitness",
     price: 7900,
     compare_at: nil,
-    image_seed: "yoga-mat-premium",
+    image_url: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -339,7 +357,8 @@ products_data = [
     category: "Hiking & Camping",
     price: 19900,
     compare_at: 24900,
-    image_seed: "down-jacket-light",
+    image_url: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=800&q=80&fit=crop&crop=top",
     has_sizes: true,
     has_colors: true
   },
@@ -350,7 +369,8 @@ products_data = [
     category: "Bags & Backpacks",
     price: 24900,
     compare_at: nil,
-    image_seed: "leather-tote-bag",
+    image_url: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -360,7 +380,8 @@ products_data = [
     category: "Watches",
     price: 49900,
     compare_at: nil,
-    image_seed: "titanium-watch",
+    image_url: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -370,7 +391,8 @@ products_data = [
     category: "Sunglasses",
     price: 16900,
     compare_at: 19900,
-    image_seed: "aviator-sunglasses",
+    image_url: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -381,7 +403,8 @@ products_data = [
     category: "Skincare",
     price: 5400,
     compare_at: 6800,
-    image_seed: "face-serum-botanical",
+    image_url: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80&fit=crop&crop=center",
     has_sizes: false,
     has_colors: false
   },
@@ -391,7 +414,8 @@ products_data = [
     category: "Fragrances",
     price: 9800,
     compare_at: nil,
-    image_seed: "cologne-cedar",
+    image_url: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&q=80&fit=crop&crop=top",
     has_sizes: false,
     has_colors: false
   },
@@ -401,7 +425,8 @@ products_data = [
     category: "Supplements",
     price: 3900,
     compare_at: 4900,
-    image_seed: "wellness-supplements",
+    image_url: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=800&q=80",
+    image_url_alt: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=800&q=80&fit=crop&crop=top",
     has_sizes: false,
     has_colors: false
   }
@@ -475,8 +500,8 @@ products_data.each_with_index do |data, idx|
   end
 
   # Attach product images (2 per product for gallery)
-  attach_product_image(product, data[:image_seed], 1)
-  attach_product_image(product, "#{data[:image_seed]}-alt", 2)
+  attach_product_image(product, data[:image_url], 1)
+  attach_product_image(product, data[:image_url_alt], 2)
 end
 puts "  #{Product.count} products created"
 

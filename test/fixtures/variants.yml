@@ -1,0 +1,24 @@
+tshirt_master:
+  product: tshirt
+  sku: TSH-001
+  price_cents: 2999
+  price_currency: USD
+  compare_at_price_cents: 3999
+  is_master: true
+  position: 0
+
+tshirt_small_red:
+  product: tshirt
+  sku: TSH-SR
+  price_cents: 2999
+  price_currency: USD
+  is_master: false
+  position: 1
+
+laptop_master:
+  product: laptop
+  sku: LAP-001
+  price_cents: 149900
+  price_currency: USD
+  is_master: true
+  position: 0

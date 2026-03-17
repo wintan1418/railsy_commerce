@@ -1,0 +1,7 @@
+tshirt_small_red_size:
+  variant: tshirt_small_red
+  option_value: small
+
+tshirt_small_red_color:
+  variant: tshirt_small_red
+  option_value: red

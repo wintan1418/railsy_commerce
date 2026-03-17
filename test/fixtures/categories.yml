@@ -1,0 +1,26 @@
+clothing:
+  name: Clothing
+  slug: clothing
+  description: Apparel and fashion
+  position: 0
+  active: true
+
+electronics:
+  name: Electronics
+  slug: electronics
+  description: Gadgets and devices
+  position: 1
+  active: true
+
+shirts:
+  name: Shirts
+  slug: shirts
+  description: All kinds of shirts
+  parent: clothing
+  position: 0
+  active: true
+
+inactive_category:
+  name: Archived
+  slug: archived
+  active: false

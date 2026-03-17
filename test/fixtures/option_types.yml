@@ -1,0 +1,9 @@
+size:
+  name: size
+  presentation: Size
+  position: 0
+
+color:
+  name: color
+  presentation: Color
+  position: 1

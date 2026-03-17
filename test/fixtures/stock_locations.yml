@@ -1,0 +1,4 @@
+default_warehouse:
+  name: Main Warehouse
+  active: true
+  default: true

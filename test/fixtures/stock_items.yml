@@ -1,0 +1,20 @@
+tshirt_master_stock:
+  stock_location: default_warehouse
+  variant: tshirt_master
+  available_quantity: 100
+  reserved_quantity: 0
+  backorderable: false
+
+tshirt_small_red_stock:
+  stock_location: default_warehouse
+  variant: tshirt_small_red
+  available_quantity: 50
+  reserved_quantity: 5
+  backorderable: false
+
+laptop_master_stock:
+  stock_location: default_warehouse
+  variant: laptop_master
+  available_quantity: 0
+  reserved_quantity: 0
+  backorderable: true

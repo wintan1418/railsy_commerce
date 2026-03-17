@@ -1,0 +1,9 @@
+tshirt_size:
+  product: tshirt
+  option_type: size
+  position: 0
+
+tshirt_color:
+  product: tshirt
+  option_type: color
+  position: 1

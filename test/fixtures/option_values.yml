@@ -1,0 +1,29 @@
+small:
+  option_type: size
+  name: small
+  presentation: Small
+  position: 0
+
+medium:
+  option_type: size
+  name: medium
+  presentation: Medium
+  position: 1
+
+large:
+  option_type: size
+  name: large
+  presentation: Large
+  position: 2
+
+red:
+  option_type: color
+  name: red
+  presentation: Red
+  position: 0
+
+blue:
+  option_type: color
+  name: blue
+  presentation: Blue
+  position: 1

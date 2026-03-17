@@ -1,0 +1,20 @@
+tshirt:
+  name: Classic T-Shirt
+  slug: classic-t-shirt
+  description: A comfortable cotton t-shirt
+  status: active
+  category: clothing
+
+laptop:
+  name: Pro Laptop
+  slug: pro-laptop
+  description: High performance laptop
+  status: active
+  category: electronics
+
+draft_product:
+  name: Draft Product
+  slug: draft-product
+  description: Not yet published
+  status: draft
+  category: clothing

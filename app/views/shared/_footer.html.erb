@@ -1,0 +1,30 @@
+<footer class="bg-white border-t border-gray-200 mt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-sm font-semibold text-gray-900">RailsyCommerce</h3>
+        <p class="mt-2 text-sm text-gray-600">A modern e-commerce template built with Rails 8.</p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-gray-900">Shop</h3>
+        <ul class="mt-2 space-y-2">
+          <li><%= link_to "All Products", products_path, class: "text-sm text-gray-600 hover:text-gray-900" %></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-gray-900">Account</h3>
+        <ul class="mt-2 space-y-2">
+          <% if authenticated? %>
+            <li><span class="text-sm text-gray-600">Signed in as <%= current_user&.email_address %></span></li>
+          <% else %>
+            <li><%= link_to "Sign in", new_session_path, class: "text-sm text-gray-600 hover:text-gray-900" %></li>
+            <li><%= link_to "Create account", new_registration_path, class: "text-sm text-gray-600 hover:text-gray-900" %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-8 border-t border-gray-200 pt-8">
+      <p class="text-sm text-gray-400 text-center">Built with RailsyCommerce</p>
+    </div>
+  </div>
+</footer>

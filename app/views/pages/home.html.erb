@@ -1,12 +1,45 @@
-<div class="min-h-screen bg-gray-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="text-center">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-        RailsyCommerce
-      </h1>
-      <p class="mt-6 text-lg leading-8 text-gray-600">
-        A modern e-commerce template built with Rails 8, Hotwire, and Tailwind CSS.
-      </p>
+<div class="bg-white">
+  <!-- Hero -->
+  <div class="relative bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+          RailsyCommerce
+        </h1>
+        <p class="mt-6 text-lg leading-8 text-gray-300">
+          A modern e-commerce template built with Rails 8, Hotwire, and Tailwind CSS.
+        </p>
+        <div class="mt-10">
+          <%= link_to "Shop Now", products_path, class: "rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Categories -->
+  <% if @categories.any? %>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <h2 class="text-2xl font-bold text-gray-900">Shop by Category</h2>
+      <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <% @categories.each do |category| %>
+          <%= link_to category_path(slug: category.slug), class: "group relative rounded-lg bg-gray-100 p-6 hover:bg-gray-200 transition" do %>
+            <h3 class="text-sm font-semibold text-gray-900 group-hover:text-indigo-600"><%= category.name %></h3>
+            <p class="mt-1 text-xs text-gray-500"><%= category.products.active.count %> products</p>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Featured Products -->
+  <% if @featured_products.any? %>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <h2 class="text-2xl font-bold text-gray-900">Featured Products</h2>
+      <div class="mt-6 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+        <% @featured_products.each do |product| %>
+          <%= render "storefront/products/product_card", product: product %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>

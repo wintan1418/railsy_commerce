@@ -1,0 +1,33 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <nav class="flex text-sm text-gray-500 mb-6">
+    <%= link_to "Home", root_path, class: "hover:text-gray-900" %>
+    <span class="mx-2">/</span>
+    <span class="text-gray-900"><%= @category.name %></span>
+  </nav>
+
+  <h1 class="text-2xl font-bold text-gray-900"><%= @category.name %></h1>
+  <% if @category.description.present? %>
+    <p class="mt-2 text-gray-600"><%= @category.description %></p>
+  <% end %>
+
+  <% if @subcategories.any? %>
+    <div class="mt-6 flex flex-wrap gap-2">
+      <% @subcategories.each do |sub| %>
+        <%= link_to sub.name, category_path(slug: sub.slug),
+          class: "px-3 py-1.5 text-sm rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @products.any? %>
+    <div class="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+      <% @products.each do |product| %>
+        <%= render "storefront/products/product_card", product: product %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="mt-16 text-center">
+      <p class="text-gray-500">No products in this category yet.</p>
+    </div>
+  <% end %>
+</div>

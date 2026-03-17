@@ -1,23 +1,96 @@
-<div class="flex min-h-[80vh] items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-  <div class="w-full max-w-md">
-    <div class="rounded-2xl bg-white p-8 shadow-xl ring-1 ring-gray-900/5 sm:p-10">
-      <!-- Header -->
-      <div class="text-center">
-        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
-          <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
-          </svg>
+<div class="flex min-h-[85vh]">
+  <!-- Left Panel: Branding -->
+  <div class="hidden lg:flex lg:w-5/12 relative overflow-hidden" style="background: var(--black);">
+    <!-- Background image -->
+    <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=1200&q=80" alt="" class="absolute inset-0 h-full w-full object-cover opacity-25">
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.85) 50%, rgba(10,10,10,0.95) 100%);"></div>
+    <!-- Grain -->
+    <div class="absolute inset-0 grain-overlay opacity-20"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 flex flex-col justify-between p-12">
+      <!-- Logo -->
+      <div class="flex items-center gap-2.5">
+        <%= link_to root_path, class: "flex items-center gap-2.5" do %>
+          <div class="flex h-8 w-8 items-center justify-center rounded" style="background: rgba(201,169,110,0.15);">
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="2" width="7" height="7" rx="1" fill="var(--gold)"/>
+              <rect x="11" y="2" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="2" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="11" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.4"/>
+            </svg>
+          </div>
+          <span class="font-display text-lg font-semibold text-white">RailsyCommerce</span>
+        <% end %>
+      </div>
+
+      <!-- Motivational text -->
+      <div>
+        <h2 class="font-display text-4xl font-light text-white leading-tight">
+          Join the<br><em class="italic" style="color: var(--gold);">Community</em>
+        </h2>
+        <p class="mt-4 text-sm leading-relaxed text-white/40 max-w-sm">
+          Create your free account and unlock access to exclusive deals, order tracking, wishlists, and personalized recommendations.
+        </p>
+
+        <!-- Benefits -->
+        <div class="mt-8 space-y-3">
+          <% [
+            "Access exclusive member-only deals",
+            "Track orders in real-time",
+            "Save items to your wishlist",
+            "Faster checkout experience"
+          ].each do |benefit| %>
+            <div class="flex items-center gap-3">
+              <div class="flex h-5 w-5 items-center justify-center rounded-full flex-shrink-0" style="background: rgba(201,169,110,0.15);">
+                <svg class="h-3 w-3" style="color: var(--gold);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+              </div>
+              <span class="text-xs text-white/40"><%= benefit %></span>
+            </div>
+          <% end %>
         </div>
-        <h1 class="mt-4 text-2xl font-bold text-gray-900">Create an account</h1>
-        <p class="mt-2 text-sm text-gray-500">
+      </div>
+
+      <!-- Bottom -->
+      <div class="border-t pt-6" style="border-color: rgba(255,255,255,0.08);">
+        <p class="text-xs text-white/20">&copy; <%= Date.current.year %> RailsyCommerce. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel: Form -->
+  <div class="flex flex-1 items-center justify-center px-6 py-12 sm:px-8 lg:px-16" style="background: var(--warm-white);">
+    <div class="w-full max-w-md">
+      <!-- Mobile logo -->
+      <div class="mb-8 text-center lg:hidden">
+        <%= link_to root_path, class: "inline-flex items-center gap-2.5" do %>
+          <div class="flex h-8 w-8 items-center justify-center rounded" style="background: var(--black);">
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="2" width="7" height="7" rx="1" fill="var(--gold)"/>
+              <rect x="11" y="2" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="2" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="11" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.4"/>
+            </svg>
+          </div>
+          <span class="font-display text-xl font-semibold" style="color: var(--black);">RailsyCommerce</span>
+        <% end %>
+      </div>
+
+      <!-- Header -->
+      <div>
+        <h1 class="font-display text-3xl font-light tracking-tight" style="color: var(--black);">Create <em class="italic" style="color: var(--gold);">Account</em></h1>
+        <p class="mt-2 text-sm" style="color: var(--mid-gray);">
           Already have an account?
-          <%= link_to "Sign in", new_session_path, class: "font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200" %>
+          <%= link_to "Sign in", new_session_path, class: "font-semibold transition-colors duration-200 hover:opacity-70", style: "color: var(--gold);" %>
         </p>
       </div>
 
-      <!-- Social Login Placeholder -->
+      <!-- Social Login -->
       <div class="mt-8">
-        <button type="button" class="flex w-full items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+        <button type="button" class="flex w-full items-center justify-center gap-3 rounded-lg border px-4 py-3 text-sm font-medium transition-all duration-200 hover:shadow-md" style="border-color: var(--cream); color: var(--black); background: white;">
           <svg class="h-5 w-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
           Continue with Google
         </button>
@@ -26,18 +99,18 @@
       <!-- Divider -->
       <div class="relative mt-6">
         <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-gray-200"></div>
+          <div class="w-full" style="height: 1px; background: var(--cream);"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="bg-white px-4 text-gray-400">or register with email</span>
+          <span class="px-4 text-xs uppercase tracking-wider" style="background: var(--warm-white); color: var(--mid-gray);">or register with email</span>
         </div>
       </div>
 
       <!-- Form -->
-      <%= form_with model: @user, url: registration_path, class: "mt-6 space-y-5" do |form| %>
+      <%= form_with model: @user, url: registration_path, class: "mt-6 space-y-4" do |form| %>
         <% if @user.errors.any? %>
-          <div class="rounded-lg bg-red-50 border border-red-200 px-4 py-3">
-            <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+          <div class="rounded-lg px-4 py-3 border" style="background: rgba(192,57,43,0.05); border-color: rgba(192,57,43,0.15);">
+            <ul class="list-disc list-inside text-sm space-y-1" style="color: var(--red);">
               <% @user.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
               <% end %>
@@ -47,48 +120,54 @@
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <%= form.label :first_name, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.label :first_name, class: "block text-xs font-semibold uppercase tracking-wider", style: "color: var(--text-body);" %>
             <%= form.text_field :first_name, required: true, autofocus: true, autocomplete: "given-name",
-              class: "mt-1.5 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all duration-200",
+              class: "mt-2 block w-full rounded-lg border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2",
+              style: "border-color: var(--cream); color: var(--black); background: white; --tw-ring-color: var(--gold);",
               placeholder: "First" %>
           </div>
           <div>
-            <%= form.label :last_name, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.label :last_name, class: "block text-xs font-semibold uppercase tracking-wider", style: "color: var(--text-body);" %>
             <%= form.text_field :last_name, required: true, autocomplete: "family-name",
-              class: "mt-1.5 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all duration-200",
+              class: "mt-2 block w-full rounded-lg border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2",
+              style: "border-color: var(--cream); color: var(--black); background: white; --tw-ring-color: var(--gold);",
               placeholder: "Last" %>
           </div>
         </div>
 
         <div>
-          <%= form.label :email_address, "Email address", class: "block text-sm font-medium text-gray-700" %>
+          <%= form.label :email_address, "Email address", class: "block text-xs font-semibold uppercase tracking-wider", style: "color: var(--text-body);" %>
           <%= form.email_field :email_address, required: true, autocomplete: "email",
-            class: "mt-1.5 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all duration-200",
+            class: "mt-2 block w-full rounded-lg border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2",
+            style: "border-color: var(--cream); color: var(--black); background: white; --tw-ring-color: var(--gold);",
             placeholder: "you@example.com" %>
         </div>
 
         <div>
-          <%= form.label :password, class: "block text-sm font-medium text-gray-700" %>
+          <%= form.label :password, class: "block text-xs font-semibold uppercase tracking-wider", style: "color: var(--text-body);" %>
           <%= form.password_field :password, required: true, autocomplete: "new-password",
-            class: "mt-1.5 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all duration-200",
+            class: "mt-2 block w-full rounded-lg border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2",
+            style: "border-color: var(--cream); color: var(--black); background: white; --tw-ring-color: var(--gold);",
             placeholder: "At least 8 characters" %>
         </div>
 
         <div>
-          <%= form.label :password_confirmation, "Confirm password", class: "block text-sm font-medium text-gray-700" %>
+          <%= form.label :password_confirmation, "Confirm password", class: "block text-xs font-semibold uppercase tracking-wider", style: "color: var(--text-body);" %>
           <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password",
-            class: "mt-1.5 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all duration-200",
+            class: "mt-2 block w-full rounded-lg border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2",
+            style: "border-color: var(--cream); color: var(--black); background: white; --tw-ring-color: var(--gold);",
             placeholder: "Repeat your password" %>
         </div>
 
         <%= form.submit "Create account",
-          class: "w-full rounded-lg bg-indigo-600 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 cursor-pointer" %>
+          class: "w-full rounded-lg py-3 text-sm font-semibold uppercase tracking-wider shadow-sm transition-all duration-200 hover:opacity-90 hover:shadow-md cursor-pointer",
+          style: "background: var(--gold); color: var(--black);" %>
       <% end %>
 
-      <p class="mt-6 text-center text-xs text-gray-400">
+      <p class="mt-6 text-center text-xs" style="color: var(--mid-gray);">
         By creating an account, you agree to our
-        <a href="#" class="text-gray-500 hover:text-gray-700 underline">Terms</a> and
-        <a href="#" class="text-gray-500 hover:text-gray-700 underline">Privacy Policy</a>.
+        <a href="#" class="underline transition-colors hover:opacity-70" style="color: var(--text-body);">Terms</a> and
+        <a href="#" class="underline transition-colors hover:opacity-70" style="color: var(--text-body);">Privacy Policy</a>.
       </p>
     </div>
   </div>

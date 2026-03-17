@@ -1,40 +1,100 @@
-<div class="flex min-h-[80vh] items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-  <div class="w-full max-w-md">
-    <div class="rounded-2xl bg-white p-8 shadow-xl ring-1 ring-gray-900/5 sm:p-10">
+<div class="flex min-h-[85vh]">
+  <!-- Left Panel: Branding -->
+  <div class="hidden lg:flex lg:w-5/12 relative overflow-hidden" style="background: var(--black);">
+    <!-- Background image -->
+    <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1200&q=80" alt="" class="absolute inset-0 h-full w-full object-cover opacity-25">
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.85) 50%, rgba(10,10,10,0.95) 100%);"></div>
+    <!-- Grain -->
+    <div class="absolute inset-0 grain-overlay opacity-20"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 flex flex-col justify-between p-12">
+      <!-- Logo -->
+      <div class="flex items-center gap-2.5">
+        <%= link_to root_path, class: "flex items-center gap-2.5" do %>
+          <div class="flex h-8 w-8 items-center justify-center rounded" style="background: rgba(201,169,110,0.15);">
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="2" width="7" height="7" rx="1" fill="var(--gold)"/>
+              <rect x="11" y="2" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="2" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="11" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.4"/>
+            </svg>
+          </div>
+          <span class="font-display text-lg font-semibold text-white">RailsyCommerce</span>
+        <% end %>
+      </div>
+
+      <!-- Motivational text -->
+      <div>
+        <h2 class="font-display text-4xl font-light text-white leading-tight">
+          Secure<br><em class="italic" style="color: var(--gold);">Account</em>
+        </h2>
+        <p class="mt-4 text-sm leading-relaxed text-white/40 max-w-sm">
+          Set a new, strong password to get back into your account. We recommend using a mix of letters, numbers, and symbols.
+        </p>
+      </div>
+
+      <!-- Bottom -->
+      <div class="border-t pt-6" style="border-color: rgba(255,255,255,0.08);">
+        <p class="text-xs text-white/20">&copy; <%= Date.current.year %> RailsyCommerce. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel: Form -->
+  <div class="flex flex-1 items-center justify-center px-6 py-12 sm:px-8 lg:px-16" style="background: var(--warm-white);">
+    <div class="w-full max-w-md">
+      <!-- Mobile logo -->
+      <div class="mb-8 text-center lg:hidden">
+        <%= link_to root_path, class: "inline-flex items-center gap-2.5" do %>
+          <div class="flex h-8 w-8 items-center justify-center rounded" style="background: var(--black);">
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="2" width="7" height="7" rx="1" fill="var(--gold)"/>
+              <rect x="11" y="2" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="2" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="11" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.4"/>
+            </svg>
+          </div>
+          <span class="font-display text-xl font-semibold" style="color: var(--black);">RailsyCommerce</span>
+        <% end %>
+      </div>
+
       <!-- Header -->
-      <div class="text-center">
-        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-          <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-          </svg>
-        </div>
-        <h1 class="mt-4 text-2xl font-bold text-gray-900">Set new password</h1>
-        <p class="mt-2 text-sm text-gray-500">Choose a strong password to secure your account.</p>
+      <div>
+        <h1 class="font-display text-3xl font-light tracking-tight" style="color: var(--black);">Choose <em class="italic" style="color: var(--gold);">Password</em></h1>
+        <p class="mt-2 text-sm" style="color: var(--mid-gray);">
+          Update your secure credentials.
+        </p>
       </div>
 
       <% if flash[:alert] %>
-        <div class="mt-6 rounded-lg bg-red-50 border border-red-200 px-4 py-3">
-          <p class="text-sm text-red-800"><%= flash[:alert] %></p>
+        <div class="mt-6 rounded-lg px-4 py-3 border" style="background: rgba(192,57,43,0.05); border-color: rgba(192,57,43,0.15);">
+          <p class="text-sm" style="color: var(--red);"><%= flash[:alert] %></p>
         </div>
       <% end %>
 
+      <!-- Form -->
       <%= form_with url: password_path(params[:token]), method: :put, class: "mt-8 space-y-5" do |form| %>
         <div>
-          <%= form.label :password, "New password", class: "block text-sm font-medium text-gray-700" %>
+          <%= form.label :password, "New password", class: "block text-xs font-semibold uppercase tracking-wider", style: "color: var(--text-body);" %>
           <%= form.password_field :password, required: true, autocomplete: "new-password", maxlength: 72,
-            class: "mt-1.5 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all duration-200",
+            class: "mt-2 block w-full rounded-lg border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2",
+            style: "border-color: var(--cream); color: var(--black); background: white; --tw-ring-color: var(--gold);",
             placeholder: "At least 8 characters" %>
         </div>
 
         <div>
-          <%= form.label :password_confirmation, "Confirm new password", class: "block text-sm font-medium text-gray-700" %>
+          <%= form.label :password_confirmation, "Confirm new password", class: "block text-xs font-semibold uppercase tracking-wider", style: "color: var(--text-body);" %>
           <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", maxlength: 72,
-            class: "mt-1.5 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all duration-200",
+            class: "mt-2 block w-full rounded-lg border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2",
+            style: "border-color: var(--cream); color: var(--black); background: white; --tw-ring-color: var(--gold);",
             placeholder: "Repeat your new password" %>
         </div>
 
-        <%= form.submit "Save new password",
-          class: "w-full rounded-lg bg-indigo-600 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 cursor-pointer" %>
+        <%= form.submit "Update password",
+          class: "w-full rounded-lg py-3 text-sm font-semibold uppercase tracking-wider shadow-sm transition-all duration-200 hover:opacity-90 hover:shadow-md cursor-pointer",
+          style: "background: var(--gold); color: var(--black);" %>
       <% end %>
     </div>
   </div>

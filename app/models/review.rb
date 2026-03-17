@@ -1,5 +1,5 @@
 class Review < ApplicationRecord
-  belongs_to :product
+  belongs_to :product, counter_cache: true
   belongs_to :user
 
   enum :status, { pending: "pending", approved: "approved", rejected: "rejected" }

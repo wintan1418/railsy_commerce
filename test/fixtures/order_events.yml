@@ -1,0 +1,6 @@
+status_change:
+  order: pending_order
+  event_type: status_change
+  data: { from: "pending", to: "confirmed" }
+  user: admin
+  created_at: <%= Time.current %>

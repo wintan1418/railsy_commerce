@@ -1,125 +1,64 @@
 <div class="flex items-center justify-between">
   <div>
     <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-    <p class="mt-1 text-sm text-gray-500">Overview of your store performance</p>
+    <p class="mt-1 text-sm text-gray-500">Last 30 days overview</p>
   </div>
-  <div class="flex items-center gap-2">
-    <span class="text-sm text-gray-400"><%= Date.current.strftime("%B %d, %Y") %></span>
-  </div>
+  <span class="text-sm text-gray-400"><%= Date.current.strftime("%B %d, %Y") %></span>
 </div>
 
 <!-- Stat Cards -->
 <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-  <!-- Revenue -->
   <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
-    <div class="flex items-center gap-4">
-      <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 text-green-600">
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500">Total Revenue</p>
-        <p class="mt-1 text-2xl font-bold text-gray-900"><%= Money.new(@total_revenue, "USD").format %></p>
-      </div>
-    </div>
-    <div class="mt-4 flex items-center gap-1">
-      <svg class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg>
-      <span class="text-sm font-medium text-green-600">+12.5%</span>
-      <span class="text-sm text-gray-400">vs last month</span>
-    </div>
+    <p class="text-sm font-medium text-gray-500">Revenue</p>
+    <p class="mt-2 text-2xl font-bold text-gray-900"><%= Money.new(@data[:total_revenue], "USD").format %></p>
   </div>
-
-  <!-- Orders -->
   <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
-    <div class="flex items-center gap-4">
-      <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-        </svg>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500">Total Orders</p>
-        <p class="mt-1 text-2xl font-bold text-gray-900"><%= @order_count %></p>
-      </div>
-    </div>
-    <div class="mt-4 flex items-center gap-1">
-      <svg class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg>
-      <span class="text-sm font-medium text-green-600">+8.2%</span>
-      <span class="text-sm text-gray-400">vs last month</span>
-    </div>
+    <p class="text-sm font-medium text-gray-500">Orders</p>
+    <p class="mt-2 text-2xl font-bold text-gray-900"><%= @data[:order_count] %></p>
   </div>
-
-  <!-- Products -->
   <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
-    <div class="flex items-center gap-4">
-      <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100 text-amber-600">
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-        </svg>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500">Products</p>
-        <p class="mt-1 text-2xl font-bold text-gray-900"><%= @product_count %></p>
-      </div>
-    </div>
-    <div class="mt-4">
-      <span class="text-sm text-gray-400"><%= Product.active.count %> active</span>
-    </div>
+    <p class="text-sm font-medium text-gray-500">Avg. Order Value</p>
+    <p class="mt-2 text-2xl font-bold text-gray-900"><%= Money.new(@data[:average_order_value], "USD").format %></p>
   </div>
-
-  <!-- Customers -->
   <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
-    <div class="flex items-center gap-4">
-      <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-100 text-purple-600">
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-        </svg>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500">Customers</p>
-        <p class="mt-1 text-2xl font-bold text-gray-900"><%= @customer_count %></p>
-      </div>
-    </div>
-    <div class="mt-4 flex items-center gap-1">
-      <svg class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg>
-      <span class="text-sm font-medium text-green-600">+5.1%</span>
-      <span class="text-sm text-gray-400">vs last month</span>
-    </div>
+    <p class="text-sm font-medium text-gray-500">New Customers</p>
+    <p class="mt-2 text-2xl font-bold text-gray-900"><%= @data[:customer_count] %></p>
   </div>
 </div>
 
-<div class="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-3">
-  <!-- Revenue Chart Placeholder -->
+<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+  <!-- Orders by Status -->
   <div class="lg:col-span-2 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
     <div class="border-b border-gray-100 px-6 py-4">
-      <h2 class="text-base font-semibold text-gray-900">Revenue Overview</h2>
+      <h2 class="text-base font-semibold text-gray-900">Orders by Status</h2>
     </div>
-    <div class="flex h-64 items-center justify-center p-6">
-      <div class="text-center">
-        <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-        </svg>
-        <p class="mt-3 text-sm text-gray-400">Chart integration coming soon</p>
-        <p class="text-xs text-gray-300">Connect a charting library to visualize revenue data</p>
-      </div>
+    <div class="grid grid-cols-3 gap-4 p-6 sm:grid-cols-6">
+      <% @data[:orders_by_status].each do |status, count| %>
+        <div class="text-center">
+          <p class="text-2xl font-bold text-gray-900"><%= count %></p>
+          <p class="mt-1 text-xs capitalize text-gray-500"><%= status %></p>
+        </div>
+      <% end %>
     </div>
   </div>
 
-  <!-- Top Selling Products -->
+  <!-- Top Products -->
   <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
     <div class="border-b border-gray-100 px-6 py-4">
       <h2 class="text-base font-semibold text-gray-900">Top Products</h2>
     </div>
     <div class="divide-y divide-gray-100">
-      <% Product.active.limit(5).each_with_index do |product, i| %>
+      <% @data[:top_products].each_with_index do |product, i| %>
         <div class="flex items-center gap-3 px-6 py-3">
           <span class="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-500"><%= i + 1 %></span>
           <div class="min-w-0 flex-1">
             <p class="truncate text-sm font-medium text-gray-900"><%= product.name %></p>
-            <p class="text-xs text-gray-500"><%= product.display_price %></p>
+            <p class="text-xs text-gray-500"><%= product.total_sold %> sold</p>
           </div>
         </div>
+      <% end %>
+      <% if @data[:top_products].empty? %>
+        <p class="px-6 py-8 text-center text-sm text-gray-400">No sales data yet</p>
       <% end %>
     </div>
   </div>
@@ -127,50 +66,26 @@
 
 <!-- Recent Orders & Low Stock -->
 <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
-  <!-- Recent Orders -->
   <div class="lg:col-span-2 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
     <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
       <h2 class="text-base font-semibold text-gray-900">Recent Orders</h2>
-      <%= link_to "View all", admin_orders_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200" %>
+      <%= link_to "View all", admin_orders_path, class: "text-sm font-medium", style: "color: var(--gold);" %>
     </div>
     <div class="overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-100">
-        <thead>
-          <tr class="bg-gray-50/50">
-            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Order</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Customer</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Total</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date</th>
-          </tr>
-        </thead>
+        <thead><tr class="bg-gray-50/50">
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Order</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Customer</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Total</th>
+        </tr></thead>
         <tbody class="divide-y divide-gray-100">
-          <% @recent_orders.each do |order| %>
-            <tr class="hover:bg-gray-50/50 transition-colors duration-150">
-              <td class="whitespace-nowrap px-6 py-4 text-sm">
-                <%= link_to order.number, admin_order_path(order), class: "font-semibold text-indigo-600 hover:text-indigo-500 transition-colors duration-200" %>
-              </td>
-              <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-700"><%= order.email %></td>
-              <td class="whitespace-nowrap px-6 py-4">
-                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
-                  <%= case order.status
-                      when 'pending' then 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-600/20'
-                      when 'confirmed' then 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20'
-                      when 'processing' then 'bg-purple-50 text-purple-700 ring-1 ring-purple-600/20'
-                      when 'shipped' then 'bg-indigo-50 text-indigo-700 ring-1 ring-indigo-600/20'
-                      when 'delivered' then 'bg-green-50 text-green-700 ring-1 ring-green-600/20'
-                      when 'cancelled' then 'bg-red-50 text-red-700 ring-1 ring-red-600/20'
-                      end %>">
-                  <%= order.status.capitalize %>
-                </span>
-              </td>
-              <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900"><%= order.total.format %></td>
-              <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= order.created_at.strftime("%b %d, %Y") %></td>
-            </tr>
-          <% end %>
-          <% if @recent_orders.empty? %>
-            <tr>
-              <td colspan="5" class="px-6 py-12 text-center text-sm text-gray-400">No orders yet.</td>
+          <% @data[:recent_orders].each do |order| %>
+            <tr class="hover:bg-gray-50/50">
+              <td class="px-6 py-4 text-sm"><%= link_to order.number, admin_order_path(order), class: "font-semibold", style: "color: var(--gold);" %></td>
+              <td class="px-6 py-4 text-sm text-gray-500"><%= order.email %></td>
+              <td class="px-6 py-4"><span class="rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize bg-gray-100 text-gray-700"><%= order.status %></span></td>
+              <td class="px-6 py-4 text-sm font-medium"><%= order.total.format %></td>
             </tr>
           <% end %>
         </tbody>
@@ -178,30 +93,26 @@
     </div>
   </div>
 
-  <!-- Low Stock Alerts -->
+  <!-- Low Stock -->
   <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
     <div class="border-b border-gray-100 px-6 py-4">
       <h2 class="text-base font-semibold text-gray-900">Low Stock Alerts</h2>
     </div>
     <div class="divide-y divide-gray-100">
-      <% low_stock = StockItem.where("available_quantity <= ?", 20).includes(variant: :product).limit(6) %>
-      <% if low_stock.any? %>
-        <% low_stock.each do |item| %>
+      <% if @data[:low_stock_items].any? %>
+        <% @data[:low_stock_items].each do |item| %>
           <div class="flex items-center justify-between px-6 py-3">
             <div class="min-w-0 flex-1">
               <p class="truncate text-sm font-medium text-gray-900"><%= item.variant.product.name %></p>
-              <p class="text-xs text-gray-500">SKU: <%= item.variant.sku %></p>
+              <p class="text-xs text-gray-500"><%= item.variant.sku %></p>
             </div>
-            <span class="ml-3 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold
-              <%= item.available_quantity <= 5 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700' %>">
+            <span class="rounded-full px-2 py-0.5 text-xs font-bold <%= item.available_quantity <= 5 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700' %>">
               <%= item.available_quantity %> left
             </span>
           </div>
         <% end %>
       <% else %>
-        <div class="px-6 py-8 text-center">
-          <p class="text-sm text-gray-400">All products well stocked</p>
-        </div>
+        <p class="px-6 py-8 text-center text-sm text-gray-400">All products well stocked</p>
       <% end %>
     </div>
   </div>

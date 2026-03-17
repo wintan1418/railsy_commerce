@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_17_131644) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_17_133438) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -138,6 +138,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_131644) do
     t.index ["option_type_id"], name: "index_option_values_on_option_type_id"
   end
 
+  create_table "order_events", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.string "event_type", null: false
+    t.jsonb "data", default: {}
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.index ["event_type"], name: "index_order_events_on_event_type"
+    t.index ["order_id"], name: "index_order_events_on_order_id"
+    t.index ["user_id"], name: "index_order_events_on_user_id"
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.bigint "variant_id", null: false
@@ -210,6 +221,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_131644) do
     t.text "meta_description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "reviews_count", default: 0, null: false
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["slug"], name: "index_products_on_slug", unique: true
     t.index ["status"], name: "index_products_on_status"
@@ -272,6 +284,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_131644) do
     t.boolean "backorderable", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "low_stock_threshold", default: 5
     t.index ["stock_location_id", "variant_id"], name: "index_stock_items_on_stock_location_id_and_variant_id", unique: true
     t.index ["stock_location_id"], name: "index_stock_items_on_stock_location_id"
     t.index ["variant_id"], name: "index_stock_items_on_variant_id"
@@ -352,6 +365,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_131644) do
   add_foreign_key "option_value_variants", "option_values"
   add_foreign_key "option_value_variants", "variants"
   add_foreign_key "option_values", "option_types"
+  add_foreign_key "order_events", "orders"
+  add_foreign_key "order_events", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "variants"
   add_foreign_key "orders", "addresses", column: "billing_address_id"

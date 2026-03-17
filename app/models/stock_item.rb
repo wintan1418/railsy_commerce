@@ -13,4 +13,13 @@ class StockItem < ApplicationRecord
   def can_reserve?(quantity)
     available_quantity >= quantity || backorderable?
   end
+
+  def low_stock?
+    available_quantity <= (low_stock_threshold || 5)
+  end
+
+  scope :low_stock, -> {
+    where("available_quantity <= COALESCE(low_stock_threshold, 5)")
+    .where(backorderable: false)
+  }
 end

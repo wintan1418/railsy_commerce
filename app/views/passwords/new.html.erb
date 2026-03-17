@@ -1,41 +1,98 @@
-<div class="flex min-h-[80vh] items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-  <div class="w-full max-w-md">
-    <div class="rounded-2xl bg-white p-8 shadow-xl ring-1 ring-gray-900/5 sm:p-10">
+<div class="flex min-h-[85vh]">
+  <!-- Left Panel: Branding -->
+  <div class="hidden lg:flex lg:w-5/12 relative overflow-hidden" style="background: var(--black);">
+    <!-- Background image -->
+    <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1200&q=80" alt="" class="absolute inset-0 h-full w-full object-cover opacity-25">
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.85) 50%, rgba(10,10,10,0.95) 100%);"></div>
+    <!-- Grain -->
+    <div class="absolute inset-0 grain-overlay opacity-20"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 flex flex-col justify-between p-12">
+      <!-- Logo -->
+      <div class="flex items-center gap-2.5">
+        <%= link_to root_path, class: "flex items-center gap-2.5" do %>
+          <div class="flex h-8 w-8 items-center justify-center rounded" style="background: rgba(201,169,110,0.15);">
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="2" width="7" height="7" rx="1" fill="var(--gold)"/>
+              <rect x="11" y="2" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="2" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="11" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.4"/>
+            </svg>
+          </div>
+          <span class="font-display text-lg font-semibold text-white">RailsyCommerce</span>
+        <% end %>
+      </div>
+
+      <!-- Motivational text -->
+      <div>
+        <h2 class="font-display text-4xl font-light text-white leading-tight">
+          Password<br><em class="italic" style="color: var(--gold);">Recovery</em>
+        </h2>
+        <p class="mt-4 text-sm leading-relaxed text-white/40 max-w-sm">
+          Don't worry, it happens to the best of us. Enter your email and we'll send you instructions to get back into your account safely and securely.
+        </p>
+      </div>
+
+      <!-- Bottom -->
+      <div class="border-t pt-6" style="border-color: rgba(255,255,255,0.08);">
+        <p class="text-xs text-white/20">&copy; <%= Date.current.year %> RailsyCommerce. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel: Form -->
+  <div class="flex flex-1 items-center justify-center px-6 py-12 sm:px-8 lg:px-16" style="background: var(--warm-white);">
+    <div class="w-full max-w-md">
+      <!-- Mobile logo -->
+      <div class="mb-8 text-center lg:hidden">
+        <%= link_to root_path, class: "inline-flex items-center gap-2.5" do %>
+          <div class="flex h-8 w-8 items-center justify-center rounded" style="background: var(--black);">
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="2" width="7" height="7" rx="1" fill="var(--gold)"/>
+              <rect x="11" y="2" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="2" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.7"/>
+              <rect x="11" y="11" width="7" height="7" rx="1" fill="var(--gold)" opacity="0.4"/>
+            </svg>
+          </div>
+          <span class="font-display text-xl font-semibold" style="color: var(--black);">RailsyCommerce</span>
+        <% end %>
+      </div>
+
       <!-- Header -->
-      <div class="text-center">
-        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
-          <svg class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
-          </svg>
-        </div>
-        <h1 class="mt-4 text-2xl font-bold text-gray-900">Forgot your password?</h1>
-        <p class="mt-2 text-sm text-gray-500">No worries, we'll send you reset instructions.</p>
+      <div>
+        <h1 class="font-display text-3xl font-light tracking-tight" style="color: var(--black);">Reset <em class="italic" style="color: var(--gold);">Password</em></h1>
+        <p class="mt-2 text-sm" style="color: var(--mid-gray);">
+          We'll send you an email with instructions.
+        </p>
       </div>
 
       <% if flash[:alert] %>
-        <div class="mt-6 rounded-lg bg-red-50 border border-red-200 px-4 py-3">
-          <p class="text-sm text-red-800"><%= flash[:alert] %></p>
+        <div class="mt-6 rounded-lg px-4 py-3 border" style="background: rgba(192,57,43,0.05); border-color: rgba(192,57,43,0.15);">
+          <p class="text-sm" style="color: var(--red);"><%= flash[:alert] %></p>
         </div>
       <% end %>
 
+      <!-- Form -->
       <%= form_with url: passwords_path, class: "mt-8 space-y-5" do |form| %>
         <div>
-          <%= form.label :email_address, "Email address", class: "block text-sm font-medium text-gray-700" %>
+          <%= form.label :email_address, "Email address", class: "block text-xs font-semibold uppercase tracking-wider", style: "color: var(--text-body);" %>
           <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email",
             value: params[:email_address],
-            class: "mt-1.5 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600/20 transition-all duration-200",
+            class: "mt-2 block w-full rounded-lg border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2",
+            style: "border-color: var(--cream); color: var(--black); background: white; --tw-ring-color: var(--gold);",
             placeholder: "you@example.com" %>
         </div>
 
-        <%= form.submit "Send reset instructions",
-          class: "w-full rounded-lg bg-indigo-600 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 cursor-pointer" %>
+        <%= form.submit "Send instructions",
+          class: "w-full rounded-lg py-3 text-sm font-semibold uppercase tracking-wider shadow-sm transition-all duration-200 hover:opacity-90 hover:shadow-md cursor-pointer",
+          style: "background: var(--gold); color: var(--black);" %>
       <% end %>
 
-      <p class="mt-6 text-center">
-        <%= link_to new_session_path, class: "inline-flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200" do %>
-          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
-          Back to sign in
-        <% end %>
+      <p class="mt-8 text-center text-sm" style="color: var(--mid-gray);">
+        Remember your password?
+        <%= link_to "Sign in", new_session_path, class: "font-semibold transition-colors duration-200 hover:opacity-70", style: "color: var(--gold);" %>
       </p>
     </div>
   </div>

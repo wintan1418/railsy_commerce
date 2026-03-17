@@ -9,6 +9,7 @@ class Order < ApplicationRecord
   belongs_to :discount, optional: true
   has_many :payments, dependent: :destroy
   has_many :shipments, dependent: :destroy
+  has_many :order_events, dependent: :destroy
 
   enum :status, {
     pending: "pending",

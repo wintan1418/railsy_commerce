@@ -1,0 +1,3 @@
+tshirt_wishlisted:
+  wishlist: customer_wishlist
+  variant: tshirt_master

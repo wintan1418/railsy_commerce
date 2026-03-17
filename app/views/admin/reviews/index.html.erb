@@ -1,0 +1,36 @@
+<div class="flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-gray-900">Reviews</h1>
+</div>
+<div class="mt-4 flex gap-2">
+  <%= link_to "All", admin_reviews_path, class: "rounded-full px-4 py-2 text-sm font-medium #{params[:status].blank? ? 'bg-gray-900 text-white' : 'bg-white text-gray-700 ring-1 ring-gray-200'}" %>
+  <% %w[pending approved rejected].each do |status| %>
+    <%= link_to status.capitalize, admin_reviews_path(status: status), class: "rounded-full px-4 py-2 text-sm font-medium #{params[:status] == status ? 'bg-gray-900 text-white' : 'bg-white text-gray-700 ring-1 ring-gray-200'}" %>
+  <% end %>
+</div>
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <table class="min-w-full divide-y divide-gray-100">
+    <thead><tr class="bg-gray-50/50">
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Product</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Customer</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Rating</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+      <th class="px-6 py-3"></th>
+    </tr></thead>
+    <tbody class="divide-y divide-gray-100">
+      <% @reviews.each do |review| %>
+        <tr>
+          <td class="px-6 py-4 text-sm"><%= review.product.name %></td>
+          <td class="px-6 py-4 text-sm text-gray-500"><%= review.user.full_name %></td>
+          <td class="px-6 py-4 text-sm" style="color: var(--gold);"><%= "★" * review.rating %><%= "☆" * (5 - review.rating) %></td>
+          <td class="px-6 py-4"><span class="rounded-full px-2.5 py-0.5 text-xs font-semibold <%= review.approved? ? 'bg-green-50 text-green-700' : review.pending? ? 'bg-yellow-50 text-yellow-700' : 'bg-red-50 text-red-700' %>"><%= review.status.capitalize %></span></td>
+          <td class="px-6 py-4 text-right text-sm space-x-2">
+            <% unless review.approved? %>
+              <%= button_to "Approve", admin_review_path(review), params: { review: { status: "approved" } }, method: :patch, class: "text-green-600 font-medium cursor-pointer" %>
+            <% end %>
+            <%= button_to "Delete", admin_review_path(review), method: :delete, data: { turbo_confirm: "Delete?" }, class: "text-red-500 font-medium cursor-pointer" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

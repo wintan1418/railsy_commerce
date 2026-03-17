@@ -1,0 +1,12 @@
+us_default:
+  name: US Default Tax
+  rate: 0.08
+  country_code: US
+  active: true
+
+ny_tax:
+  name: NY State Tax
+  rate: 0.08875
+  country_code: US
+  state: NY
+  active: true

@@ -9,6 +9,7 @@ class Product < ApplicationRecord
   has_many :product_option_types, -> { order(:position) }, dependent: :destroy
   has_many :option_types, through: :product_option_types
 
+  has_many :reviews, dependent: :destroy
   has_many_attached :images
 
   enum :status, { draft: "draft", active: "active", archived: "archived" }
@@ -39,5 +40,13 @@ class Product < ApplicationRecord
 
   def in_stock?
     variants.any?(&:in_stock?)
+  end
+
+  def average_rating
+    reviews.approved.average(:rating)&.round(1)
+  end
+
+  def reviews_count
+    reviews.approved.count
   end
 end

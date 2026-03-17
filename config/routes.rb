@@ -7,12 +7,25 @@ Rails.application.routes.draw do
   # Storefront
   root "pages#home"
 
-  resources :products, only: %i[index show], controller: "storefront/products"
+  resources :products, only: %i[index show], controller: "storefront/products" do
+    resources :reviews, only: %i[create], controller: "storefront/reviews"
+  end
   resources :categories, only: %i[show], controller: "storefront/categories", param: :slug
 
   # Cart
   resource :cart, only: %i[show]
   resources :cart_items, only: %i[create update destroy]
+
+  # Customer Account
+  namespace :account do
+    root "orders#index"
+    resources :orders, only: %i[index show]
+    resources :addresses
+    resource :profile, only: %i[show update], controller: "profile"
+    resource :wishlist, only: %i[show] do
+      post :toggle, on: :member
+    end
+  end
 
   # Admin
   namespace :admin do
@@ -20,6 +33,8 @@ Rails.application.routes.draw do
     resources :products
     resources :orders, only: %i[index show update]
     resources :categories
+    resources :reviews, only: %i[index update destroy]
+    resources :discounts
   end
 
   # Webhooks

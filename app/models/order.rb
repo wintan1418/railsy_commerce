@@ -6,6 +6,7 @@ class Order < ApplicationRecord
   belongs_to :shipping_address, class_name: "Address", optional: true
   has_many :order_items, dependent: :destroy
   has_many :variants, through: :order_items
+  belongs_to :discount, optional: true
   has_many :payments, dependent: :destroy
   has_many :shipments, dependent: :destroy
 

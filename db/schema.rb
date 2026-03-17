@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_17_114233) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_17_131644) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -93,6 +93,23 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_114233) do
     t.index ["slug"], name: "index_categories_on_slug", unique: true
   end
 
+  create_table "discounts", force: :cascade do |t|
+    t.string "code", null: false
+    t.string "name", null: false
+    t.string "discount_type", null: false
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.integer "minimum_order_cents"
+    t.integer "usage_limit"
+    t.integer "usage_count", default: 0, null: false
+    t.integer "per_user_limit", default: 1
+    t.datetime "starts_at"
+    t.datetime "expires_at"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_discounts_on_code", unique: true
+  end
+
   create_table "option_types", force: :cascade do |t|
     t.string "name", null: false
     t.string "presentation", null: false
@@ -150,6 +167,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_114233) do
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "discount_id"
+    t.index ["discount_id"], name: "index_orders_on_discount_id"
     t.index ["number"], name: "index_orders_on_number", unique: true
     t.index ["status"], name: "index_orders_on_status"
     t.index ["user_id"], name: "index_orders_on_user_id"
@@ -194,6 +213,21 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_114233) do
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["slug"], name: "index_products_on_slug", unique: true
     t.index ["status"], name: "index_products_on_status"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "rating", null: false
+    t.string "title"
+    t.text "body"
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id", "user_id"], name: "index_reviews_on_product_id_and_user_id", unique: true
+    t.index ["product_id"], name: "index_reviews_on_product_id"
+    t.index ["status"], name: "index_reviews_on_status"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -251,6 +285,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_114233) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "tax_rates", force: :cascade do |t|
+    t.string "name", null: false
+    t.decimal "rate", precision: 8, scale: 6, null: false
+    t.string "country_code", null: false
+    t.string "state"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_code", "state"], name: "index_tax_rates_on_country_code_and_state"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
@@ -281,6 +326,23 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_114233) do
     t.index ["sku"], name: "index_variants_on_sku", unique: true, where: "(sku IS NOT NULL)"
   end
 
+  create_table "wishlist_items", force: :cascade do |t|
+    t.bigint "wishlist_id", null: false
+    t.bigint "variant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["variant_id"], name: "index_wishlist_items_on_variant_id"
+    t.index ["wishlist_id", "variant_id"], name: "index_wishlist_items_on_wishlist_id_and_variant_id", unique: true
+    t.index ["wishlist_id"], name: "index_wishlist_items_on_wishlist_id"
+  end
+
+  create_table "wishlists", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wishlists_on_user_id", unique: true
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "addresses", "users"
@@ -294,15 +356,21 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_114233) do
   add_foreign_key "order_items", "variants"
   add_foreign_key "orders", "addresses", column: "billing_address_id"
   add_foreign_key "orders", "addresses", column: "shipping_address_id"
+  add_foreign_key "orders", "discounts"
   add_foreign_key "orders", "users"
   add_foreign_key "payments", "orders"
   add_foreign_key "product_option_types", "option_types"
   add_foreign_key "product_option_types", "products"
   add_foreign_key "products", "categories"
+  add_foreign_key "reviews", "products"
+  add_foreign_key "reviews", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "shipments", "orders"
   add_foreign_key "shipments", "shipping_methods"
   add_foreign_key "stock_items", "stock_locations"
   add_foreign_key "stock_items", "variants"
   add_foreign_key "variants", "products"
+  add_foreign_key "wishlist_items", "variants"
+  add_foreign_key "wishlist_items", "wishlists"
+  add_foreign_key "wishlists", "users"
 end

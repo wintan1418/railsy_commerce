@@ -1,0 +1,24 @@
+percentage_discount:
+  code: SAVE20
+  name: 20% Off
+  discount_type: percentage
+  amount: 20.0
+  active: true
+
+fixed_discount:
+  code: FLAT10
+  name: $10 Off
+  discount_type: fixed_amount
+  amount: 10.0
+  minimum_order_cents: 5000
+  usage_limit: 100
+  usage_count: 0
+  active: true
+
+expired_discount:
+  code: EXPIRED
+  name: Expired Code
+  discount_type: percentage
+  amount: 50.0
+  expires_at: <%= 1.day.ago %>
+  active: true

@@ -1,0 +1,15 @@
+approved_review:
+  product: tshirt
+  user: customer
+  rating: 5
+  title: Great t-shirt
+  body: Very comfortable and well made.
+  status: approved
+
+pending_review:
+  product: laptop
+  user: admin
+  rating: 4
+  title: Good laptop
+  body: Fast and reliable.
+  status: pending

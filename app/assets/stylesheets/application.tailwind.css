@@ -8,6 +8,7 @@
   --cream: #ede8e0;
   --gold: #c9a96e;
   --gold-light: #e8d5b0;
+  --gold-dark: #a8884d;
   --red: #c0392b;
   --mid-gray: #6b6b6b;
   --light-gray: #d4d4d4;
@@ -28,8 +29,12 @@ body {
 
 /* ─── Keyframes ───────────────────────────────────────────────────── */
 @keyframes heroIn {
-  from { opacity: 0; transform: translateY(60px); }
+  from { opacity: 0; transform: translateY(50px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroLineExpand {
+  from { width: 0; }
+  to { width: 4rem; }
 }
 @keyframes float1 {
   0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -57,6 +62,30 @@ body {
   from { width: 0; }
   to { width: 100%; }
 }
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,169,110,0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(201,169,110,0.15); }
+}
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+@keyframes grainShift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-2%, -2%); }
+  30% { transform: translate(1%, -1%); }
+  50% { transform: translate(-1%, 2%); }
+  70% { transform: translate(2%, 1%); }
+  90% { transform: translate(-1%, -1%); }
+}
+@keyframes goldLine {
+  from { width: 0; opacity: 0; }
+  to { width: 100%; opacity: 1; }
+}
 
 .animate-fade-in-up {
   animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -77,6 +106,39 @@ body {
 .animate-delay-600 { animation-delay: 600ms; }
 .animate-delay-800 { animation-delay: 800ms; }
 .animate-delay-1000 { animation-delay: 1000ms; }
+
+/* ─── Shimmer utilities ──────────────────────────────────────────── */
+.shimmer-gold {
+  background: linear-gradient(
+    110deg,
+    var(--gold) 0%,
+    var(--gold-light) 40%,
+    #fff 50%,
+    var(--gold-light) 60%,
+    var(--gold) 100%
+  );
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.shimmer-badge {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+/* ─── Grain texture overlay ──────────────────────────────────────── */
+.grain-overlay::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  animation: grainShift 8s steps(10) infinite;
+  pointer-events: none;
+  z-index: 1;
+}
 
 /* ─── Slide transitions (kept for slideshow controller compatibility) */
 .slide-active {
@@ -139,6 +201,27 @@ body {
   transform: scale(1.08);
 }
 
+/* ─── Category card glow on hover ────────────────────────────────── */
+.category-card {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -12px rgba(201,169,110,0.25),
+              0 0 0 1px rgba(201,169,110,0.1);
+}
+
+/* ─── Promo card hover ───────────────────────────────────────────── */
+.promo-card {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.promo-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 25px 60px -15px rgba(0,0,0,0.3);
+}
+
 /* ─── Scrollbar hide ─────────────────────────────────────────────── */
 .scroll-snap-x {
   scroll-snap-type: x mandatory;
@@ -171,6 +254,63 @@ body {
 }
 .nav-link-gold:hover::after {
   width: 100%;
+}
+
+/* ─── Trust bar icon hover ───────────────────────────────────────── */
+.trust-icon {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.trust-item:hover .trust-icon {
+  transform: scale(1.15);
+  color: var(--gold-dark);
+}
+
+/* ─── Newsletter glow button ─────────────────────────────────────── */
+.btn-subscribe {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-subscribe:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px -5px rgba(201,169,110,0.5);
+}
+.btn-subscribe::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+  background-size: 200% auto;
+  animation: shimmer 2.5s linear infinite;
+}
+
+/* ─── Gold decorative line ───────────────────────────────────────── */
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--gold) 80%, transparent 100%);
+}
+
+/* ─── Section divider ────────────────────────────────────────────── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cream), transparent);
+}
+
+/* ─── Footer top gradient border ─────────────────────────────────── */
+.footer-top-border {
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent 100%);
+}
+
+/* ─── Social icon hover ──────────────────────────────────────────── */
+.social-icon {
+  transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+}
+.social-icon:hover {
+  border-color: var(--gold) !important;
+  color: var(--gold) !important;
+  transform: translateY(-2px);
+  background: rgba(201,169,110,0.08);
 }
 
 /* ─── Smooth section reveals ─────────────────────────────────────── */

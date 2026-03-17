@@ -1,0 +1,31 @@
+<div class="flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-gray-900">Discounts</h1>
+  <%= link_to "New Discount", new_admin_discount_path, class: "rounded-lg px-4 py-2.5 text-sm font-semibold text-white", style: "background: var(--gold);" %>
+</div>
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <table class="min-w-full divide-y divide-gray-100">
+    <thead><tr class="bg-gray-50/50">
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Code</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Type</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Amount</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Usage</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+      <th class="px-6 py-3"></th>
+    </tr></thead>
+    <tbody class="divide-y divide-gray-100">
+      <% @discounts.each do |discount| %>
+        <tr>
+          <td class="px-6 py-4 text-sm font-semibold"><%= discount.code %></td>
+          <td class="px-6 py-4 text-sm text-gray-500 capitalize"><%= discount.discount_type.humanize %></td>
+          <td class="px-6 py-4 text-sm"><%= discount.percentage? ? "#{discount.amount}%" : "$#{discount.amount}" %></td>
+          <td class="px-6 py-4 text-sm text-gray-500"><%= discount.usage_count %><%= "/#{discount.usage_limit}" if discount.usage_limit %></td>
+          <td class="px-6 py-4"><span class="rounded-full px-2.5 py-0.5 text-xs font-semibold <%= discount.active? && !discount.expired? ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500' %>"><%= discount.active? && !discount.expired? ? 'Active' : 'Inactive' %></span></td>
+          <td class="px-6 py-4 text-right text-sm space-x-2">
+            <%= link_to "Edit", edit_admin_discount_path(discount), class: "font-medium", style: "color: var(--gold);" %>
+            <%= button_to "Delete", admin_discount_path(discount), method: :delete, data: { turbo_confirm: "Delete?" }, class: "text-red-500 font-medium cursor-pointer" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

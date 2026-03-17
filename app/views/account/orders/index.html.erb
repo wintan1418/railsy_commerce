@@ -1,0 +1,25 @@
+<div class="mx-auto max-w-4xl px-6 py-12">
+  <h1 class="font-display text-3xl font-light" style="color: var(--black);">My <em class="italic">Orders</em></h1>
+  <div class="mt-8 space-y-4">
+    <% @orders.each do |order| %>
+      <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-semibold" style="color: var(--black);"><%= order.number %></p>
+            <p class="mt-1 text-xs" style="color: var(--mid-gray);"><%= order.created_at.strftime("%B %d, %Y") %></p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm font-semibold" style="color: var(--black);"><%= order.total.format %></p>
+            <p class="mt-1 text-xs capitalize" style="color: var(--gold);"><%= order.status %></p>
+          </div>
+        </div>
+        <div class="mt-4">
+          <%= link_to "View Details", account_order_path(order), class: "text-sm font-medium", style: "color: var(--gold);" %>
+        </div>
+      </div>
+    <% end %>
+    <% if @orders.empty? %>
+      <p class="py-12 text-center text-sm" style="color: var(--mid-gray);">No orders yet.</p>
+    <% end %>
+  </div>
+</div>

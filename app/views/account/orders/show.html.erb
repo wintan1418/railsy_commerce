@@ -1,0 +1,18 @@
+<div class="mx-auto max-w-4xl px-6 py-12">
+  <h1 class="font-display text-3xl font-light" style="color: var(--black);">Order <%= @order.number %></h1>
+  <p class="mt-2 text-sm capitalize" style="color: var(--gold);"><%= @order.status %></p>
+  <div class="mt-8 space-y-4">
+    <% @order_items.each do |item| %>
+      <div class="flex justify-between rounded-lg bg-white p-4 shadow-sm ring-1 ring-gray-900/5">
+        <div>
+          <p class="text-sm font-medium"><%= item.variant.product.name %></p>
+          <p class="text-xs" style="color: var(--mid-gray);">Qty: <%= item.quantity %></p>
+        </div>
+        <p class="text-sm font-medium"><%= item.total.format %></p>
+      </div>
+    <% end %>
+  </div>
+  <div class="mt-8 text-right">
+    <p class="font-display text-2xl font-semibold" style="color: var(--black);">Total: <%= @order.total.format %></p>
+  </div>
+</div>

@@ -1,90 +1,107 @@
-<div class="bg-white">
+<div style="background: var(--warm-white);">
   <!-- ═══════════════════════════════════════════════════════════════════
-       HERO SLIDESHOW - Full-screen with per-slide animated text
+       HERO - Cinematic Dark Luxury (Static, no slideshow)
        ═══════════════════════════════════════════════════════════════════ -->
-  <section class="relative h-[100svh] min-h-[650px] max-h-[1000px] overflow-hidden -mt-[calc(4rem+2.5rem)]"
-           data-controller="slideshow"
-           data-slideshow-interval-value="5000"
-           data-action="mouseenter->slideshow#pause mouseleave->slideshow#resume">
+  <section class="relative overflow-hidden -mt-[calc(4rem+2.625rem)]" style="height: 92vh; min-height: 650px; max-height: 1100px; background: var(--black);">
+    <!-- Warm gradient overlay -->
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 30% 50%, rgba(201,169,110,0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(201,169,110,0.05) 0%, transparent 50%);"></div>
 
-    <% hero_slides = [
-      {
-        image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80",
-        tag: "Spring / Summer 2026",
-        headline: "Curated for the",
-        headline_accent: "Modern Life",
-        description: "Premium products thoughtfully designed to elevate your everyday experience."
-      },
-      {
-        image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1920&q=80",
-        tag: "New Collection",
-        headline: "Define Your",
-        headline_accent: "Signature Style",
-        description: "Handpicked fashion essentials from the world's most coveted brands."
-      },
-      {
-        image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&q=80",
-        tag: "Limited Edition",
-        headline: "Elevate Every",
-        headline_accent: "Moment",
-        description: "From wardrobe staples to statement pieces, find what speaks to you."
-      }
-    ] %>
+    <div class="relative z-10 mx-auto flex h-full max-w-7xl items-center px-6 sm:px-8 lg:px-12">
+      <!-- Left: Text Content -->
+      <div class="max-w-2xl pt-20" style="animation: heroIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+        <!-- Eyebrow -->
+        <div class="flex items-center gap-4">
+          <span class="block h-px w-10" style="background: var(--gold);"></span>
+          <span class="text-xs font-medium uppercase tracking-[0.35em]" style="color: var(--gold);">New Collection 2026</span>
+        </div>
 
-    <!-- Slides with individual text overlays -->
-    <% hero_slides.each_with_index do |slide, i| %>
-      <div data-slideshow-target="slide"
-           class="absolute inset-0 <%= i == 0 ? 'slide-active' : 'slide-inactive' %>">
-        <img src="<%= slide[:image] %>" alt="" class="h-full w-full object-cover object-center" loading="<%= i == 0 ? 'eager' : 'lazy' %>">
-        <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-transparent"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20"></div>
+        <!-- Title -->
+        <h1 class="mt-8 font-display font-light leading-[1.05] tracking-tight text-white" style="font-size: clamp(3.25rem, 5vw, 5.5rem);">
+          Define Your<br>
+          <em class="font-display italic" style="color: var(--gold);">Signature</em><br>
+          Style
+        </h1>
 
-        <!-- Per-slide text (animates in/out with slide transitions) -->
-        <div class="hero-text absolute inset-0 z-20 flex items-center">
-          <div class="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-12">
-            <div class="max-w-2xl pt-16">
-              <div class="flex items-center gap-3">
-                <span class="h-px w-8 bg-white/50"></span>
-                <span class="text-xs font-semibold uppercase tracking-[0.35em] text-white/70"><%= slide[:tag] %></span>
-              </div>
-              <h1 class="mt-6 text-5xl font-light leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
-                <%= slide[:headline] %>
-                <span class="block font-display font-semibold italic"><%= slide[:headline_accent] %></span>
-              </h1>
-              <p class="mt-6 max-w-md text-base leading-relaxed text-white/60 sm:text-lg"><%= slide[:description] %></p>
-              <div class="mt-10 flex flex-col gap-4 sm:flex-row">
-                <%= link_to products_path, class: "group inline-flex items-center justify-center gap-3 bg-white px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] text-gray-900 transition-all duration-300 hover:bg-indigo-600 hover:text-white" do %>
-                  Shop Collection
-                  <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
-                <% end %>
-                <%= link_to "Explore Sale", products_path(on_sale: true), class: "inline-flex items-center justify-center gap-3 border border-white/30 px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white/10" %>
-              </div>
-            </div>
-          </div>
+        <!-- Subtitle -->
+        <p class="mt-6 max-w-md text-base leading-relaxed" style="color: rgba(255,255,255,0.5);">
+          Premium products thoughtfully designed to elevate your everyday experience. Curated for the modern connoisseur.
+        </p>
+
+        <!-- CTAs -->
+        <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+          <%= link_to products_path, class: "group inline-flex items-center justify-center gap-3 px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] transition-all duration-300 hover:opacity-90", style: "background: var(--gold); color: var(--black);" do %>
+            Shop Collection
+            <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+          <% end %>
+          <%= link_to "Explore Sale", products_path(on_sale: true),
+            class: "inline-flex items-center justify-center gap-3 border px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10",
+            style: "border-color: rgba(255,255,255,0.3);" %>
         </div>
       </div>
-    <% end %>
 
-    <!-- Pill dot indicators with progress animation -->
-    <div class="absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2">
-      <% hero_slides.each_with_index do |_, i| %>
-        <button data-slideshow-target="dot" data-slide-index="<%= i %>" data-action="click->slideshow#goToSlide"
-                class="h-2 transition-all duration-500 cursor-pointer <%= i == 0 ? 'dot-active' : 'dot-inactive' %>"
-                aria-label="Go to slide <%= i + 1 %>"></button>
-      <% end %>
+      <!-- Right: Decorative Elements -->
+      <div class="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2">
+        <!-- Floating circles -->
+        <div class="relative h-[400px] w-[300px]">
+          <div class="absolute top-0 right-0 h-48 w-48 rounded-full border" style="border-color: rgba(201,169,110,0.2); animation: float1 6s ease-in-out infinite;"></div>
+          <div class="absolute bottom-0 left-0 h-32 w-32 rounded-full border" style="border-color: rgba(201,169,110,0.15); animation: float1 8s ease-in-out infinite 1s;"></div>
+          <div class="absolute top-1/3 left-1/4 h-20 w-20 rounded-full border" style="border-color: rgba(201,169,110,0.1); animation: float1 5s ease-in-out infinite 0.5s;"></div>
+          <!-- Vertical gold accent line -->
+          <div class="absolute right-24 top-1/4 h-32 w-px" style="background: linear-gradient(to bottom, transparent, var(--gold), transparent);"></div>
+        </div>
+      </div>
     </div>
 
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-10 right-10 z-30 hidden animate-float lg:block">
-      <a href="#categories" class="flex flex-col items-center gap-2 text-white/40 transition-colors hover:text-white/70">
-        <span class="text-[10px] font-semibold uppercase tracking-[0.3em]" style="writing-mode: vertical-rl;">Scroll</span>
-        <div class="h-10 w-px bg-gradient-to-b from-white/40 to-transparent"></div>
-      </a>
+    <!-- Bottom Right: Stats -->
+    <div class="absolute bottom-12 right-12 z-20 hidden lg:flex items-center gap-10">
+      <div class="text-right">
+        <p class="font-display text-2xl font-semibold" style="color: var(--gold);">2.4k+</p>
+        <p class="text-xs uppercase tracking-wider" style="color: rgba(255,255,255,0.4);">Products</p>
+      </div>
+      <div class="text-right">
+        <p class="font-display text-2xl font-semibold" style="color: var(--gold);">180+</p>
+        <p class="text-xs uppercase tracking-wider" style="color: rgba(255,255,255,0.4);">Brands</p>
+      </div>
+      <div class="text-right">
+        <p class="font-display text-2xl font-semibold" style="color: var(--gold);">98%</p>
+        <p class="text-xs uppercase tracking-wider" style="color: rgba(255,255,255,0.4);">Satisfaction</p>
+      </div>
+    </div>
+
+    <!-- Bottom Center: Scroll Indicator -->
+    <div class="absolute bottom-10 left-1/2 z-20 -translate-x-1/2 flex flex-col items-center gap-3">
+      <span class="text-[10px] font-medium uppercase tracking-[0.3em]" style="color: rgba(255,255,255,0.3);">Scroll</span>
+      <div class="h-8 w-px overflow-hidden" style="background: rgba(255,255,255,0.1);">
+        <div class="h-full w-full" style="background: var(--gold); animation: scrollAnim 2s ease-in-out infinite;"></div>
+      </div>
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════════════
-       TRENDING CATEGORIES
+       TRUST BAR
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section style="background: var(--cream);">
+    <div class="mx-auto max-w-7xl px-6 py-6 sm:px-8 lg:px-12">
+      <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
+        <% [
+          { icon: "M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12", label: "Free Shipping" },
+          { icon: "M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182", label: "Easy Returns" },
+          { icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z", label: "Secure Checkout" },
+          { icon: "M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155", label: "24/7 Support" }
+        ].each do |item| %>
+          <div class="flex items-center gap-3">
+            <svg class="h-5 w-5 flex-shrink-0" style="color: var(--gold);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="<%= item[:icon] %>" />
+            </svg>
+            <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--black);"><%= item[:label] %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       TRENDING CATEGORIES - 6-column grid
        ═══════════════════════════════════════════════════════════════════ -->
   <% if @categories.any? %>
     <% category_images = {
@@ -95,36 +112,46 @@
       "Accessories" => "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&q=80",
       "Beauty & Wellness" => "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80"
     } %>
+    <% category_gradients = [
+      "linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%)",
+      "linear-gradient(135deg, #0f1923 0%, #0a1018 100%)",
+      "linear-gradient(135deg, #1c1a15 0%, #12110d 100%)",
+      "linear-gradient(135deg, #0d1a12 0%, #091009 100%)",
+      "linear-gradient(135deg, #1a1520 0%, #100d15 100%)",
+      "linear-gradient(135deg, #1a1015 0%, #120a0f 100%)"
+    ] %>
     <section id="categories" class="py-20 lg:py-28">
       <div class="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
         <div class="flex items-end justify-between">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-600">Browse</p>
-            <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Trending <span class="font-display italic">Categories</span></h2>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em]" style="color: var(--gold);">Browse</p>
+            <h2 class="mt-2 font-display text-3xl font-light tracking-tight sm:text-4xl" style="color: var(--black);">Trending <em class="italic">Categories</em></h2>
           </div>
-          <%= link_to products_path, class: "hidden items-center gap-2 text-sm font-medium text-gray-900 transition-colors hover:text-indigo-600 sm:flex" do %>
+          <%= link_to products_path, class: "hidden items-center gap-2 text-sm font-medium transition-colors sm:flex hover:opacity-70", style: "color: var(--black);" do %>
             View All
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
           <% end %>
         </div>
       </div>
-      <div class="mt-10 flex gap-5 overflow-x-auto px-6 pb-4 scroll-snap-x scrollbar-hide sm:px-8 lg:px-12">
-        <% @categories.each do |category| %>
-          <%= link_to category_path(slug: category.slug), class: "group relative flex-none w-[260px] sm:w-[300px] overflow-hidden rounded-2xl" do %>
-            <div class="aspect-[3/4] w-full overflow-hidden">
-              <img src="<%= category_images[category.name] || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80' %>" alt="<%= category.name %>" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-6">
-              <h3 class="text-xl font-bold text-white"><%= category.name %></h3>
-              <p class="mt-1 text-sm text-white/60"><%= @category_counts[category] || 0 %> products</p>
-              <div class="mt-3 flex items-center gap-2 text-sm font-medium text-white/80 transition-all duration-300 group-hover:text-white group-hover:gap-3">
-                Shop Now
-                <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+      <div class="mt-10 mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <% @categories.first(6).each_with_index do |category, idx| %>
+            <%= link_to category_path(slug: category.slug), class: "group relative overflow-hidden rounded-2xl" do %>
+              <div class="aspect-[3/4] w-full overflow-hidden rounded-2xl" style="background: <%= category_gradients[idx % 6] %>;">
+                <img src="<%= category_images[category.name] || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80' %>" alt="<%= category.name %>" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70" loading="lazy">
               </div>
-            </div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+              <div class="absolute bottom-0 left-0 right-0 p-4 lg:p-5">
+                <h3 class="font-display text-lg font-semibold text-white"><%= category.name %></h3>
+                <p class="mt-0.5 text-xs text-white/50"><%= @category_counts[category] || 0 %> products</p>
+                <div class="mt-2 flex items-center gap-1 text-xs font-medium opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:gap-2" style="color: var(--gold);">
+                  Shop Now
+                  <svg class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </div>
+              </div>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
     </section>
   <% end %>
@@ -133,14 +160,14 @@
        NEW ARRIVALS
        ═══════════════════════════════════════════════════════════════════ -->
   <% if @featured_products.any? %>
-    <section class="bg-gray-50/60">
+    <section style="background: var(--cream);">
       <div class="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
         <div class="flex items-end justify-between">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-600">Just Dropped</p>
-            <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">New <span class="font-display italic">Arrivals</span></h2>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em]" style="color: var(--gold);">Just Dropped</p>
+            <h2 class="mt-2 font-display text-3xl font-light tracking-tight sm:text-4xl" style="color: var(--black);">New <em class="italic">Arrivals</em></h2>
           </div>
-          <%= link_to products_path(sort: "newest"), class: "hidden items-center gap-2 text-sm font-medium text-gray-900 transition-colors hover:text-indigo-600 sm:flex" do %>
+          <%= link_to products_path(sort: "newest"), class: "hidden items-center gap-2 text-sm font-medium transition-colors sm:flex hover:opacity-70", style: "color: var(--black);" do %>
             View All
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
           <% end %>
@@ -159,31 +186,32 @@
        ═══════════════════════════════════════════════════════════════════ -->
   <section class="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
     <div class="grid gap-6 md:grid-cols-2">
-      <div class="group relative overflow-hidden rounded-2xl">
-        <div class="aspect-[4/3] w-full overflow-hidden sm:aspect-[16/10]">
-          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&q=80" alt="New Arrivals" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+      <!-- Left: New Arrivals -->
+      <div class="group relative overflow-hidden rounded-2xl" style="background: linear-gradient(135deg, #b8860b22 0%, #daa52033 50%, #cd853f22 100%); min-height: 320px;">
+        <div class="absolute inset-0 flex items-center justify-center overflow-hidden">
+          <span class="font-display text-[8rem] font-bold uppercase leading-none opacity-[0.04]" style="color: var(--gold);">NEW</span>
         </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-8">
-          <p class="text-xs font-semibold uppercase tracking-[0.25em] text-white/60">Spring 2026</p>
-          <h3 class="mt-2 text-2xl font-bold text-white sm:text-3xl">New <span class="font-display italic">Arrivals</span></h3>
-          <p class="mt-2 text-sm text-white/70">Discover the latest additions to our collection</p>
-          <%= link_to products_path(sort: "newest"), class: "mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:text-white/80" do %>
+        <div class="relative z-10 flex h-full flex-col justify-end p-8 lg:p-10">
+          <p class="text-xs font-semibold uppercase tracking-[0.25em]" style="color: var(--gold);">Spring 2026</p>
+          <h3 class="mt-2 font-display text-3xl font-light text-white sm:text-4xl" style="color: var(--black);">New <em class="italic">Arrivals</em></h3>
+          <p class="mt-2 text-sm" style="color: var(--mid-gray);">Discover the latest additions to our collection</p>
+          <%= link_to products_path(sort: "newest"), class: "mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider transition-colors hover:opacity-70", style: "color: var(--black);" do %>
             Shop New
             <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
           <% end %>
         </div>
       </div>
-      <div class="group relative overflow-hidden rounded-2xl">
-        <div class="aspect-[4/3] w-full overflow-hidden sm:aspect-[16/10]">
-          <img src="https://images.unsplash.com/photo-1607082349566-187342175e2f?w=900&q=80" alt="Sale" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+
+      <!-- Right: Sale -->
+      <div class="group relative overflow-hidden rounded-2xl" style="background: var(--black); min-height: 320px;">
+        <div class="absolute inset-0 flex items-center justify-center overflow-hidden">
+          <span class="font-display text-[10rem] font-bold uppercase leading-none opacity-[0.06] text-white">SALE</span>
         </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-8">
-          <p class="text-xs font-semibold uppercase tracking-[0.25em] text-white/60">Limited Time</p>
-          <h3 class="mt-2 text-2xl font-bold text-white sm:text-3xl">Up to <span class="font-display italic text-amber-300">40% Off</span></h3>
-          <p class="mt-2 text-sm text-white/70">Premium pieces at exceptional prices</p>
-          <%= link_to products_path(on_sale: true), class: "mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:text-white/80" do %>
+        <div class="relative z-10 flex h-full flex-col justify-end p-8 lg:p-10">
+          <p class="text-xs font-semibold uppercase tracking-[0.25em]" style="color: var(--gold);">Limited Time</p>
+          <h3 class="mt-2 font-display text-3xl font-light text-white sm:text-4xl">Up to <span style="color: var(--red);" class="font-semibold">50% Off</span></h3>
+          <p class="mt-2 text-sm text-white/50">Premium pieces at exceptional prices</p>
+          <%= link_to products_path(on_sale: true), class: "mt-5 inline-flex items-center gap-2 border border-white/30 px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-300 hover:border-white hover:bg-white/10" do %>
             Shop Sale
             <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
           <% end %>
@@ -197,13 +225,20 @@
        ═══════════════════════════════════════════════════════════════════ -->
   <% sale_products = @featured_products.select { |p| p.master_variant&.on_sale? } %>
   <% if sale_products.any? %>
-    <section class="bg-gray-50/60">
+    <section style="background: var(--cream);">
       <div class="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
         <div class="flex items-end justify-between">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-red-500">Don't Miss Out</p>
-            <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">On <span class="font-display italic">Sale</span></h2>
+          <div class="flex items-center gap-3">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.25em]" style="color: var(--red);">Don't Miss Out</p>
+              <h2 class="mt-2 font-display text-3xl font-light tracking-tight sm:text-4xl" style="color: var(--black);">On <em class="italic">Sale</em></h2>
+            </div>
+            <span class="ml-2 rounded-full px-3 py-1 text-xs font-semibold text-white" style="background: var(--red);">Up to 50% Off</span>
           </div>
+          <%= link_to products_path(on_sale: true), class: "hidden items-center gap-2 text-sm font-medium transition-colors sm:flex hover:opacity-70", style: "color: var(--black);" do %>
+            View All
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+          <% end %>
         </div>
         <div class="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-8">
           <% sale_products.first(4).each do |product| %>
@@ -215,48 +250,32 @@
   <% end %>
 
   <!-- ═══════════════════════════════════════════════════════════════════
-       BRAND VALUES
-       ═══════════════════════════════════════════════════════════════════ -->
-  <section class="border-y border-gray-100">
-    <div class="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
-      <div class="text-center">
-        <p class="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-600">Why Choose Us</p>
-        <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">The RailsyCommerce <span class="font-display italic">Promise</span></h2>
-      </div>
-      <div class="mt-16 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
-        <% [
-          { icon: "M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12", title: "Free Shipping", desc: "Complimentary shipping on all orders over $50." },
-          { icon: "M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182", title: "Easy Returns", desc: "30-day hassle-free return policy. No questions asked." },
-          { icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z", title: "Secure Payment", desc: "256-bit SSL encryption protects your data." },
-          { icon: "M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155", title: "24/7 Support", desc: "Our dedicated team is always here to help." }
-        ].each do |item| %>
-          <div class="group flex flex-col items-center text-center">
-            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-900 text-white shadow-lg transition-all duration-300 group-hover:-translate-y-2 group-hover:bg-indigo-600 group-hover:shadow-indigo-200">
-              <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="<%= item[:icon] %>" /></svg>
-            </div>
-            <h3 class="mt-6 text-base font-bold text-gray-900"><%= item[:title] %></h3>
-            <p class="mt-2 text-sm leading-relaxed text-gray-500"><%= item[:desc] %></p>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════════════════════════
        NEWSLETTER
        ═══════════════════════════════════════════════════════════════════ -->
-  <section class="bg-gray-950">
+  <section style="background: linear-gradient(135deg, var(--black) 0%, #1a1510 100%);">
     <div class="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
-      <div class="mx-auto max-w-2xl text-center">
-        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-indigo-400">Newsletter</p>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">Stay in the <span class="font-display italic">Loop</span></h2>
-        <p class="mt-4 text-base leading-relaxed text-gray-400">Be the first to know about new collections, exclusive deals, and style tips.</p>
-        <form class="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-0" action="#" method="post">
-          <input type="email" placeholder="Enter your email address" required
-            class="flex-1 border border-gray-700 bg-gray-900 px-6 py-4 text-sm text-white placeholder:text-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors">
-          <button type="submit" class="bg-indigo-600 px-8 py-4 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-indigo-500">Subscribe</button>
-        </form>
-        <p class="mt-4 text-xs text-gray-600">We respect your privacy. Unsubscribe at any time.</p>
+      <div class="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
+        <!-- Left: Text -->
+        <div class="max-w-lg">
+          <p class="text-xs font-semibold uppercase tracking-[0.3em]" style="color: var(--gold);">Newsletter</p>
+          <h2 class="mt-3 font-display text-3xl font-light tracking-tight text-white sm:text-4xl">
+            Get <em class="italic" style="color: var(--gold);">Exclusive</em> Deals<br>& New Drops
+          </h2>
+          <p class="mt-4 text-sm leading-relaxed text-white/40">Be the first to know about new collections, exclusive deals, and style tips.</p>
+        </div>
+
+        <!-- Right: Form -->
+        <div class="flex-1 max-w-md">
+          <form class="flex flex-col gap-3 sm:flex-row sm:gap-0" action="#" method="post">
+            <input type="email" placeholder="Enter your email address" required
+              class="flex-1 border border-white/10 px-6 py-4 text-sm text-white placeholder:text-white/30 focus:border-[var(--gold)] focus:outline-none transition-colors"
+              style="background: rgba(255,255,255,0.05);">
+            <button type="submit" class="px-8 py-4 text-sm font-semibold uppercase tracking-wider transition-colors duration-200 hover:opacity-90" style="background: var(--gold); color: var(--black);">
+              Subscribe
+            </button>
+          </form>
+          <p class="mt-4 text-xs text-white/20">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
       </div>
     </div>
   </section>

@@ -15,18 +15,18 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="h-full bg-white text-gray-900 antialiased">
+  <body class="h-full antialiased">
     <!-- Announcement Bar -->
-    <div class="bg-indigo-600">
-      <div class="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
-        <p class="text-center text-sm font-medium text-white">
-          Free shipping on orders over $50 &mdash; <a href="<%= products_path %>" class="underline underline-offset-2 hover:text-indigo-100">Shop now</a>
+    <div style="background: var(--black);">
+      <div class="mx-auto max-w-7xl px-4 py-2.5 sm:px-6 lg:px-8">
+        <p class="text-center text-xs font-light tracking-wide text-white/80">
+          Free shipping on orders over <span style="color: var(--gold);">$75</span> &middot; New arrivals every Friday &middot; Use code <span style="color: var(--gold); font-weight: 500;">STYLE20</span> for 20% off
         </p>
       </div>
     </div>

@@ -1,28 +1,28 @@
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
   <!-- Breadcrumb -->
-  <nav class="flex items-center gap-2 text-sm text-gray-400 mb-8">
-    <%= link_to "Home", root_path, class: "hover:text-gray-600 transition-colors duration-200" %>
+  <nav class="flex items-center gap-2 text-sm mb-8" style="color: var(--mid-gray);">
+    <%= link_to "Home", root_path, class: "transition-colors duration-200 hover:text-[var(--gold)]" %>
     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-    <%= link_to "Products", products_path, class: "hover:text-gray-600 transition-colors duration-200" %>
+    <%= link_to "Products", products_path, class: "transition-colors duration-200 hover:text-[var(--gold)]" %>
     <% if @product.category %>
       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-      <%= link_to @product.category.name, category_path(slug: @product.category.slug), class: "hover:text-gray-600 transition-colors duration-200" %>
+      <%= link_to @product.category.name, category_path(slug: @product.category.slug), class: "transition-colors duration-200 hover:text-[var(--gold)]" %>
     <% end %>
     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-    <span class="text-gray-700 font-medium truncate"><%= @product.name %></span>
+    <span class="font-medium truncate" style="color: var(--black);"><%= @product.name %></span>
   </nav>
 
   <div class="lg:grid lg:grid-cols-2 lg:gap-x-12">
     <!-- Image Gallery -->
     <div data-controller="image-gallery">
-      <div class="aspect-square overflow-hidden rounded-2xl bg-gray-100">
+      <div class="aspect-square overflow-hidden rounded-2xl" style="background: var(--cream);">
         <% if @product.images.attached? %>
           <img data-image-gallery-target="mainImage"
             src="<%= url_for(@product.images.first) %>"
             alt="<%= @product.name %>"
             class="h-full w-full object-cover transition-opacity duration-300" />
         <% else %>
-          <div class="flex h-full w-full items-center justify-center text-gray-300">
+          <div class="flex h-full w-full items-center justify-center" style="color: var(--light-gray);">
             <svg class="h-24 w-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
             </svg>
@@ -36,7 +36,8 @@
               data-image-gallery-target="thumbnail"
               data-action="click->image-gallery#select"
               data-image-url="<%= url_for(image) %>"
-              class="aspect-square overflow-hidden rounded-xl bg-gray-100 cursor-pointer transition-all duration-200 <%= idx == 0 ? 'ring-2 ring-indigo-600' : 'ring-1 ring-gray-200 hover:ring-indigo-300' %>">
+              class="aspect-square overflow-hidden rounded-xl cursor-pointer transition-all duration-200"
+              style="background: var(--cream); <%= idx == 0 ? 'ring: 2px solid var(--gold); outline: 2px solid var(--gold);' : 'outline: 1px solid var(--cream);' %>">
               <%= image_tag image, class: "h-full w-full object-cover" %>
             </button>
           <% end %>
@@ -47,51 +48,53 @@
     <!-- Product Info -->
     <div class="mt-8 lg:mt-0">
       <% if @product.category %>
-        <p class="text-sm font-medium uppercase tracking-wider text-indigo-600"><%= @product.category.name %></p>
+        <p class="text-sm font-semibold uppercase tracking-wider" style="color: var(--gold);"><%= @product.category.name %></p>
       <% end %>
 
-      <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"><%= @product.name %></h1>
+      <h1 class="mt-2 font-display text-3xl font-light tracking-tight sm:text-4xl" style="color: var(--black);"><%= @product.name %></h1>
 
       <!-- Star Rating -->
       <div class="mt-3 flex items-center gap-2">
-        <div class="flex text-amber-400">
+        <div class="flex" style="color: var(--gold);">
           <% 5.times do %>
             <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd"/></svg>
           <% end %>
         </div>
-        <span class="text-sm text-gray-500"><%= rand(24..186) %> reviews</span>
+        <span class="text-sm" style="color: var(--mid-gray);"><%= rand(24..186) %> reviews</span>
       </div>
 
       <!-- Price -->
       <div class="mt-6 flex items-center gap-3">
         <% if @master_variant&.on_sale? %>
-          <span class="text-3xl font-bold text-red-600"><%= @master_variant.price.format %></span>
-          <span class="text-xl text-gray-400 line-through"><%= @master_variant.compare_at_price.format %></span>
+          <span class="font-display text-3xl font-semibold" style="color: var(--red);"><%= @master_variant.price.format %></span>
+          <span class="text-xl line-through" style="color: var(--mid-gray);"><%= @master_variant.compare_at_price.format %></span>
           <% discount = ((@master_variant.compare_at_price_cents - @master_variant.price_cents).to_f / @master_variant.compare_at_price_cents * 100).round %>
-          <span class="rounded-full bg-red-100 px-3 py-1 text-sm font-bold text-red-700">-<%= discount %>%</span>
+          <span class="rounded-full px-3 py-1 text-sm font-bold text-white" style="background: var(--red);">-<%= discount %>%</span>
         <% elsif @master_variant %>
-          <span class="text-3xl font-bold text-gray-900"><%= @master_variant.price.format %></span>
+          <span class="font-display text-3xl font-semibold" style="color: var(--black);"><%= @master_variant.price.format %></span>
         <% end %>
       </div>
 
       <!-- Variant Selection -->
       <% non_master_variants = @variants.reject(&:is_master?) %>
       <% if non_master_variants.any? %>
-        <div class="mt-8 space-y-6 border-t border-gray-200 pt-8">
+        <div class="mt-8 space-y-6 border-t pt-8" style="border-color: var(--cream);">
           <% @product.option_types.each do |option_type| %>
             <div>
-              <h3 class="text-sm font-semibold text-gray-900"><%= option_type.presentation %></h3>
+              <h3 class="text-sm font-semibold" style="color: var(--black);"><%= option_type.presentation %></h3>
               <div class="mt-3 flex flex-wrap gap-2">
                 <% if option_type.name == "color" %>
                   <% color_map = { "black" => "bg-gray-900", "white" => "bg-white border border-gray-300", "navy" => "bg-blue-900", "red" => "bg-red-500", "blue" => "bg-blue-500", "green" => "bg-green-600", "olive" => "bg-green-800", "burgundy" => "bg-red-900", "charcoal" => "bg-gray-600", "sand" => "bg-amber-200" } %>
                   <% option_type.option_values.each do |ov| %>
                     <button type="button" title="<%= ov.presentation %>"
-                      class="h-9 w-9 rounded-full <%= color_map[ov.name] || 'bg-gray-400' %> ring-offset-2 hover:ring-2 hover:ring-indigo-500 focus:ring-2 focus:ring-indigo-500 transition-all duration-200"></button>
+                      class="h-9 w-9 rounded-full <%= color_map[ov.name] || 'bg-gray-400' %> ring-offset-2 hover:ring-2 focus:ring-2 transition-all duration-200"
+                      style="--tw-ring-color: var(--gold);"></button>
                   <% end %>
                 <% else %>
                   <% option_type.option_values.each do |ov| %>
                     <button type="button"
-                      class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:border-indigo-500 hover:text-indigo-600 focus:border-indigo-500 focus:text-indigo-600 focus:ring-2 focus:ring-indigo-600/20 transition-all duration-200">
+                      class="rounded-lg border px-4 py-2 text-sm font-medium transition-all duration-200 hover:border-[var(--gold)] hover:text-[var(--gold)] focus:border-[var(--gold)] focus:text-[var(--gold)]"
+                      style="border-color: var(--cream); color: var(--text-body);">
                       <%= ov.presentation %>
                     </button>
                   <% end %>
@@ -104,33 +107,37 @@
 
       <!-- Add to Cart -->
       <% if @product.in_stock? && @master_variant %>
-        <div class="mt-8 border-t border-gray-200 pt-8">
+        <div class="mt-8 border-t pt-8" style="border-color: var(--cream);">
           <%= form_with url: cart_items_path, method: :post do |form| %>
             <%= form.hidden_field :variant_id, value: @master_variant.id %>
             <div class="flex items-center gap-4">
               <!-- Quantity Selector -->
-              <div class="flex items-center rounded-lg border border-gray-300" data-controller="quantity">
+              <div class="flex items-center rounded-lg border" style="border-color: var(--cream);" data-controller="quantity">
                 <button type="button" data-action="quantity#decrement"
-                  class="flex h-12 w-12 items-center justify-center text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer">
+                  class="flex h-12 w-12 items-center justify-center transition-colors duration-200 cursor-pointer" style="color: var(--mid-gray);">
                   <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"/></svg>
                 </button>
                 <%= form.number_field :quantity, value: 1, min: 1, max: 99,
                   data: { quantity_target: "input" },
-                  class: "h-12 w-14 border-x border-gray-300 text-center text-sm font-medium text-gray-900 focus:outline-none" %>
+                  class: "h-12 w-14 border-x text-center text-sm font-medium focus:outline-none",
+                  style: "border-color: var(--cream); color: var(--black);" %>
                 <button type="button" data-action="quantity#increment"
-                  class="flex h-12 w-12 items-center justify-center text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer">
+                  class="flex h-12 w-12 items-center justify-center transition-colors duration-200 cursor-pointer" style="color: var(--mid-gray);">
                   <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
                 </button>
               </div>
 
               <!-- Add to Cart Button -->
               <%= form.submit "Add to Cart",
-                class: "flex-1 rounded-lg bg-indigo-600 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors duration-200 cursor-pointer" %>
+                class: "flex-1 rounded-lg py-3.5 text-sm font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-200 cursor-pointer",
+                style: "background: var(--black);",
+                onmouseover: "this.style.background='var(--gold)'; this.style.color='var(--black)';",
+                onmouseout: "this.style.background='var(--black)'; this.style.color='white';" %>
             </div>
           <% end %>
 
           <!-- Wishlist -->
-          <button type="button" class="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 py-3 text-sm font-medium text-gray-700 hover:border-gray-400 hover:text-gray-900 transition-all duration-200">
+          <button type="button" class="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border py-3 text-sm font-medium transition-all duration-200 hover:border-[var(--gold)] hover:text-[var(--gold)]" style="border-color: var(--cream); color: var(--text-body);">
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
             </svg>
@@ -138,11 +145,11 @@
           </button>
         </div>
       <% else %>
-        <div class="mt-8 border-t border-gray-200 pt-8">
-          <button disabled class="w-full rounded-lg bg-gray-200 py-3.5 text-sm font-semibold text-gray-400 cursor-not-allowed">
+        <div class="mt-8 border-t pt-8" style="border-color: var(--cream);">
+          <button disabled class="w-full rounded-lg py-3.5 text-sm font-semibold cursor-not-allowed" style="background: var(--cream); color: var(--mid-gray);">
             Out of Stock
           </button>
-          <p class="mt-3 text-center text-sm text-gray-500">This item is currently unavailable</p>
+          <p class="mt-3 text-center text-sm" style="color: var(--mid-gray);">This item is currently unavailable</p>
         </div>
       <% end %>
 
@@ -153,42 +160,42 @@
             <span class="inline-block h-2 w-2 rounded-full bg-green-500"></span>
             <span class="text-sm text-green-600">In Stock</span>
           <% else %>
-            <span class="inline-block h-2 w-2 rounded-full bg-red-500"></span>
-            <span class="text-sm text-red-600">Out of Stock</span>
+            <span class="inline-block h-2 w-2 rounded-full" style="background: var(--red);"></span>
+            <span class="text-sm" style="color: var(--red);">Out of Stock</span>
           <% end %>
         </div>
       <% end %>
 
       <!-- Product Details (Expandable) -->
       <% if @product.description.present? %>
-        <div class="mt-8 border-t border-gray-200 pt-8">
+        <div class="mt-8 border-t pt-8" style="border-color: var(--cream);">
           <details open class="group">
-            <summary class="flex cursor-pointer items-center justify-between py-2 text-sm font-semibold text-gray-900">
+            <summary class="flex cursor-pointer items-center justify-between py-2 text-sm font-semibold" style="color: var(--black);">
               Description
-              <svg class="h-5 w-5 text-gray-400 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" style="color: var(--mid-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
             </summary>
-            <div class="mt-3 text-sm leading-relaxed text-gray-600">
+            <div class="mt-3 text-sm leading-relaxed" style="color: var(--text-body);">
               <%= simple_format @product.description %>
             </div>
           </details>
 
-          <details class="group border-t border-gray-200">
-            <summary class="flex cursor-pointer items-center justify-between py-4 text-sm font-semibold text-gray-900">
+          <details class="group border-t" style="border-color: var(--cream);">
+            <summary class="flex cursor-pointer items-center justify-between py-4 text-sm font-semibold" style="color: var(--black);">
               Shipping & Returns
-              <svg class="h-5 w-5 text-gray-400 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" style="color: var(--mid-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
             </summary>
-            <div class="mt-1 pb-4 text-sm leading-relaxed text-gray-600">
-              <p>Free standard shipping on orders over $50. Express shipping available at checkout.</p>
+            <div class="mt-1 pb-4 text-sm leading-relaxed" style="color: var(--text-body);">
+              <p>Free standard shipping on orders over $75. Express shipping available at checkout.</p>
               <p class="mt-2">Easy returns within 30 days of purchase. Items must be in original condition.</p>
             </div>
           </details>
 
-          <details class="group border-t border-gray-200">
-            <summary class="flex cursor-pointer items-center justify-between py-4 text-sm font-semibold text-gray-900">
+          <details class="group border-t" style="border-color: var(--cream);">
+            <summary class="flex cursor-pointer items-center justify-between py-4 text-sm font-semibold" style="color: var(--black);">
               Care Instructions
-              <svg class="h-5 w-5 text-gray-400 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+              <svg class="h-5 w-5 transition-transform group-open:rotate-180" style="color: var(--mid-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
             </summary>
-            <div class="mt-1 pb-4 text-sm leading-relaxed text-gray-600">
+            <div class="mt-1 pb-4 text-sm leading-relaxed" style="color: var(--text-body);">
               <p>Please refer to the care label on the product for specific instructions. Generally, we recommend gentle handling to maintain product quality.</p>
             </div>
           </details>
@@ -200,8 +207,9 @@
   <!-- You May Also Like -->
   <% related = Product.active.where(category: @product.category).where.not(id: @product.id).includes(:category, variants: :stock_items).limit(4) %>
   <% if related.any? %>
-    <section class="mt-20 border-t border-gray-200 pt-16">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900">You may also like</h2>
+    <section class="mt-20 border-t pt-16" style="border-color: var(--cream);">
+      <p class="text-xs font-semibold uppercase tracking-[0.25em]" style="color: var(--gold);">Recommended</p>
+      <h2 class="mt-2 font-display text-2xl font-light tracking-tight" style="color: var(--black);">You May Also <em class="italic">Like</em></h2>
       <div class="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
         <% related.each do |product| %>
           <%= render "storefront/products/product_card", product: product %>

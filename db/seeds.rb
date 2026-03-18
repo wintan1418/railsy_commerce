@@ -567,6 +567,86 @@ if Order.count == 0
   puts "  #{Order.count} sample orders created"
 end
 
+# ─── Static Pages ─────────────────────────────────────────────────
+pages_data = [
+  {
+    title: "About Us",
+    body: "RailsyCommerce is a luxury e-commerce platform built with care and attention to detail. We curate the finest products from around the world, bringing them together in one beautiful shopping experience.\n\nOur mission is to make premium shopping accessible, enjoyable, and sustainable. Every product in our collection meets our rigorous standards for quality, craftsmanship, and ethical sourcing.\n\nFounded in 2024, we've grown from a small team of passionate curators to a global marketplace serving customers in over 50 countries.",
+    position: 0
+  },
+  {
+    title: "Contact",
+    body: "We'd love to hear from you.\n\nEmail: hello@railsycommerce.com\nPhone: 1-800-RAILSY (1-800-724-5799)\n\nCustomer Support Hours:\nMonday - Friday: 9am - 6pm EST\nSaturday: 10am - 4pm EST\nSunday: Closed\n\nHeadquarters:\n123 Commerce Street\nNew York, NY 10001\nUnited States",
+    position: 1
+  },
+  {
+    title: "FAQ",
+    body: "Frequently Asked Questions\n\nHow long does shipping take?\nStandard shipping takes 5-7 business days. Express shipping delivers in 1-2 business days.\n\nWhat is your return policy?\nWe offer a 30-day return policy on all items in original condition. See our Return Policy page for details.\n\nDo you ship internationally?\nYes! We ship to over 50 countries worldwide. International shipping times vary by destination.\n\nHow do I track my order?\nOnce your order ships, you'll receive a tracking number via email. You can also track your order from your account dashboard.\n\nAre your products authentic?\nAbsolutely. We source directly from brands and authorized distributors. Every product is guaranteed authentic.",
+    position: 2
+  },
+  {
+    title: "Shipping Policy",
+    body: "Shipping Information\n\nFree Standard Shipping on orders over $75.\n\nStandard Shipping: $9.99 (5-7 business days)\nExpress Shipping: $24.99 (1-2 business days)\nFree Shipping: $0 (7-10 business days, orders over $75)\n\nAll orders are processed within 1-2 business days. You will receive a confirmation email with tracking information once your order has shipped.\n\nInternational Shipping:\nWe ship to most countries worldwide. International shipping rates and delivery times vary by destination. Customs duties and taxes may apply and are the responsibility of the recipient.",
+    position: 3
+  },
+  {
+    title: "Return Policy",
+    body: "Returns & Exchanges\n\nWe want you to love your purchase. If you're not completely satisfied, we're here to help.\n\n30-Day Return Window:\nYou have 30 days from the date of delivery to initiate a return for a full refund.\n\nConditions:\n- Items must be in original, unworn condition with all tags attached\n- Items must be returned in original packaging\n- Sale items are final sale and cannot be returned\n- Personalized items cannot be returned\n\nHow to Start a Return:\n1. Log into your account\n2. Go to your order history\n3. Click 'Request Return' on the order\n4. Follow the instructions provided\n\nRefunds are processed within 5-10 business days of receiving your return.",
+    position: 4
+  }
+]
+
+pages_data.each do |data|
+  Page.find_or_create_by!(title: data[:title]) do |p|
+    p.body = data[:body]
+    p.position = data[:position]
+    p.published = true
+  end
+end
+puts "  #{Page.count} pages created"
+
+# ─── Product Relations ────────────────────────────────────────────
+if ProductRelation.count == 0
+  products_list = Product.active.to_a
+  products_list.each do |product|
+    # Add 2-3 related products from the same category
+    same_category = products_list.select { |p| p.category_id == product.category_id && p.id != product.id }
+    other_products = products_list.select { |p| p.category_id != product.category_id && p.id != product.id }
+
+    related = same_category.sample([2, same_category.size].min) + other_products.sample(1)
+    related.compact.each_with_index do |rel, i|
+      ProductRelation.find_or_create_by!(product: product, related_product: rel) do |pr|
+        pr.relation_type = i == 0 ? :related : [:cross_sell, :up_sell].sample
+        pr.position = i
+      end
+    end
+  end
+  puts "  #{ProductRelation.count} product relations created"
+end
+
+# ─── Promotions ───────────────────────────────────────────────────
+Promotion.find_or_create_by!(name: "Free Shipping Over $75") do |p|
+  p.promotion_type = :free_shipping
+  p.conditions = { minimum_total_cents: 7500 }
+  p.active = true
+  p.auto_apply = true
+end
+
+Promotion.find_or_create_by!(name: "Summer Category Sale") do |p|
+  p.promotion_type = :percentage_off_category
+  clothing = Category.find_by(name: "Clothing")
+  p.conditions = { percentage: 15, category_id: clothing&.id }
+  p.active = false
+  p.auto_apply = false
+  p.starts_at = 1.month.from_now
+  p.expires_at = 3.months.from_now
+end
+puts "  #{Promotion.count} promotions created"
+
+# ─── Store Config: Currency ───────────────────────────────────────
+StoreConfig.set("store_currency", "USD")
+StoreConfig.set("supported_currencies", "USD,EUR,GBP,CAD,AUD,JPY")
+
 puts ""
 puts "Seeding complete!"
 puts "  Products: #{Product.count}"
@@ -574,3 +654,6 @@ puts "  Categories: #{Category.count} (#{Category.roots.count} root)"
 puts "  Variants: #{Variant.count}"
 puts "  Orders: #{Order.count}"
 puts "  Users: #{User.count} (#{User.customer.count} customers)"
+puts "  Pages: #{Page.count}"
+puts "  Product Relations: #{ProductRelation.count}"
+puts "  Promotions: #{Promotion.count}"

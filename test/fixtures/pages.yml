@@ -1,0 +1,27 @@
+about_us:
+  title: About Us
+  slug: about-us
+  body: We are a luxury e-commerce brand dedicated to quality.
+  published: true
+  position: 0
+
+contact:
+  title: Contact
+  slug: contact
+  body: Get in touch with us at hello@railsycommerce.com.
+  published: true
+  position: 1
+
+faq:
+  title: FAQ
+  slug: faq
+  body: Frequently asked questions and answers.
+  published: true
+  position: 2
+
+unpublished_page:
+  title: Coming Soon
+  slug: coming-soon
+  body: This page is not yet published.
+  published: false
+  position: 99

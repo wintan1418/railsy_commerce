@@ -28,7 +28,10 @@ Rails.application.routes.draw do
   # Customer Account
   namespace :account do
     root "orders#index"
-    resources :orders, only: %i[index show]
+    resources :orders, only: %i[index show] do
+      resources :returns, only: %i[new create]
+    end
+    resources :returns, only: %i[show]
     resources :addresses
     resource :profile, only: %i[show update], controller: "profile"
     resource :wishlist, only: %i[show] do
@@ -44,7 +47,22 @@ Rails.application.routes.draw do
     resources :categories
     resources :reviews, only: %i[index update destroy]
     resources :discounts
+    resources :returns, only: %i[index show update]
+    resources :pages
     resource :settings, only: %i[show update], controller: "settings"
+  end
+
+  # API
+  namespace :api do
+    namespace :v1 do
+      resources :products, only: [:index, :show]
+      resources :orders, only: [:index, :show]
+      resource :cart, only: [:show], controller: "cart" do
+        post :add_item
+        patch :update_item
+        delete :remove_item
+      end
+    end
   end
 
   # Webhooks
@@ -54,4 +72,7 @@ Rails.application.routes.draw do
 
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
+
+  # Static pages (catch-all, must be last)
+  get "/:slug", to: "pages#show", as: :page
 end

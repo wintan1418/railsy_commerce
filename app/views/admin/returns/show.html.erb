@@ -1,0 +1,93 @@
+<div class="flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Return #<%= @return_request.id %></h1>
+    <p class="mt-1 text-sm text-gray-500">Order: <%= link_to @return_request.order.number, admin_order_path(@return_request.order), class: "text-indigo-600 hover:text-indigo-500" %></p>
+  </div>
+  <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase
+    <%= case @return_request.status
+        when 'requested' then 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-600/20'
+        when 'approved' then 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20'
+        when 'received' then 'bg-purple-50 text-purple-700 ring-1 ring-purple-600/20'
+        when 'refunded' then 'bg-green-50 text-green-700 ring-1 ring-green-600/20'
+        when 'rejected' then 'bg-red-50 text-red-700 ring-1 ring-red-600/20'
+        end %>">
+    <%= @return_request.status.capitalize %>
+  </span>
+</div>
+
+<div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+  <!-- Return Details -->
+  <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+    <h3 class="text-sm font-semibold text-gray-900">Details</h3>
+    <dl class="mt-4 space-y-3 text-sm">
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Customer</dt>
+        <dd class="font-medium text-gray-900"><%= @return_request.user&.full_name || "Guest" %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Submitted</dt>
+        <dd class="font-medium text-gray-900"><%= @return_request.created_at.strftime("%b %d, %Y %l:%M %p") %></dd>
+      </div>
+      <div class="flex justify-between">
+        <dt class="text-gray-500">Refund Amount</dt>
+        <dd class="font-medium text-gray-900"><%= @return_request.refund_amount_cents.present? ? @return_request.refund_amount.format : "Not set" %></dd>
+      </div>
+    </dl>
+
+    <div class="mt-4 border-t border-gray-100 pt-4">
+      <h4 class="text-sm font-semibold text-gray-900">Reason</h4>
+      <p class="mt-2 text-sm text-gray-600"><%= @return_request.reason %></p>
+    </div>
+
+    <% if @return_request.notes.present? %>
+      <div class="mt-4 border-t border-gray-100 pt-4">
+        <h4 class="text-sm font-semibold text-gray-900">Notes</h4>
+        <p class="mt-2 text-sm text-gray-600"><%= @return_request.notes %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Update Form -->
+  <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+    <h3 class="text-sm font-semibold text-gray-900">Update Return</h3>
+    <%= form_with model: @return_request, url: admin_return_path(@return_request), method: :patch, class: "mt-4 space-y-4" do |form| %>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Status</label>
+        <%= form.select :status, ReturnRequest.statuses.keys.map { |s| [s.capitalize, s] },
+          {}, class: "mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Refund Amount (cents)</label>
+        <%= form.number_field :refund_amount_cents, class: "mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm", min: 0 %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Notes</label>
+        <%= form.text_area :notes, rows: 3, class: "mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" %>
+      </div>
+
+      <%= form.submit "Update Return", class: "w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors duration-200 cursor-pointer" %>
+    <% end %>
+  </div>
+</div>
+
+<!-- Return Items -->
+<% if @return_items.any? %>
+  <div class="mt-6 rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+    <div class="px-6 py-4 border-b border-gray-100">
+      <h3 class="text-sm font-semibold text-gray-900">Return Items</h3>
+    </div>
+    <div class="divide-y divide-gray-100">
+      <% @return_items.each do |item| %>
+        <div class="flex items-center justify-between px-6 py-4">
+          <div>
+            <p class="text-sm font-medium text-gray-900"><%= item.order_item.variant.product.name %></p>
+            <p class="text-xs text-gray-500">SKU: <%= item.order_item.variant.sku %> | Qty: <%= item.quantity %></p>
+          </div>
+          <p class="text-sm font-medium text-gray-900"><%= item.order_item.total.format %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

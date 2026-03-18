@@ -14,11 +14,7 @@ module Storefront
       @variants = @product.variants.includes(:option_values, :stock_items).ordered
       @master_variant = @product.master_variant
       @reviews = @product.reviews.approved.recent.includes(:user).limit(10)
-      @related_products = Product.active
-        .where(category_id: @product.category_id)
-        .where.not(id: @product.id)
-        .includes(variants: :stock_items)
-        .limit(4)
+      @related_products = @product.related(limit: 4)
     end
   end
 end

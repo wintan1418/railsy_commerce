@@ -10,6 +10,8 @@ class Product < ApplicationRecord
   has_many :option_types, through: :product_option_types
 
   has_many :reviews, dependent: :destroy
+  has_many :product_relations, dependent: :destroy
+  has_many :related_products, through: :product_relations
   has_many_attached :images
 
   enum :status, { draft: "draft", active: "active", archived: "archived" }
@@ -48,5 +50,17 @@ class Product < ApplicationRecord
 
   def reviews_count
     reviews.approved.count
+  end
+
+  def related(limit: 4)
+    explicit = related_products.active.includes(:category, variants: :stock_items).limit(limit)
+    return explicit if explicit.any?
+
+    # Fallback to same-category products
+    Product.active
+      .where(category_id: category_id)
+      .where.not(id: id)
+      .includes(:category, variants: :stock_items)
+      .limit(limit)
   end
 end

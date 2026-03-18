@@ -1,0 +1,56 @@
+<div class="mx-auto max-w-3xl px-6 py-12">
+  <nav class="flex items-center gap-2 text-sm mb-8" style="color: var(--mid-gray);">
+    <%= link_to "My Orders", account_orders_path, class: "transition-colors duration-200 hover:text-[var(--gold)]" %>
+    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+    <span style="color: var(--black);">Return #<%= @return_request.id %></span>
+  </nav>
+
+  <div class="flex items-start justify-between">
+    <div>
+      <h1 class="font-display text-3xl font-light" style="color: var(--black);">Return Request</h1>
+      <p class="mt-2 text-sm" style="color: var(--mid-gray);">Order <%= @return_request.order.number %></p>
+    </div>
+    <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider
+      <%= case @return_request.status
+          when 'requested' then 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-600/20'
+          when 'approved' then 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20'
+          when 'received' then 'bg-purple-50 text-purple-700 ring-1 ring-purple-600/20'
+          when 'refunded' then 'bg-green-50 text-green-700 ring-1 ring-green-600/20'
+          when 'rejected' then 'bg-red-50 text-red-700 ring-1 ring-red-600/20'
+          end %>">
+      <%= @return_request.status %>
+    </span>
+  </div>
+
+  <div class="mt-8 rounded-lg border p-6" style="border-color: var(--cream);">
+    <h3 class="text-sm font-semibold" style="color: var(--black);">Reason</h3>
+    <p class="mt-2 text-sm" style="color: var(--text-body);"><%= @return_request.reason %></p>
+
+    <% if @return_request.notes.present? %>
+      <h3 class="mt-4 text-sm font-semibold" style="color: var(--black);">Notes</h3>
+      <p class="mt-2 text-sm" style="color: var(--text-body);"><%= @return_request.notes %></p>
+    <% end %>
+
+    <% if @return_request.refund_amount_cents.present? %>
+      <h3 class="mt-4 text-sm font-semibold" style="color: var(--black);">Refund Amount</h3>
+      <p class="mt-2 font-display text-xl font-semibold" style="color: var(--gold);"><%= @return_request.refund_amount.format %></p>
+    <% end %>
+  </div>
+
+  <% if @return_items.any? %>
+    <div class="mt-6 space-y-3">
+      <h3 class="text-sm font-semibold" style="color: var(--black);">Items</h3>
+      <% @return_items.each do |item| %>
+        <div class="flex justify-between rounded-lg border p-4" style="border-color: var(--cream);">
+          <div>
+            <p class="text-sm font-medium" style="color: var(--black);"><%= item.order_item.variant.product.name %></p>
+            <p class="text-xs" style="color: var(--mid-gray);">Qty: <%= item.quantity %></p>
+          </div>
+          <p class="text-sm font-medium" style="color: var(--black);"><%= item.order_item.total.format %></p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <p class="mt-8 text-xs" style="color: var(--mid-gray);">Submitted on <%= @return_request.created_at.strftime("%B %d, %Y at %l:%M %p") %></p>
+</div>

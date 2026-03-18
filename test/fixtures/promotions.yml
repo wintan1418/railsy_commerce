@@ -1,0 +1,20 @@
+free_shipping_promo:
+  name: Free Shipping Over $50
+  promotion_type: free_shipping
+  conditions: '{"minimum_total_cents": 5000}'
+  active: true
+  auto_apply: true
+
+buy_two_get_one:
+  name: Buy 2 Get 1 Free
+  promotion_type: buy_x_get_y
+  conditions: '{"buy_quantity": 2}'
+  active: true
+  auto_apply: false
+
+inactive_promo:
+  name: Expired Sale
+  promotion_type: percentage_off_category
+  conditions: '{"percentage": 10, "category_id": 1}'
+  active: false
+  auto_apply: false

@@ -1,0 +1,5 @@
+tshirt_to_laptop:
+  product: tshirt
+  related_product: laptop
+  relation_type: related
+  position: 0

@@ -1,0 +1,65 @@
+<div class="flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Returns</h1>
+    <p class="mt-1 text-sm text-gray-500"><%= @return_requests.count %> total returns</p>
+  </div>
+</div>
+
+<div class="mt-6 flex flex-wrap gap-2">
+  <%= link_to "All", admin_returns_path,
+    class: "rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 #{params[:status].blank? ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50'}" %>
+  <% %w[requested approved received refunded rejected].each do |status| %>
+    <%= link_to status.capitalize, admin_returns_path(status: status),
+      class: "rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 #{params[:status] == status ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50'}" %>
+  <% end %>
+</div>
+
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-100">
+      <thead>
+        <tr class="bg-gray-50/50">
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">ID</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Order</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Customer</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Reason</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date</th>
+          <th class="px-6 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @return_requests.each do |rr| %>
+          <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+            <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-900">#<%= rr.id %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= rr.order.number %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= rr.user&.full_name || "Guest" %></td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
+                <%= case rr.status
+                    when 'requested' then 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-600/20'
+                    when 'approved' then 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20'
+                    when 'received' then 'bg-purple-50 text-purple-700 ring-1 ring-purple-600/20'
+                    when 'refunded' then 'bg-green-50 text-green-700 ring-1 ring-green-600/20'
+                    when 'rejected' then 'bg-red-50 text-red-700 ring-1 ring-red-600/20'
+                    end %>">
+                <%= rr.status.capitalize %>
+              </span>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate"><%= rr.reason %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= rr.created_at.strftime("%b %d, %Y") %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-right">
+              <%= link_to "View", admin_return_path(rr),
+                class: "text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200" %>
+            </td>
+          </tr>
+        <% end %>
+        <% if @return_requests.empty? %>
+          <tr>
+            <td colspan="7" class="px-6 py-12 text-center text-sm text-gray-400">No return requests yet.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

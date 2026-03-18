@@ -1,0 +1,7 @@
+return_item_one:
+  return_id: 1
+  order_item: tshirt_order_item
+  quantity: 1
+  reason: Does not fit
+  created_at: <%= Time.current.to_formatted_s(:db) %>
+  updated_at: <%= Time.current.to_formatted_s(:db) %>

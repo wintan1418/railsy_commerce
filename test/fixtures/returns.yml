@@ -1,0 +1,23 @@
+<% now = Time.current.to_formatted_s(:db) %>
+
+requested_return:
+  id: 1
+  order_id: <%= ActiveRecord::FixtureSet.identify(:pending_order) %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:customer) %>
+  status: requested
+  reason: Item does not fit properly
+  notes: Would like to exchange for a larger size
+  currency: USD
+  created_at: <%= now %>
+  updated_at: <%= now %>
+
+approved_return:
+  id: 2
+  order_id: <%= ActiveRecord::FixtureSet.identify(:confirmed_order) %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:customer) %>
+  status: approved
+  reason: Received wrong color
+  refund_amount_cents: 5998
+  currency: USD
+  created_at: <%= now %>
+  updated_at: <%= now %>

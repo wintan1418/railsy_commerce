@@ -10,4 +10,10 @@ class PagesController < ApplicationController
       Product.active.where(category_id: [ cat.id ] + child_ids).count
     }
   end
+
+  def show
+    @page = Page.published.friendly.find(params[:slug])
+  rescue ActiveRecord::RecordNotFound
+    head :not_found
+  end
 end

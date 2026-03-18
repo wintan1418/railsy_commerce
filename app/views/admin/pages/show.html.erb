@@ -1,0 +1,25 @@
+<div class="flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900"><%= @page.title %></h1>
+    <p class="mt-1 text-sm text-gray-500">/<%= @page.slug %></p>
+  </div>
+  <div class="flex gap-3">
+    <%= link_to "Edit", edit_admin_page_path(@page),
+      class: "rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors duration-200" %>
+    <%= link_to "View on site", page_path(slug: @page.slug), target: "_blank",
+      class: "rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50 transition-colors duration-200" %>
+  </div>
+</div>
+
+<div class="mt-6 rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+  <div class="flex gap-4 mb-4">
+    <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
+      <%= @page.published? ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20' : 'bg-gray-50 text-gray-600 ring-1 ring-gray-500/20' %>">
+      <%= @page.published? ? "Published" : "Draft" %>
+    </span>
+    <span class="text-xs text-gray-400">Position: <%= @page.position %></span>
+  </div>
+  <div class="prose prose-sm max-w-none">
+    <%= simple_format @page.body %>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_17_152653) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_18_171405) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -185,6 +185,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_152653) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
+  create_table "pages", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "slug", null: false
+    t.text "body"
+    t.boolean "published", default: true
+    t.integer "position", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_pages_on_slug", unique: true
+  end
+
   create_table "payments", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.integer "amount_cents", null: false
@@ -211,6 +222,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_152653) do
     t.index ["product_id"], name: "index_product_option_types_on_product_id"
   end
 
+  create_table "product_relations", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "related_product_id", null: false
+    t.string "relation_type", default: "related", null: false
+    t.integer "position", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id", "related_product_id"], name: "index_product_relations_on_product_id_and_related_product_id", unique: true
+    t.index ["product_id"], name: "index_product_relations_on_product_id"
+    t.index ["related_product_id"], name: "index_product_relations_on_related_product_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -225,6 +248,46 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_152653) do
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["slug"], name: "index_products_on_slug", unique: true
     t.index ["status"], name: "index_products_on_status"
+  end
+
+  create_table "promotions", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "promotion_type", null: false
+    t.jsonb "conditions", default: {}
+    t.boolean "active", default: true
+    t.datetime "starts_at"
+    t.datetime "expires_at"
+    t.boolean "auto_apply", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_promotions_on_active"
+    t.index ["promotion_type"], name: "index_promotions_on_promotion_type"
+  end
+
+  create_table "return_items", force: :cascade do |t|
+    t.bigint "return_id", null: false
+    t.bigint "order_item_id", null: false
+    t.integer "quantity", null: false
+    t.string "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_item_id"], name: "index_return_items_on_order_item_id"
+    t.index ["return_id"], name: "index_return_items_on_return_id"
+  end
+
+  create_table "returns", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "user_id"
+    t.string "status", default: "requested", null: false
+    t.text "reason", null: false
+    t.text "notes"
+    t.integer "refund_amount_cents"
+    t.string "currency", default: "USD"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_returns_on_order_id"
+    t.index ["status"], name: "index_returns_on_status"
+    t.index ["user_id"], name: "index_returns_on_user_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -388,7 +451,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_17_152653) do
   add_foreign_key "payments", "orders"
   add_foreign_key "product_option_types", "option_types"
   add_foreign_key "product_option_types", "products"
+  add_foreign_key "product_relations", "products"
+  add_foreign_key "product_relations", "products", column: "related_product_id"
   add_foreign_key "products", "categories"
+  add_foreign_key "return_items", "order_items"
+  add_foreign_key "return_items", "returns"
+  add_foreign_key "returns", "orders"
+  add_foreign_key "returns", "users"
   add_foreign_key "reviews", "products"
   add_foreign_key "reviews", "users"
   add_foreign_key "sessions", "users"

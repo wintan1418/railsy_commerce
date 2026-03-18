@@ -1,3 +1,7 @@
 store_name:
   key: store_name
   value: RailsyCommerce
+
+setup_complete:
+  key: setup_complete
+  value: "true"

@@ -54,7 +54,9 @@ Rails.application.routes.draw do
     resources :tax_rates
     resources :returns, only: %i[index show update]
     resources :pages
+    resource :theme, only: %i[show update], controller: "theme"
     resource :settings, only: %i[show update], controller: "settings"
+    resource :setup, only: %i[show update], controller: "setup"
   end
 
   # API
@@ -77,6 +79,9 @@ Rails.application.routes.draw do
 
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
+
+  # Hire a developer
+  get "hire", to: "pages#hire"
 
   # Static pages (catch-all, must be last)
   get "/:slug", to: "pages#show", as: :page

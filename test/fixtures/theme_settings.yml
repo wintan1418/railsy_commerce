@@ -1,0 +1,53 @@
+primary_color:
+  key: primary_color
+  value: "#c9a96e"
+  setting_type: color
+  group: colors
+  label: Primary Color
+  description: Main accent color
+  position: 0
+
+store_display_name:
+  key: store_display_name
+  value: RailsyCommerce
+  setting_type: text
+  group: general
+  label: Store Display Name
+  description: The name shown in the header
+  position: 0
+
+announcement_enabled:
+  key: announcement_enabled
+  value: "true"
+  setting_type: boolean
+  group: header
+  label: Show Announcement Bar
+  description: Toggle the announcement bar on or off
+  position: 1
+
+hero_headline:
+  key: hero_headline
+  value: "Discover What's Next"
+  setting_type: text
+  group: hero
+  label: Hero Headline
+  description: Main headline on the homepage hero section
+  position: 0
+
+instagram_url:
+  key: instagram_url
+  value: ""
+  setting_type: text
+  group: social
+  label: Instagram URL
+  description: Link to your Instagram profile
+  position: 0
+
+footer_tagline:
+  key: footer_tagline
+  value: "Quality products, exceptional service."
+  setting_type: text
+  group: footer
+  label: Footer Tagline
+  description: Text shown in the footer brand section
+  position: 0

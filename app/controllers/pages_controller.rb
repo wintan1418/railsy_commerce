@@ -16,4 +16,7 @@ class PagesController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     head :not_found
   end
+
+  def hire
+  end
 end

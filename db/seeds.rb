@@ -646,6 +646,58 @@ puts "  #{Promotion.count} promotions created"
 # ─── Store Config: Currency ───────────────────────────────────────
 StoreConfig.set("store_currency", "USD")
 StoreConfig.set("supported_currencies", "USD,EUR,GBP,CAD,AUD,JPY")
+StoreConfig.set("setup_complete", "true")
+
+# ─── Theme Settings ──────────────────────────────────────────────
+theme_settings_data = [
+  # General
+  { key: "store_display_name", value: "RailsyCommerce", setting_type: "text", group: "general", label: "Store Display Name", description: "The name shown in the header and browser tab", position: 0 },
+  { key: "tagline", value: "Premium Marketplace", setting_type: "text", group: "general", label: "Tagline", description: "Short tagline displayed below the store name", position: 1 },
+  { key: "logo_url", value: "", setting_type: "image", group: "general", label: "Logo URL", description: "URL to your store logo image (leave blank for text logo)", position: 2 },
+  { key: "favicon_url", value: "", setting_type: "image", group: "general", label: "Favicon URL", description: "URL to your favicon image", position: 3 },
+
+  # Colors
+  { key: "primary_color", value: "#c9a96e", setting_type: "color", group: "colors", label: "Primary Color", description: "Main accent color used for buttons, links, and highlights (default: gold)", position: 0 },
+  { key: "secondary_color", value: "#1a1a1a", setting_type: "color", group: "colors", label: "Secondary Color", description: "Dark color used for headings and backgrounds", position: 1 },
+  { key: "accent_color", value: "#d4b97e", setting_type: "color", group: "colors", label: "Accent Color", description: "Lighter accent for hover states and highlights", position: 2 },
+
+  # Hero
+  { key: "hero_headline", value: "Discover What's Next", setting_type: "text", group: "hero", label: "Hero Headline", description: "Main headline on the homepage hero section", position: 0 },
+  { key: "hero_subtext", value: "From cutting-edge tech to timeless home essentials — everything you need, beautifully curated and delivered to your door.", setting_type: "text", group: "hero", label: "Hero Subtext", description: "Supporting text below the headline", position: 1 },
+  { key: "hero_cta_text", value: "Shop Now", setting_type: "text", group: "hero", label: "Hero CTA Text", description: "Text for the main call-to-action button", position: 2 },
+  { key: "hero_cta_link", value: "/products", setting_type: "text", group: "hero", label: "Hero CTA Link", description: "URL the CTA button links to", position: 3 },
+  { key: "hero_bg_image", value: "", setting_type: "image", group: "hero", label: "Hero Background Image URL", description: "Custom background image for the hero section", position: 4 },
+
+  # Header
+  { key: "announcement_text", value: "Free shipping on all orders over $75 — no code needed", setting_type: "text", group: "header", label: "Announcement Bar Text", description: "Text shown in the top announcement bar", position: 0 },
+  { key: "announcement_enabled", value: "true", setting_type: "boolean", group: "header", label: "Show Announcement Bar", description: "Toggle the announcement bar on or off", position: 1 },
+  { key: "show_search_bar", value: "true", setting_type: "boolean", group: "header", label: "Show Search Bar", description: "Display the search bar in the header", position: 2 },
+
+  # Footer
+  { key: "footer_tagline", value: "Your one-stop marketplace for everything — from electronics to home essentials, fashion to fitness. Quality products, exceptional service.", setting_type: "text", group: "footer", label: "Footer Tagline", description: "Text shown in the footer brand section", position: 0 },
+  { key: "copyright_text", value: "RailsyCommerce. All rights reserved.", setting_type: "text", group: "footer", label: "Copyright Text", description: "Copyright notice in the footer", position: 1 },
+  { key: "show_newsletter", value: "true", setting_type: "boolean", group: "footer", label: "Show Newsletter Section", description: "Display the newsletter signup section on the homepage", position: 2 },
+
+  # Social Media
+  { key: "instagram_url", value: "", setting_type: "text", group: "social", label: "Instagram URL", description: "Link to your Instagram profile", position: 0 },
+  { key: "twitter_url", value: "", setting_type: "text", group: "social", label: "Twitter / X URL", description: "Link to your Twitter/X profile", position: 1 },
+  { key: "facebook_url", value: "", setting_type: "text", group: "social", label: "Facebook URL", description: "Link to your Facebook page", position: 2 },
+  { key: "tiktok_url", value: "", setting_type: "text", group: "social", label: "TikTok URL", description: "Link to your TikTok profile", position: 3 },
+  { key: "youtube_url", value: "", setting_type: "text", group: "social", label: "YouTube URL", description: "Link to your YouTube channel", position: 4 },
+  { key: "linkedin_url", value: "", setting_type: "text", group: "social", label: "LinkedIn URL", description: "Link to your LinkedIn page", position: 5 }
+]
+
+theme_settings_data.each do |data|
+  ThemeSetting.find_or_create_by!(key: data[:key]) do |ts|
+    ts.value = data[:value]
+    ts.setting_type = data[:setting_type]
+    ts.group = data[:group]
+    ts.label = data[:label]
+    ts.description = data[:description]
+    ts.position = data[:position]
+  end
+end
+puts "  #{ThemeSetting.count} theme settings created"
 
 puts ""
 puts "Seeding complete!"

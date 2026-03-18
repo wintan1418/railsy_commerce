@@ -12,15 +12,18 @@
           <span class="text-xs font-medium uppercase tracking-[0.35em]" style="color: var(--gold);">Professional Services</span>
         </div>
         <h1 class="mt-6 font-display text-4xl font-light tracking-tight text-white sm:text-5xl lg:text-6xl">
-          Need Help<br>Setting <em class="italic shimmer-gold">Up?</em>
+          Need Expert Help<br>With Your <em class="italic shimmer-gold">Store?</em>
         </h1>
         <p class="mt-6 text-base leading-relaxed" style="color: rgba(255,255,255,0.5);">
-          Whether you need a complete store setup, custom features, or ongoing support, our team of experienced developers is here to bring your vision to life.
+          Built by <strong class="text-white/80">Oluwadare Juwon</strong> — a Full-Stack Engineer & SaaS Architect with 6+ years building high-performance web applications with Ruby on Rails. I turn complex ideas into scalable products.
         </p>
-        <div class="mt-8">
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
           <a href="#services" class="inline-flex items-center gap-3 px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] transition-all duration-300 hover:opacity-90" style="background: var(--gold); color: var(--black);">
             View Services
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" /></svg>
+          </a>
+          <a href="#contact" class="inline-flex items-center justify-center gap-3 border px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] text-white transition-all duration-300 hover:bg-white/10" style="border-color: rgba(255,255,255,0.3);">
+            Get in Touch
           </a>
         </div>
       </div>
@@ -28,24 +31,47 @@
     <div class="absolute bottom-0 left-0 right-0 gold-line opacity-30"></div>
   </section>
 
+  <!-- Tech Stack Bar -->
+  <section style="background: var(--cream); border-bottom: 1px solid var(--light-gray);">
+    <div class="mx-auto max-w-7xl px-6 py-5 sm:px-8 lg:px-12">
+      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-semibold uppercase tracking-wider" style="color: var(--mid-gray);">
+        <span>Ruby on Rails</span>
+        <span style="color: var(--light-gray);">|</span>
+        <span>React</span>
+        <span style="color: var(--light-gray);">|</span>
+        <span>PostgreSQL</span>
+        <span style="color: var(--light-gray);">|</span>
+        <span>Hotwire</span>
+        <span style="color: var(--light-gray);">|</span>
+        <span>Tailwind CSS</span>
+        <span style="color: var(--light-gray);">|</span>
+        <span>Stripe</span>
+        <span style="color: var(--light-gray);">|</span>
+        <span>Docker</span>
+        <span style="color: var(--light-gray);">|</span>
+        <span>AWS</span>
+      </div>
+    </div>
+  </section>
+
   <!-- Services Section -->
   <section id="services" class="py-20 lg:py-28" style="background: var(--warm-white);">
     <div class="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
       <div class="text-center max-w-2xl mx-auto">
-        <p class="text-xs font-semibold uppercase tracking-[0.3em]" style="color: var(--gold);">What We Offer</p>
-        <h2 class="mt-3 font-display text-3xl font-light tracking-tight sm:text-4xl" style="color: var(--black);">Our <em class="italic">Services</em></h2>
-        <p class="mt-4 text-sm leading-relaxed" style="color: var(--mid-gray);">From initial setup to ongoing maintenance, we offer comprehensive e-commerce solutions.</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.3em]" style="color: var(--gold);">What I Offer</p>
+        <h2 class="mt-3 font-display text-3xl font-light tracking-tight sm:text-4xl" style="color: var(--black);">Professional <em class="italic">Services</em></h2>
+        <p class="mt-4 text-sm leading-relaxed" style="color: var(--mid-gray);">From initial setup to custom feature development — I handle everything so you can focus on growing your business.</p>
         <div class="gold-line mt-6 mx-auto w-20 opacity-40"></div>
       </div>
 
       <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <% [
-          { title: "Store Setup & Configuration", price: "$299", period: "one-time", description: "Complete store configuration including products, categories, payment integration, shipping methods, and email setup. We'll get your store ready to accept orders.", icon: "M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016A3.001 3.001 0 0021 9.349m-18 0a2.999 2.999 0 00.75-1.974V5.25A2.25 2.25 0 016 3h12a2.25 2.25 0 012.25 2.25v2.125a3 3 0 01-.75 1.974" },
-          { title: "Custom Feature Development", price: "$149", period: "/hour", description: "Need something specific? Custom payment gateways, third-party integrations, unique checkout flows, loyalty programs, subscription systems, and more.", icon: "M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" },
-          { title: "Theme Customization", price: "$199", period: "one-time", description: "Custom color schemes, typography, layout changes, and brand-specific design updates to make your store uniquely yours.", icon: "M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" },
-          { title: "Deployment & DevOps", price: "$399", period: "one-time", description: "Production deployment to your preferred hosting platform (Kamal, Railway, Render, DigitalOcean, or Heroku). Includes SSL, database setup, and monitoring.", icon: "M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" },
-          { title: "Ongoing Maintenance", price: "$99", period: "/month", description: "Monthly maintenance plan including security updates, bug fixes, performance monitoring, backups, and up to 2 hours of minor changes per month.", icon: "M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l5.653-4.655m0 0a3.75 3.75 0 00-1.453-.853l-3.15-1.057a2.25 2.25 0 01-1.442-1.442l-1.057-3.15a.75.75 0 01.242-.826l1.862-1.396a.75.75 0 011.065.114l.974 1.195a2.25 2.25 0 001.654.88l3.274.138a.75.75 0 01.597.35l.974 1.623a.75.75 0 01-.136.98L15.17 11.42z" },
-          { title: "Training & Consultation", price: "$89", period: "/hour", description: "One-on-one sessions to teach you how to manage your store, add products, process orders, run promotions, and make the most of every feature.", icon: "M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" }
+          { title: "Store Setup & Configuration", price: "$299", period: "one-time", description: "Complete store configuration: products, categories, Stripe/Paystack payment integration, shipping, tax rates, email notifications, and domain setup. Your store live and taking orders in 48 hours.", icon: "M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016A3.001 3.001 0 0021 9.349m-18 0a2.999 2.999 0 00.75-1.974V5.25A2.25 2.25 0 016 3h12a2.25 2.25 0 012.25 2.25v2.125a3 3 0 01-.75 1.974" },
+          { title: "Custom Feature Development", price: "$149", period: "/hour", description: "Need something unique? Custom payment gateways, third-party API integrations, subscription systems, loyalty programs, multi-vendor marketplace features, or AI-powered recommendations.", icon: "M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" },
+          { title: "Theme & Brand Customization", price: "$199", period: "one-time", description: "Custom color schemes, typography, layouts, and brand-specific design to make your store uniquely yours. Mobile-responsive, fast-loading, and conversion-optimized.", icon: "M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" },
+          { title: "Deployment & DevOps", price: "$399", period: "one-time", description: "Production deployment to Railway, Render, DigitalOcean, AWS, or your own server with Kamal. Includes SSL, database optimization, CDN setup, monitoring, and CI/CD pipeline.", icon: "M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" },
+          { title: "Ongoing Maintenance", price: "$99", period: "/month", description: "Security updates, bug fixes, performance monitoring, daily backups, and up to 2 hours of minor feature changes per month. Priority response time on issues.", icon: "M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l5.653-4.655m0 0a3.75 3.75 0 00-1.453-.853l-3.15-1.057a2.25 2.25 0 01-1.442-1.442l-1.057-3.15a.75.75 0 01.242-.826l1.862-1.396a.75.75 0 011.065.114l.974 1.195a2.25 2.25 0 001.654.88l3.274.138a.75.75 0 01.597.35l.974 1.623a.75.75 0 01-.136.98L15.17 11.42z" },
+          { title: "Training & Consultation", price: "$89", period: "/hour", description: "One-on-one sessions to teach you how to manage your store, add products, process orders, run promotions, and maximize every feature. Remote or in-person available.", icon: "M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" }
         ].each do |service| %>
           <div class="group relative overflow-hidden rounded-2xl bg-white p-8 ring-1 ring-gray-900/5 transition-all duration-300 hover:shadow-lg hover:ring-gray-900/10">
             <div class="flex h-12 w-12 items-center justify-center rounded-xl" style="background: rgba(201,169,110,0.1);">
@@ -76,50 +102,93 @@
     <div class="absolute bottom-0 left-0 right-0 gold-line opacity-25"></div>
 
     <div class="relative z-10 mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
-      <div class="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
+      <div class="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-20">
         <div class="flex-1">
-          <p class="text-xs font-semibold uppercase tracking-[0.3em]" style="color: var(--gold);">About</p>
-          <h2 class="mt-3 font-display text-3xl font-light tracking-tight text-white sm:text-4xl">Meet Your <em class="italic" style="color: var(--gold);">Developer</em></h2>
-          <p class="mt-6 text-sm leading-relaxed" style="color: rgba(255,255,255,0.5);">
-            With years of experience building e-commerce solutions on Ruby on Rails, I specialize in creating fast, reliable, and beautiful online stores. I've helped dozens of businesses launch and scale their online presence.
+          <p class="text-xs font-semibold uppercase tracking-[0.3em]" style="color: var(--gold);">The Creator</p>
+          <h2 class="mt-3 font-display text-3xl font-light tracking-tight text-white sm:text-4xl">Oluwadare <em class="italic" style="color: var(--gold);">Juwon</em></h2>
+          <p class="mt-2 text-sm font-medium" style="color: var(--gold);">Full-Stack Engineer & SaaS Architect</p>
+
+          <p class="mt-6 text-sm leading-relaxed" style="color: rgba(255,255,255,0.55);">
+            I build high-performance web applications with Ruby on Rails and React, specializing in turning complex ideas into scalable products. With 6+ years of experience, I've worked with companies like <strong class="text-white/70">Agent.inc</strong> and <strong class="text-white/70">88stacks</strong>, building robust API backends handling thousands of requests and shipping production-grade SaaS products.
           </p>
-          <p class="mt-4 text-sm leading-relaxed" style="color: rgba(255,255,255,0.5);">
-            Every project gets my full attention. I believe in clean code, thorough testing, and delivering on time. Your success is my success.
+          <p class="mt-4 text-sm leading-relaxed" style="color: rgba(255,255,255,0.55);">
+            Currently focused on bridging traditional web architecture with AI-driven solutions. RailsyCommerce is my vision for what modern e-commerce should be — clean, fast, and simple to operate.
           </p>
-          <div class="mt-8 grid grid-cols-3 gap-6">
+
+          <!-- Stats -->
+          <div class="mt-8 grid grid-cols-4 gap-6">
+            <div>
+              <p class="font-display text-2xl font-semibold" style="color: var(--gold);">6+</p>
+              <p class="text-[11px] uppercase tracking-wider" style="color: rgba(255,255,255,0.3);">Years Exp.</p>
+            </div>
             <div>
               <p class="font-display text-2xl font-semibold" style="color: var(--gold);">50+</p>
               <p class="text-[11px] uppercase tracking-wider" style="color: rgba(255,255,255,0.3);">Projects</p>
             </div>
             <div>
-              <p class="font-display text-2xl font-semibold" style="color: var(--gold);">8+</p>
-              <p class="text-[11px] uppercase tracking-wider" style="color: rgba(255,255,255,0.3);">Years Exp.</p>
+              <p class="font-display text-2xl font-semibold" style="color: var(--gold);">95%</p>
+              <p class="text-[11px] uppercase tracking-wider" style="color: rgba(255,255,255,0.3);">Rails</p>
             </div>
             <div>
               <p class="font-display text-2xl font-semibold" style="color: var(--gold);">100%</p>
               <p class="text-[11px] uppercase tracking-wider" style="color: rgba(255,255,255,0.3);">Satisfaction</p>
             </div>
           </div>
+
+          <!-- Social Links -->
+          <div class="mt-8 flex items-center gap-4">
+            <a href="https://github.com/wintan1418" target="_blank" class="flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 hover:border-[var(--gold)]" style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5);" title="GitHub">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            <a href="https://linkedin.com/in/oluwintan" target="_blank" class="flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 hover:border-[var(--gold)]" style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5);" title="LinkedIn">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a href="https://twitter.com/juwonoluwadare" target="_blank" class="flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 hover:border-[var(--gold)]" style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5);" title="Twitter/X">
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://oluwintan.com" target="_blank" class="flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 hover:border-[var(--gold)]" style="border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5);" title="Portfolio">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+            </a>
+          </div>
         </div>
+
+        <!-- Profile Visual -->
         <div class="flex-shrink-0">
-          <div class="h-64 w-64 rounded-2xl" style="background: linear-gradient(135deg, rgba(201,169,110,0.15) 0%, rgba(201,169,110,0.05) 100%); border: 1px solid rgba(201,169,110,0.2);">
-            <div class="flex h-full w-full items-center justify-center">
-              <div class="text-center">
-                <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full" style="background: rgba(201,169,110,0.15);">
-                  <svg class="h-10 w-10" style="color: var(--gold);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                  </svg>
-                </div>
-                <p class="mt-3 text-xs" style="color: rgba(255,255,255,0.3);">Add your photo here</p>
+          <div class="relative h-72 w-72 rounded-2xl overflow-hidden" style="border: 1px solid rgba(201,169,110,0.2);">
+            <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(201,169,110,0.15) 0%, rgba(201,169,110,0.05) 100%);"></div>
+            <div class="relative flex h-full w-full flex-col items-center justify-center text-center p-6">
+              <div class="flex h-24 w-24 items-center justify-center rounded-full text-3xl font-bold" style="background: var(--gold); color: var(--black);">
+                JO
               </div>
+              <p class="mt-4 font-display text-lg font-semibold text-white">Juwon Oluwadare</p>
+              <p class="mt-1 text-xs uppercase tracking-wider" style="color: var(--gold);">Full-Stack Engineer</p>
+              <p class="mt-1 text-xs" style="color: rgba(255,255,255,0.3);">Ondo, Nigeria</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Portfolio Highlights -->
+      <div class="mt-20">
+        <p class="text-xs font-semibold uppercase tracking-[0.25em] mb-8" style="color: var(--gold);">Notable Projects</p>
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <% [
+            { name: "RailsyCommerce", desc: "E-commerce template kit" },
+            { name: "RezumFit", desc: "AI-powered resume builder" },
+            { name: "Rosterflow", desc: "Event planning platform" },
+            { name: "Agent.inc", desc: "Senior Rails Developer" }
+          ].each do |project| %>
+            <div class="rounded-xl p-5 transition-all duration-300 hover:bg-white/5" style="border: 1px solid rgba(255,255,255,0.08);">
+              <p class="font-display text-sm font-semibold text-white"><%= project[:name] %></p>
+              <p class="mt-1 text-xs" style="color: rgba(255,255,255,0.35);"><%= project[:desc] %></p>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials Placeholder -->
+  <!-- Testimonials -->
   <section class="py-20 lg:py-28" style="background: linear-gradient(180deg, var(--cream) 0%, var(--warm-white) 100%);">
     <div class="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
       <div class="text-center max-w-2xl mx-auto">
@@ -130,9 +199,9 @@
 
       <div class="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         <% [
-          { name: "Sarah M.", role: "Boutique Owner", quote: "The setup was incredibly smooth. My store was live and taking orders within 48 hours. The attention to detail is remarkable." },
-          { name: "James K.", role: "E-commerce Founder", quote: "Custom features were delivered exactly as specified and on time. The code quality is excellent and easy to maintain." },
-          { name: "Maria L.", role: "Small Business Owner", quote: "The ongoing maintenance plan gives me peace of mind. I can focus on my business while knowing my store is in good hands." }
+          { name: "Alex Thompson", role: "Startup Founder", quote: "Exceptional developer who delivered ahead of schedule. Juwon understood our requirements perfectly and built a solution that exceeded expectations. His Rails expertise is top-notch." },
+          { name: "Sarah Chen", role: "CTO, SaaS Company", quote: "Built a robust API backend handling thousands of requests seamlessly. Clean code, well-tested, and properly documented. One of the best Rails developers I've worked with." },
+          { name: "Michael Okonkwo", role: "Engineering Lead", quote: "Impressive Rails knowledge and genuine willingness to mentor junior developers on the team. Juwon doesn't just write code — he elevates the entire engineering culture." }
         ].each do |testimonial| %>
           <div class="rounded-2xl bg-white p-8 ring-1 ring-gray-900/5">
             <div class="flex gap-1">
@@ -145,7 +214,7 @@
             <p class="mt-4 text-sm leading-relaxed" style="color: var(--mid-gray);"><%= testimonial[:quote] %></p>
             <div class="mt-6 flex items-center gap-3">
               <div class="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold" style="background: rgba(201,169,110,0.15); color: var(--gold);">
-                <%= testimonial[:name][0] %>
+                <%= testimonial[:name].split(" ").map(&:first).join %>
               </div>
               <div>
                 <p class="text-sm font-semibold" style="color: var(--black);"><%= testimonial[:name] %></p>
@@ -169,11 +238,11 @@
       <div class="space-y-4">
         <% [
           { q: "How long does a typical store setup take?", a: "A standard store setup takes 2-3 business days. This includes product configuration, payment integration, shipping setup, and basic customization. More complex setups with custom features may take 1-2 weeks." },
-          { q: "What's included in the setup fee?", a: "The setup fee covers complete store configuration: adding your products and categories, setting up Stripe or other payment gateways, configuring shipping methods and tax rates, email notification setup, and basic theme customization to match your brand." },
-          { q: "Do you offer refunds?", a: "Yes, if we haven't started working on your project, you can get a full refund. Once work has begun, we'll charge only for the time spent. We believe in fair, transparent pricing." },
-          { q: "Can you work with my existing design?", a: "Absolutely! We can customize the theme to match your brand guidelines, including colors, fonts, layout changes, and custom components. Just send us your design files or brand guide." },
-          { q: "What about hosting?", a: "We can deploy your store to any major hosting platform: Railway, Render, DigitalOcean, Heroku, or your own server with Kamal. Hosting costs are separate and depend on the platform you choose (typically $7-25/month)." },
-          { q: "Do you provide ongoing support?", a: "Yes! Our monthly maintenance plan ($99/mo) includes security updates, bug fixes, performance monitoring, and up to 2 hours of minor changes. For larger changes, we bill at our hourly rate." }
+          { q: "What's included in the setup fee?", a: "The $299 setup fee covers: adding your products and categories, setting up Stripe or Paystack payments, configuring shipping methods and tax rates, email notification setup, basic theme customization to match your brand, and deployment to your hosting platform." },
+          { q: "Which payment gateways do you support?", a: "Out of the box, RailsyCommerce supports Stripe (international) and Paystack (Africa). I can integrate any additional payment gateway as a custom feature — PayPal, Flutterwave, Razorpay, Square, and more." },
+          { q: "Can you work with my existing design?", a: "Absolutely. I can customize the theme to match your brand guidelines including colors, fonts, layout changes, and custom components. Just send your design files, brand guide, or examples of sites you like." },
+          { q: "What about hosting costs?", a: "Hosting is separate. I can deploy to Railway ($5-20/mo), Render ($7-25/mo), DigitalOcean ($12-24/mo), Heroku ($7-25/mo), or your own server. I'll recommend the best option for your budget and traffic." },
+          { q: "Do you offer refunds?", a: "If I haven't started your project, full refund. Once work begins, I charge only for time spent. I believe in transparent, fair pricing — no surprises." }
         ].each do |faq| %>
           <div class="rounded-xl bg-white p-6 ring-1 ring-gray-900/5">
             <h3 class="text-sm font-semibold" style="color: var(--black);"><%= faq[:q] %></h3>
@@ -190,58 +259,93 @@
     <div class="absolute top-0 left-0 right-0 gold-line opacity-25"></div>
     <div class="absolute top-0 right-0 w-[500px] h-[500px] opacity-[0.06]" style="background: radial-gradient(circle, var(--gold) 0%, transparent 60%);"></div>
 
-    <div class="relative z-10 mx-auto max-w-3xl px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
-      <div class="text-center mb-12">
-        <p class="text-xs font-semibold uppercase tracking-[0.3em]" style="color: var(--gold);">Get in Touch</p>
-        <h2 class="mt-3 font-display text-3xl font-light tracking-tight text-white sm:text-4xl">Start Your <em class="italic" style="color: var(--gold);">Project</em></h2>
-        <p class="mt-4 text-sm leading-relaxed" style="color: rgba(255,255,255,0.4);">Tell us about your project and we'll get back to you within 24 hours.</p>
+    <div class="relative z-10 mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-12 lg:py-28">
+      <div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
+        <!-- Left: Contact Info -->
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.3em]" style="color: var(--gold);">Get in Touch</p>
+          <h2 class="mt-3 font-display text-3xl font-light tracking-tight text-white sm:text-4xl">Let's Build Your <em class="italic" style="color: var(--gold);">Store</em></h2>
+          <p class="mt-4 text-sm leading-relaxed" style="color: rgba(255,255,255,0.4);">Ready to launch? Send me a message and I'll get back to you within 24 hours.</p>
+
+          <div class="mt-10 space-y-6">
+            <div class="flex items-center gap-4">
+              <div class="flex h-10 w-10 items-center justify-center rounded-full" style="background: rgba(201,169,110,0.1);">
+                <svg class="h-5 w-5" style="color: var(--gold);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-wider" style="color: rgba(255,255,255,0.3);">Email</p>
+                <a href="mailto:wintan1418@gmail.com" class="text-sm text-white hover:underline">wintan1418@gmail.com</a>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="flex h-10 w-10 items-center justify-center rounded-full" style="background: rgba(201,169,110,0.1);">
+                <svg class="h-5 w-5" style="color: var(--gold);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-wider" style="color: rgba(255,255,255,0.3);">WhatsApp</p>
+                <a href="https://wa.me/2348145804206" target="_blank" class="text-sm text-white hover:underline">+234 814 580 4206</a>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="flex h-10 w-10 items-center justify-center rounded-full" style="background: rgba(201,169,110,0.1);">
+                <svg class="h-5 w-5" style="color: var(--gold);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-wider" style="color: rgba(255,255,255,0.3);">Portfolio</p>
+                <a href="https://oluwintan.com" target="_blank" class="text-sm text-white hover:underline">oluwintan.com</a>
+              </div>
+            </div>
+          </div>
+
+          <p class="mt-10 text-xs italic" style="color: rgba(255,255,255,0.2);">Available for full-time employment, contracts, and consultations.</p>
+        </div>
+
+        <!-- Right: Contact Form -->
+        <div>
+          <form action="mailto:wintan1418@gmail.com" method="post" enctype="text/plain" class="space-y-5">
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div>
+                <label class="block text-sm font-medium" style="color: rgba(255,255,255,0.6);">Your Name</label>
+                <input type="text" name="name" required placeholder="Your name"
+                  class="mt-1.5 block w-full rounded-lg border px-4 py-3 text-sm text-white placeholder:text-white/25 focus:outline-none transition-colors"
+                  style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1);">
+              </div>
+              <div>
+                <label class="block text-sm font-medium" style="color: rgba(255,255,255,0.6);">Your Email</label>
+                <input type="email" name="email" required placeholder="you@example.com"
+                  class="mt-1.5 block w-full rounded-lg border px-4 py-3 text-sm text-white placeholder:text-white/25 focus:outline-none transition-colors"
+                  style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1);">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium" style="color: rgba(255,255,255,0.6);">Service Interested In</label>
+              <select name="service" class="mt-1.5 block w-full rounded-lg border px-4 py-3 text-sm text-white focus:outline-none transition-colors" style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1);">
+                <option value="" style="background: #1a1a1a;">Select a service...</option>
+                <option value="setup" style="background: #1a1a1a;">Store Setup & Configuration ($299)</option>
+                <option value="custom" style="background: #1a1a1a;">Custom Feature Development ($149/hr)</option>
+                <option value="theme" style="background: #1a1a1a;">Theme & Brand Customization ($199)</option>
+                <option value="deploy" style="background: #1a1a1a;">Deployment & DevOps ($399)</option>
+                <option value="maintenance" style="background: #1a1a1a;">Ongoing Maintenance ($99/mo)</option>
+                <option value="training" style="background: #1a1a1a;">Training & Consultation ($89/hr)</option>
+                <option value="other" style="background: #1a1a1a;">Other / Not Sure</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium" style="color: rgba(255,255,255,0.6);">Tell Me About Your Project</label>
+              <textarea name="message" rows="5" required placeholder="What do you need help with? Budget? Timeline?"
+                class="mt-1.5 block w-full rounded-lg border px-4 py-3 text-sm text-white placeholder:text-white/25 focus:outline-none transition-colors resize-none"
+                style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1);"></textarea>
+            </div>
+
+            <button type="submit" class="w-full inline-flex items-center justify-center gap-3 px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] transition-all duration-300 hover:opacity-90 cursor-pointer rounded-lg" style="background: var(--gold); color: var(--black);">
+              Send Message
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
+            </button>
+          </form>
+        </div>
       </div>
-
-      <form action="mailto:hello@railsycommerce.com" method="post" enctype="text/plain" class="space-y-5">
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div>
-            <label class="block text-sm font-medium" style="color: rgba(255,255,255,0.6);">Your Name</label>
-            <input type="text" name="name" required placeholder="John Doe"
-              class="mt-1.5 block w-full rounded-lg border px-4 py-3 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[var(--gold)] transition-colors"
-              style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1);">
-          </div>
-          <div>
-            <label class="block text-sm font-medium" style="color: rgba(255,255,255,0.6);">Your Email</label>
-            <input type="email" name="email" required placeholder="john@example.com"
-              class="mt-1.5 block w-full rounded-lg border px-4 py-3 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[var(--gold)] transition-colors"
-              style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1);">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium" style="color: rgba(255,255,255,0.6);">Service Interested In</label>
-          <select name="service" class="mt-1.5 block w-full rounded-lg border px-4 py-3 text-sm text-white focus:outline-none focus:border-[var(--gold)] transition-colors"
-            style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1);">
-            <option value="" style="background: #1a1a1a;">Select a service...</option>
-            <option value="setup" style="background: #1a1a1a;">Store Setup & Configuration ($299)</option>
-            <option value="custom" style="background: #1a1a1a;">Custom Feature Development ($149/hr)</option>
-            <option value="theme" style="background: #1a1a1a;">Theme Customization ($199)</option>
-            <option value="deploy" style="background: #1a1a1a;">Deployment & DevOps ($399)</option>
-            <option value="maintenance" style="background: #1a1a1a;">Ongoing Maintenance ($99/mo)</option>
-            <option value="training" style="background: #1a1a1a;">Training & Consultation ($89/hr)</option>
-            <option value="other" style="background: #1a1a1a;">Other / Not Sure</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium" style="color: rgba(255,255,255,0.6);">Tell Us About Your Project</label>
-          <textarea name="message" rows="5" required placeholder="Describe what you need help with..."
-            class="mt-1.5 block w-full rounded-lg border px-4 py-3 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[var(--gold)] transition-colors resize-none"
-            style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1);"></textarea>
-        </div>
-
-        <div class="text-center pt-2">
-          <button type="submit" class="inline-flex items-center gap-3 px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] transition-all duration-300 hover:opacity-90 cursor-pointer" style="background: var(--gold); color: var(--black);">
-            Send Message
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
-          </button>
-        </div>
-      </form>
     </div>
   </section>
 </div>

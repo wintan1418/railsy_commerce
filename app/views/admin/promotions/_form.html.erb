@@ -1,0 +1,42 @@
+<%= form_with model: [:admin, promotion], class: "space-y-6" do |form| %>
+  <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5 p-6 space-y-4">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.text_field :name, required: true, class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" %>
+      </div>
+      <div>
+        <%= form.label :promotion_type, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.select :promotion_type, [["Free Shipping", "free_shipping"], ["Buy X Get Y", "buy_x_get_y"], ["Percentage Off Category", "percentage_off_category"]], {}, class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" %>
+      </div>
+    </div>
+    <div>
+      <%= form.label :conditions, "Conditions (JSON)", class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_area :conditions, value: (promotion.conditions.is_a?(Hash) ? promotion.conditions.to_json : promotion.conditions), rows: 3, class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-gray-400", placeholder: '{"minimum_total_cents": 5000}' %>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :starts_at, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.datetime_local_field :starts_at, class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" %>
+      </div>
+      <div>
+        <%= form.label :expires_at, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.datetime_local_field :expires_at, class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" %>
+      </div>
+    </div>
+    <div class="flex items-center gap-6">
+      <div class="flex items-center gap-2">
+        <%= form.check_box :active, class: "h-4 w-4 rounded border-gray-300" %>
+        <%= form.label :active, "Active", class: "text-sm font-medium text-gray-700" %>
+      </div>
+      <div class="flex items-center gap-2">
+        <%= form.check_box :auto_apply, class: "h-4 w-4 rounded border-gray-300" %>
+        <%= form.label :auto_apply, "Auto-apply", class: "text-sm font-medium text-gray-700" %>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-end gap-3">
+    <%= link_to "Cancel", admin_promotions_path, class: "rounded-lg bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700" %>
+    <%= form.submit promotion.persisted? ? "Update" : "Create Promotion", class: "rounded-lg px-4 py-2 text-sm font-semibold text-white cursor-pointer", style: "background: var(--gold);" %>
+  </div>
+<% end %>

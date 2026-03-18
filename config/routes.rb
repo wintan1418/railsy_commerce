@@ -44,9 +44,14 @@ Rails.application.routes.draw do
     root "dashboard#show"
     resources :products
     resources :orders, only: %i[index show update]
+    resources :customers, only: %i[index show]
     resources :categories
+    resources :inventory, only: %i[index update]
+    resources :shipping_methods
     resources :reviews, only: %i[index update destroy]
     resources :discounts
+    resources :promotions
+    resources :tax_rates
     resources :returns, only: %i[index show update]
     resources :pages
     resource :settings, only: %i[show update], controller: "settings"

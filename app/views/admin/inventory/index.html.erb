@@ -1,0 +1,70 @@
+<div class="flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Inventory</h1>
+    <p class="mt-1 text-sm text-gray-500"><%= @stock_items.count %> stock items</p>
+  </div>
+</div>
+
+<div class="mt-6 flex flex-wrap items-center gap-3">
+  <%= form_tag admin_inventory_index_path, method: :get, class: "flex items-center gap-3" do %>
+    <input type="text" name="search" value="<%= params[:search] %>" placeholder="Search by product or SKU..."
+      class="block w-full max-w-md rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" />
+    <label class="flex items-center gap-2 text-sm text-gray-600">
+      <input type="checkbox" name="low_stock" value="1" <%= "checked" if params[:low_stock] == "1" %> class="h-4 w-4 rounded border-gray-300" />
+      Low stock only
+    </label>
+    <button type="submit" class="rounded-lg px-4 py-2 text-sm font-semibold text-white" style="background: var(--gold);">Filter</button>
+    <% if params[:search].present? || params[:low_stock].present? %>
+      <%= link_to "Clear", admin_inventory_index_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-100">
+      <thead>
+        <tr class="bg-gray-50/50">
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Product</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">SKU</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Available</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Reserved</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Threshold</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Update Qty</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @stock_items.each do |item| %>
+          <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+            <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-900"><%= item.variant.product.name %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= item.variant.sku || "—" %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900"><%= item.available_quantity %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= item.reserved_quantity %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= item.low_stock_threshold || 5 %></td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <% if item.low_stock? %>
+                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 ring-1 ring-red-600/20">Low Stock</span>
+              <% elsif item.backorderable? %>
+                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-blue-50 text-blue-700 ring-1 ring-blue-600/20">Backorderable</span>
+              <% else %>
+                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 ring-1 ring-green-600/20">In Stock</span>
+              <% end %>
+            </td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <%= form_with model: [:admin, item], url: admin_inventory_path(item), method: :patch, class: "flex items-center gap-2" do |f| %>
+                <%= f.number_field :available_quantity, value: item.available_quantity, min: 0, class: "w-20 rounded-lg border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" %>
+                <%= f.submit "Save", class: "rounded-lg px-3 py-1 text-xs font-semibold text-white cursor-pointer", style: "background: var(--gold);" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <% if @stock_items.empty? %>
+          <tr>
+            <td colspan="7" class="px-6 py-12 text-center text-sm text-gray-400">No stock items found.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

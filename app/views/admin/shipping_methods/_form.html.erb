@@ -1,0 +1,36 @@
+<%= form_with model: [:admin, shipping_method], class: "space-y-6" do |form| %>
+  <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5 p-6 space-y-4">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.text_field :name, required: true, class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" %>
+      </div>
+      <div>
+        <%= form.label :price_cents, "Price (cents)", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.number_field :price_cents, min: 0, required: true, class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" %>
+      </div>
+    </div>
+    <div>
+      <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_field :description, class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" %>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :min_delivery_days, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.number_field :min_delivery_days, min: 0, class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" %>
+      </div>
+      <div>
+        <%= form.label :max_delivery_days, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.number_field :max_delivery_days, min: 0, class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" %>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <%= form.check_box :active, class: "h-4 w-4 rounded border-gray-300" %>
+      <%= form.label :active, "Active", class: "text-sm font-medium text-gray-700" %>
+    </div>
+  </div>
+  <div class="flex justify-end gap-3">
+    <%= link_to "Cancel", admin_shipping_methods_path, class: "rounded-lg bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700" %>
+    <%= form.submit shipping_method.persisted? ? "Update" : "Create Shipping Method", class: "rounded-lg px-4 py-2 text-sm font-semibold text-white cursor-pointer", style: "background: var(--gold);" %>
+  </div>
+<% end %>

@@ -1,0 +1,54 @@
+<div class="flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Customers</h1>
+    <p class="mt-1 text-sm text-gray-500"><%= @customers.count %> total customers</p>
+  </div>
+</div>
+
+<div class="mt-6">
+  <%= form_tag admin_customers_path, method: :get, class: "flex items-center gap-3" do %>
+    <input type="text" name="search" value="<%= params[:search] %>" placeholder="Search by name or email..."
+      class="block w-full max-w-md rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-400" />
+    <button type="submit" class="rounded-lg px-4 py-2 text-sm font-semibold text-white" style="background: var(--gold);">Search</button>
+    <% if params[:search].present? %>
+      <%= link_to "Clear", admin_customers_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-100">
+      <thead>
+        <tr class="bg-gray-50/50">
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Name</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Email</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Orders</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Total Spent</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Joined</th>
+          <th class="px-6 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @customers.each do |customer| %>
+          <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+            <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-900"><%= customer.full_name %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= customer.email_address %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= customer.orders.count %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900"><%= number_to_currency(customer.orders.sum(:total_cents) / 100.0) %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= customer.created_at.strftime("%b %d, %Y") %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-right">
+              <%= link_to "View", admin_customer_path(customer),
+                class: "text-sm font-medium transition-colors duration-200", style: "color: var(--gold);" %>
+            </td>
+          </tr>
+        <% end %>
+        <% if @customers.empty? %>
+          <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-sm text-gray-400">No customers found.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

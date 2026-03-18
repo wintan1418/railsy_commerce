@@ -1,0 +1,45 @@
+<div class="flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-gray-900">Tax Rates</h1>
+  <%= link_to "New Tax Rate", new_admin_tax_rate_path, class: "rounded-lg px-4 py-2.5 text-sm font-semibold text-white", style: "background: var(--gold);" %>
+</div>
+
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-100">
+      <thead>
+        <tr class="bg-gray-50/50">
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Name</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Rate</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Country</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">State</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
+          <th class="px-6 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @tax_rates.each do |tax_rate| %>
+          <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+            <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-900"><%= tax_rate.name %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900"><%= number_to_percentage(tax_rate.rate * 100, precision: 2) %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= tax_rate.country_code %></td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= tax_rate.state || "—" %></td>
+            <td class="whitespace-nowrap px-6 py-4">
+              <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold <%= tax_rate.active? ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20' : 'bg-gray-100 text-gray-500 ring-1 ring-gray-300/20' %>">
+                <%= tax_rate.active? ? "Active" : "Inactive" %>
+              </span>
+            </td>
+            <td class="whitespace-nowrap px-6 py-4 text-right text-sm space-x-2">
+              <%= link_to "Edit", edit_admin_tax_rate_path(tax_rate), class: "font-medium", style: "color: var(--gold);" %>
+              <%= button_to "Delete", admin_tax_rate_path(tax_rate), method: :delete, data: { turbo_confirm: "Delete this tax rate?" }, class: "text-red-500 font-medium cursor-pointer" %>
+            </td>
+          </tr>
+        <% end %>
+        <% if @tax_rates.empty? %>
+          <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-sm text-gray-400">No tax rates yet.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

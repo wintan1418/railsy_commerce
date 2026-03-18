@@ -42,6 +42,9 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
+# Cloud storage (S3-compatible: AWS S3, Cloudflare R2, etc.)
+gem "aws-sdk-s3", require: false
+
 # Environment variables
 gem "dotenv-rails", groups: [:development, :test]
 

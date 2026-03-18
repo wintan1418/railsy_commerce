@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "from@example.com"
+  default from: -> { StoreConfig.get("store_email", "hello@railsycommerce.com") }
   layout "mailer"
 end

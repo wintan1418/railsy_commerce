@@ -1,0 +1,98 @@
+<div class="flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900"><%= @customer.full_name %></h1>
+    <p class="mt-1 text-sm text-gray-500"><%= @customer.email_address %></p>
+  </div>
+  <%= link_to "Back to Customers", admin_customers_path, class: "text-sm font-medium text-gray-500 hover:text-gray-700" %>
+</div>
+
+<!-- Stats -->
+<div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+  <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5 p-6">
+    <p class="text-sm font-medium text-gray-500">Total Orders</p>
+    <p class="mt-1 text-2xl font-bold text-gray-900"><%= @order_count %></p>
+  </div>
+  <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5 p-6">
+    <p class="text-sm font-medium text-gray-500">Total Spent</p>
+    <p class="mt-1 text-2xl font-bold text-gray-900"><%= number_to_currency(@total_spent / 100.0) %></p>
+  </div>
+  <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5 p-6">
+    <p class="text-sm font-medium text-gray-500">Member Since</p>
+    <p class="mt-1 text-2xl font-bold text-gray-900"><%= @customer.created_at.strftime("%b %d, %Y") %></p>
+  </div>
+</div>
+
+<!-- Orders -->
+<div class="mt-8">
+  <h2 class="text-lg font-semibold text-gray-900">Orders</h2>
+  <div class="mt-4 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-100">
+        <thead>
+          <tr class="bg-gray-50/50">
+            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Order</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Total</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date</th>
+            <th class="px-6 py-3"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <% @orders.each do |order| %>
+            <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+              <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-900"><%= order.number %></td>
+              <td class="whitespace-nowrap px-6 py-4">
+                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
+                  <%= case order.status
+                      when 'pending' then 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-600/20'
+                      when 'confirmed' then 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20'
+                      when 'processing' then 'bg-purple-50 text-purple-700 ring-1 ring-purple-600/20'
+                      when 'shipped' then 'bg-indigo-50 text-indigo-700 ring-1 ring-indigo-600/20'
+                      when 'delivered' then 'bg-green-50 text-green-700 ring-1 ring-green-600/20'
+                      when 'cancelled' then 'bg-red-50 text-red-700 ring-1 ring-red-600/20'
+                      end %>">
+                  <%= order.status.capitalize %>
+                </span>
+              </td>
+              <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900"><%= order.total.format %></td>
+              <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"><%= order.created_at.strftime("%b %d, %Y") %></td>
+              <td class="whitespace-nowrap px-6 py-4 text-right">
+                <%= link_to "View", admin_order_path(order),
+                  class: "text-sm font-medium transition-colors duration-200", style: "color: var(--gold);" %>
+              </td>
+            </tr>
+          <% end %>
+          <% if @orders.empty? %>
+            <tr>
+              <td colspan="5" class="px-6 py-12 text-center text-sm text-gray-400">No orders yet.</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Addresses -->
+<div class="mt-8">
+  <h2 class="text-lg font-semibold text-gray-900">Addresses</h2>
+  <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <% @addresses.each do |address| %>
+      <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5 p-6">
+        <p class="text-sm font-semibold text-gray-900"><%= address.full_name %></p>
+        <p class="mt-1 text-sm text-gray-500"><%= address.address_line_1 %></p>
+        <% if address.address_line_2.present? %>
+          <p class="text-sm text-gray-500"><%= address.address_line_2 %></p>
+        <% end %>
+        <p class="text-sm text-gray-500"><%= address.city %>, <%= address.state %> <%= address.postal_code %></p>
+        <p class="text-sm text-gray-500"><%= address.country_code %></p>
+        <% if address.phone.present? %>
+          <p class="mt-1 text-sm text-gray-400"><%= address.phone %></p>
+        <% end %>
+      </div>
+    <% end %>
+    <% if @addresses.empty? %>
+      <p class="text-sm text-gray-400">No addresses on file.</p>
+    <% end %>
+  </div>
+</div>

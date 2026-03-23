@@ -18,10 +18,7 @@ module Account
         @added = true
       end
 
-      respond_to do |format|
-        format.html { redirect_back fallback_location: account_wishlist_path }
-        format.turbo_stream
-      end
+      redirect_back fallback_location: account_wishlist_path
     end
   end
 end

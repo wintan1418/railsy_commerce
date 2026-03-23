@@ -12,13 +12,11 @@ module Account
 
       if item
         item.destroy
-        @added = false
+        redirect_back fallback_location: account_wishlist_path, notice: "Removed from wishlist."
       else
         wishlist.wishlist_items.create!(variant: variant)
-        @added = true
+        redirect_back fallback_location: account_wishlist_path, notice: "Added to wishlist!"
       end
-
-      redirect_back fallback_location: account_wishlist_path
     end
   end
 end

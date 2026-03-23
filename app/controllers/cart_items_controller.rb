@@ -11,12 +11,9 @@ class CartItemsController < ApplicationController
     )
 
     if result.success?
-      respond_to do |format|
-        format.html { redirect_to cart_path, notice: "Added to cart!" }
-        format.turbo_stream
-      end
+      redirect_back fallback_location: products_path, notice: "Added to cart!"
     else
-      redirect_to cart_path, alert: result.errors.join(", ")
+      redirect_back fallback_location: products_path, alert: result.errors.join(", ")
     end
   end
 
@@ -24,10 +21,7 @@ class CartItemsController < ApplicationController
     @cart_item = current_cart.cart_items.find(params[:id])
 
     if @cart_item.update(quantity: params[:cart_item][:quantity].to_i)
-      respond_to do |format|
-        format.html { redirect_to cart_path }
-        format.turbo_stream
-      end
+      redirect_to cart_path, notice: "Cart updated."
     else
       redirect_to cart_path, alert: "Could not update quantity."
     end
@@ -36,10 +30,6 @@ class CartItemsController < ApplicationController
   def destroy
     @cart_item = current_cart.cart_items.find(params[:id])
     @cart_item.destroy
-
-    respond_to do |format|
-      format.html { redirect_to cart_path, notice: "Item removed." }
-      format.turbo_stream
-    end
+    redirect_to cart_path, notice: "Item removed."
   end
 end

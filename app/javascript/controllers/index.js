@@ -24,3 +24,6 @@ application.register("ticker", TickerController)
 
 import StripePaymentController from "./stripe_payment_controller"
 application.register("stripe-payment", StripePaymentController)
+
+import ToastController from "./toast_controller"
+application.register("toast", ToastController)

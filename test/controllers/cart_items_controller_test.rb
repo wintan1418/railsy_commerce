@@ -5,7 +5,7 @@ class CartItemsControllerTest < ActionDispatch::IntegrationTest
     assert_difference "CartItem.count", 1 do
       post cart_items_url, params: { variant_id: variants(:laptop_master).id, quantity: 1 }
     end
-    assert_redirected_to cart_url
+    assert_response :redirect
   end
 
   test "remove item from cart" do

@@ -65,9 +65,9 @@
           </dl>
 
           <div class="mt-8">
-            <button type="button" class="w-full rounded-lg bg-indigo-600 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors duration-200 cursor-pointer">
-              Proceed to Checkout
-            </button>
+            <%= link_to "Proceed to Checkout", checkout_path,
+              class: "block w-full rounded-lg py-3.5 text-center text-sm font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-200 cursor-pointer hover:opacity-90",
+              style: "background: var(--gold); color: var(--black);" %>
           </div>
 
           <!-- Trust Badges -->

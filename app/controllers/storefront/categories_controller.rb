@@ -5,8 +5,11 @@ module Storefront
 
     def show
       @category = Category.friendly.find(params[:slug])
-      @products = @category.products.active.includes(variants: :stock_items).ordered
       @subcategories = @category.children.active.ordered
+
+      # Include products from subcategories too
+      category_ids = [ @category.id ] + @subcategories.pluck(:id)
+      @products = Product.active.where(category_id: category_ids).includes(:category, variants: :stock_items).ordered
     end
   end
 end

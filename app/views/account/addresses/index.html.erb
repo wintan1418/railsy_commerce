@@ -1,7 +1,7 @@
-<div class="mx-auto max-w-4xl px-6 py-12">
-  <div class="flex items-center justify-between">
+<div class="mx-auto max-w-4xl px-4 sm:px-6 py-12">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
     <h1 class="font-display text-3xl font-light" style="color: var(--black);">My <em class="italic">Addresses</em></h1>
-    <%= link_to "Add Address", new_account_address_path, class: "rounded-lg px-4 py-2 text-sm font-semibold text-white", style: "background: var(--gold);" %>
+    <%= link_to "Add Address", new_account_address_path, class: "rounded-lg px-4 py-2 min-h-[44px] inline-flex items-center text-sm font-semibold text-white", style: "background: var(--gold);" %>
   </div>
   <div class="mt-8 grid gap-4 sm:grid-cols-2">
     <% @addresses.each do |address| %>

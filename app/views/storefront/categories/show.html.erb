@@ -20,10 +20,10 @@
 
   <!-- Subcategories -->
   <% if @subcategories.any? %>
-    <div class="mt-6 flex flex-wrap gap-2">
+    <div class="mt-6 flex overflow-x-auto gap-2 pb-2 scrollbar-hide sm:flex-wrap sm:overflow-visible sm:pb-0">
       <% @subcategories.each do |sub| %>
         <%= link_to sub.name, category_path(slug: sub.slug),
-          class: "rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50 transition-all duration-200" %>
+          class: "flex-shrink-0 rounded-full border border-gray-200 bg-white px-4 py-2 min-h-[44px] inline-flex items-center text-sm font-medium text-gray-700 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50 transition-all duration-200" %>
       <% end %>
     </div>
   <% end %>

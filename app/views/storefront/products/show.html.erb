@@ -1,6 +1,6 @@
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
   <!-- Breadcrumb -->
-  <nav class="flex items-center gap-2 text-sm mb-8" style="color: var(--mid-gray);">
+  <nav class="flex items-center gap-2 text-sm mb-8 overflow-x-auto scrollbar-hide" style="color: var(--mid-gray);">
     <%= link_to "Home", root_path, class: "transition-colors duration-200 hover:text-[var(--gold)]" %>
     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
     <%= link_to "Products", products_path, class: "transition-colors duration-200 hover:text-[var(--gold)]" %>
@@ -113,9 +113,9 @@
         <div class="mt-8 border-t pt-8" style="border-color: var(--cream);">
           <%= form_with url: cart_items_path, method: :post do |form| %>
             <%= form.hidden_field :variant_id, value: @master_variant.id %>
-            <div class="flex items-center gap-4">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <!-- Quantity Selector -->
-              <div class="flex items-center rounded-lg border" style="border-color: var(--cream);" data-controller="quantity">
+              <div class="flex items-center justify-center rounded-lg border" style="border-color: var(--cream);" data-controller="quantity">
                 <button type="button" data-action="quantity#decrement"
                   class="flex h-12 w-12 items-center justify-center transition-colors duration-200 cursor-pointer" style="color: var(--mid-gray);">
                   <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"/></svg>
@@ -132,7 +132,7 @@
 
               <!-- Add to Cart Button -->
               <%= form.submit "Add to Cart",
-                class: "flex-1 rounded-lg py-3.5 text-sm font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-200 cursor-pointer",
+                class: "flex-1 w-full rounded-lg py-3.5 min-h-[48px] text-sm font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-200 cursor-pointer",
                 style: "background: var(--black);",
                 onmouseover: "this.style.background='var(--gold)'; this.style.color='var(--black)';",
                 onmouseout: "this.style.background='var(--black)'; this.style.color='white';" %>

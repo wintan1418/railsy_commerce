@@ -108,10 +108,10 @@
         </div>
 
         <!-- Sort Dropdown -->
-        <div class="flex items-center gap-2">
-          <label for="sort" class="text-sm" style="color: var(--mid-gray);">Sort by:</label>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <label for="sort" class="text-sm whitespace-nowrap" style="color: var(--mid-gray);">Sort by:</label>
           <select id="sort" onchange="window.location.href = this.value"
-            class="rounded-lg border py-2 pl-3 pr-8 text-sm focus:outline-none focus:ring-1"
+            class="flex-1 sm:flex-none rounded-lg border py-2 pl-3 pr-8 text-sm min-h-[44px] focus:outline-none focus:ring-1"
             style="border-color: var(--cream); background: white; color: var(--black); --tw-ring-color: var(--gold);">
             <option value="<%= products_path(params.permit(:q, :category_id, :on_sale).merge(sort: 'newest')) %>" <%= 'selected' if params[:sort] == 'newest' || params[:sort].blank? %>>Newest</option>
             <option value="<%= products_path(params.permit(:q, :category_id, :on_sale).merge(sort: 'price_asc')) %>" <%= 'selected' if params[:sort] == 'price_asc' %>>Price: Low to High</option>
@@ -122,14 +122,14 @@
       </div>
 
       <!-- Mobile Category Pills -->
-      <div class="mb-6 flex overflow-x-auto gap-2 pb-2 lg:hidden scrollbar-hide">
+      <div class="mb-6 flex overflow-x-auto gap-2 pb-2 lg:hidden scrollbar-hide -mx-4 px-4">
         <%= link_to "All", products_path(params.permit(:q, :sort, :on_sale)),
-          class: "flex-shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
+          class: "flex-shrink-0 rounded-full px-4 py-2 min-h-[44px] inline-flex items-center text-sm font-medium transition-colors duration-200",
           style: params[:category_id].blank? ? "background: var(--gold); color: var(--black);" : "background: var(--cream); color: var(--text-body);" %>
         <% @categories.each do |category| %>
           <%= link_to category.name,
             products_path(params.permit(:q, :sort, :on_sale).merge(category_id: category.id)),
-            class: "flex-shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
+            class: "flex-shrink-0 rounded-full px-4 py-2 min-h-[44px] inline-flex items-center text-sm font-medium transition-colors duration-200",
             style: params[:category_id].to_s == category.id.to_s ? "background: var(--gold); color: var(--black);" : "background: var(--cream); color: var(--text-body);" %>
         <% end %>
       </div>

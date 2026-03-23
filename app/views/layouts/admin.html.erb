@@ -12,17 +12,28 @@
 
   <body class="h-full bg-gray-50 antialiased">
     <div class="flex h-full">
+      <!-- Mobile sidebar overlay -->
+      <div id="admin-sidebar-overlay" class="fixed inset-0 z-40 bg-black/50 hidden lg:hidden" onclick="document.getElementById('admin-sidebar').classList.add('hidden'); document.getElementById('admin-sidebar').classList.remove('flex'); document.getElementById('admin-sidebar-overlay').classList.add('hidden');"></div>
+
       <!-- Sidebar -->
-      <aside class="hidden w-64 flex-shrink-0 flex-col bg-gray-900 lg:flex">
+      <aside id="admin-sidebar" class="hidden w-64 flex-shrink-0 flex-col bg-gray-900 lg:flex fixed inset-y-0 left-0 z-50 lg:relative">
         <!-- Logo -->
-        <div class="flex h-16 items-center gap-2 px-6 border-b border-gray-800">
-          <svg class="h-7 w-7 text-indigo-400" viewBox="0 0 32 32" fill="currentColor">
-            <rect x="2" y="2" width="12" height="12" rx="3"/>
-            <rect x="18" y="2" width="12" height="12" rx="3" opacity="0.7"/>
-            <rect x="2" y="18" width="12" height="12" rx="3" opacity="0.7"/>
-            <rect x="18" y="18" width="12" height="12" rx="3" opacity="0.4"/>
-          </svg>
-          <span class="text-lg font-bold text-white">RailsyCommerce</span>
+        <div class="flex h-16 items-center justify-between gap-2 px-6 border-b border-gray-800">
+          <div class="flex items-center gap-2">
+            <svg class="h-7 w-7 text-indigo-400" viewBox="0 0 32 32" fill="currentColor">
+              <rect x="2" y="2" width="12" height="12" rx="3"/>
+              <rect x="18" y="2" width="12" height="12" rx="3" opacity="0.7"/>
+              <rect x="2" y="18" width="12" height="12" rx="3" opacity="0.7"/>
+              <rect x="18" y="18" width="12" height="12" rx="3" opacity="0.4"/>
+            </svg>
+            <span class="text-lg font-bold text-white">RailsyCommerce</span>
+          </div>
+          <button type="button" class="flex h-10 w-10 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors lg:hidden"
+            onclick="document.getElementById('admin-sidebar').classList.add('hidden'); document.getElementById('admin-sidebar').classList.remove('flex'); document.getElementById('admin-sidebar-overlay').classList.add('hidden');">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
         <!-- Navigation -->
@@ -187,6 +198,12 @@
         <!-- Mobile Header -->
         <header class="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 lg:hidden">
           <div class="flex items-center gap-2">
+            <button type="button" class="flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+              onclick="document.getElementById('admin-sidebar').classList.remove('hidden'); document.getElementById('admin-sidebar').classList.add('flex'); document.getElementById('admin-sidebar-overlay').classList.remove('hidden');">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
             <svg class="h-7 w-7 text-indigo-600" viewBox="0 0 32 32" fill="currentColor">
               <rect x="2" y="2" width="12" height="12" rx="3"/>
               <rect x="18" y="2" width="12" height="12" rx="3" opacity="0.7"/>
@@ -196,9 +213,7 @@
             <span class="text-lg font-bold text-gray-900">Admin</span>
           </div>
           <div class="flex items-center gap-2">
-            <%= link_to "Dashboard", admin_root_path, class: "text-xs text-gray-500" %>
-            <%= link_to "Products", admin_products_path, class: "text-xs text-gray-500" %>
-            <%= link_to "Orders", admin_orders_path, class: "text-xs text-gray-500" %>
+            <%= link_to "Store", root_path, target: "_blank", class: "text-xs text-gray-500 min-h-[44px] inline-flex items-center px-2" %>
           </div>
         </header>
 

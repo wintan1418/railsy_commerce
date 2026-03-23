@@ -313,6 +313,33 @@ body {
   background: rgba(201,169,110,0.08);
 }
 
+/* ─── Mobile Responsiveness ─────────────────────────────────────── */
+
+/* Ensure minimum touch target size (44px) on mobile */
+@media (max-width: 640px) {
+  /* Make product card hover actions always visible on mobile (no hover state) */
+  .product-card-actions {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+  }
+
+  /* Ensure social icons meet 44px touch target */
+  .social-icon {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Prevent horizontal overflow globally */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Admin mobile sidebar toggle */
+  .admin-sidebar-open {
+    transform: translateX(0) !important;
+  }
+}
+
 /* ─── Smooth section reveals ─────────────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
   .reveal-on-scroll {

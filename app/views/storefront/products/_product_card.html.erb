@@ -22,7 +22,7 @@
     <% end %>
 
     <!-- Hover Actions -->
-    <div class="absolute right-3 top-3 flex flex-col gap-2 translate-x-2 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100">
+    <div class="product-card-actions absolute right-3 top-3 flex flex-col gap-2 sm:translate-x-2 sm:opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100">
       <!-- Wishlist Heart -->
       <% if authenticated? %>
         <% wishlisted = current_user.wishlist&.includes_variant?(variant) %>
@@ -99,7 +99,7 @@
           <%= form.hidden_field :variant_id, value: variant.id %>
           <%= form.hidden_field :quantity, value: 1 %>
           <%= form.submit "Add to Cart",
-            class: "w-full cursor-pointer rounded-md py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition-all duration-200",
+            class: "w-full cursor-pointer rounded-md py-2.5 min-h-[44px] text-xs font-semibold uppercase tracking-wider text-white transition-all duration-200",
             style: "background: var(--black);",
             onmouseover: "this.style.background='var(--gold)'; this.style.color='var(--black)';",
             onmouseout: "this.style.background='var(--black)'; this.style.color='white';" %>

@@ -14,7 +14,10 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  enum :role, { customer: "customer", admin: "admin" }
+  enum :role, { customer: "customer", vendor: "vendor", admin: "admin" }
+
+  # Vendor products
+  has_many :vendor_products, class_name: "Product", foreign_key: :vendor_id, dependent: :nullify
 
   validates :email_address, presence: true, uniqueness: true,
     format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -23,8 +26,14 @@ class User < ApplicationRecord
   validates :role, presence: true
   validates :password, length: { minimum: 8 }, allow_nil: true
 
+  validates :vendor_name, presence: true, if: :vendor?
+
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def display_name
+    vendor? ? (vendor_name.presence || full_name) : full_name
   end
 
   def oauth_user?

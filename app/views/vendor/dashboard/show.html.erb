@@ -1,0 +1,68 @@
+<div class="flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Vendor Dashboard</h1>
+    <p class="mt-1 text-sm text-gray-500">Welcome, <%= current_user.vendor_name || current_user.full_name %></p>
+  </div>
+</div>
+
+<div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3">
+  <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+    <p class="text-sm font-medium text-gray-500">Revenue</p>
+    <p class="mt-2 text-2xl font-bold text-gray-900"><%= Money.new(@total_revenue, "USD").format %></p>
+  </div>
+  <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+    <p class="text-sm font-medium text-gray-500">Products</p>
+    <p class="mt-2 text-2xl font-bold text-gray-900"><%= @product_count %></p>
+  </div>
+  <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+    <p class="text-sm font-medium text-gray-500">Orders</p>
+    <p class="mt-2 text-2xl font-bold text-gray-900"><%= @order_count %></p>
+  </div>
+</div>
+
+<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+  <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+    <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+      <h2 class="text-base font-semibold text-gray-900">My Products</h2>
+      <%= link_to "Manage", vendor_products_path, class: "text-sm font-medium", style: "color: var(--gold);" %>
+    </div>
+    <div class="divide-y divide-gray-100">
+      <% @products.limit(5).each do |product| %>
+        <div class="flex items-center justify-between px-6 py-3">
+          <div>
+            <p class="text-sm font-medium text-gray-900"><%= product.name %></p>
+            <p class="text-xs text-gray-500"><%= product.display_price %></p>
+          </div>
+          <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize <%= product.active? ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500' %>"><%= product.status %></span>
+        </div>
+      <% end %>
+      <% if @products.empty? %>
+        <div class="px-6 py-8 text-center">
+          <p class="text-sm text-gray-400">No products yet.</p>
+          <%= link_to "Add your first product", new_vendor_product_path, class: "mt-2 inline-block text-sm font-medium", style: "color: var(--gold);" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+    <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+      <h2 class="text-base font-semibold text-gray-900">Recent Orders</h2>
+      <%= link_to "View all", vendor_orders_path, class: "text-sm font-medium", style: "color: var(--gold);" %>
+    </div>
+    <div class="divide-y divide-gray-100">
+      <% @orders.each do |order| %>
+        <div class="flex items-center justify-between px-6 py-3">
+          <div>
+            <p class="text-sm font-medium text-gray-900"><%= order.number %></p>
+            <p class="text-xs text-gray-500"><%= order.created_at.strftime("%b %d, %Y") %></p>
+          </div>
+          <span class="text-sm font-medium"><%= order.total.format %></span>
+        </div>
+      <% end %>
+      <% if @orders.empty? %>
+        <p class="px-6 py-8 text-center text-sm text-gray-400">No orders yet.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

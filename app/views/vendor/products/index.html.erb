@@ -1,0 +1,27 @@
+<div class="flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-gray-900">My Products</h1>
+  <%= link_to "Add Product", new_vendor_product_path, class: "rounded-lg px-4 py-2.5 text-sm font-semibold text-white", style: "background: var(--gold);" %>
+</div>
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <table class="min-w-full divide-y divide-gray-100">
+    <thead><tr class="bg-gray-50/50">
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Product</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Price</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+      <th class="px-6 py-3"></th>
+    </tr></thead>
+    <tbody class="divide-y divide-gray-100">
+      <% @products.each do |product| %>
+        <tr>
+          <td class="px-6 py-4 text-sm font-medium text-gray-900"><%= product.name %></td>
+          <td class="px-6 py-4 text-sm"><%= product.display_price %></td>
+          <td class="px-6 py-4"><span class="rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize <%= product.active? ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500' %>"><%= product.status %></span></td>
+          <td class="px-6 py-4 text-right space-x-2">
+            <%= link_to "Edit", edit_vendor_product_path(product), class: "text-sm font-medium", style: "color: var(--gold);" %>
+            <%= button_to "Delete", vendor_product_path(product), method: :delete, data: { turbo_confirm: "Delete?" }, class: "text-sm font-medium text-red-500 cursor-pointer" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

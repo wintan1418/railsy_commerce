@@ -11,6 +11,7 @@ class Order < ApplicationRecord
   has_many :shipments, dependent: :destroy
   has_many :order_events, dependent: :destroy
   has_many :return_requests, dependent: :destroy
+  has_many :tracking_updates, dependent: :destroy
 
   enum :status, {
     pending: "pending",

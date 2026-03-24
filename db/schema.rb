@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_18_200000) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_24_152803) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -179,9 +179,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_18_200000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "discount_id"
+    t.string "tracking_number"
     t.index ["discount_id"], name: "index_orders_on_discount_id"
     t.index ["number"], name: "index_orders_on_number", unique: true
     t.index ["status"], name: "index_orders_on_status"
+    t.index ["tracking_number"], name: "index_orders_on_tracking_number"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -245,9 +247,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_18_200000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "reviews_count", default: 0, null: false
+    t.bigint "vendor_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["slug"], name: "index_products_on_slug", unique: true
     t.index ["status"], name: "index_products_on_status"
+    t.index ["vendor_id"], name: "index_products_on_vendor_id"
   end
 
   create_table "promotions", force: :cascade do |t|
@@ -395,6 +399,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_18_200000) do
     t.index ["position"], name: "index_theme_settings_on_position"
   end
 
+  create_table "tracking_updates", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.string "status", null: false
+    t.string "location"
+    t.text "description", null: false
+    t.datetime "estimated_delivery"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id", "created_at"], name: "index_tracking_updates_on_order_id_and_created_at"
+    t.index ["order_id"], name: "index_tracking_updates_on_order_id"
+    t.index ["updated_by_id"], name: "index_tracking_updates_on_updated_by_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
@@ -406,6 +424,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_18_200000) do
     t.string "provider"
     t.string "uid"
     t.string "avatar_url"
+    t.string "vendor_name"
+    t.text "vendor_description"
+    t.boolean "vendor_verified", default: false
+    t.decimal "vendor_commission_rate", precision: 5, scale: 2, default: "10.0"
+    t.string "phone"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
   end
@@ -469,6 +492,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_18_200000) do
   add_foreign_key "product_relations", "products"
   add_foreign_key "product_relations", "products", column: "related_product_id"
   add_foreign_key "products", "categories"
+  add_foreign_key "products", "users", column: "vendor_id"
   add_foreign_key "return_items", "order_items"
   add_foreign_key "return_items", "returns"
   add_foreign_key "returns", "orders"
@@ -480,6 +504,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_18_200000) do
   add_foreign_key "shipments", "shipping_methods"
   add_foreign_key "stock_items", "stock_locations"
   add_foreign_key "stock_items", "variants"
+  add_foreign_key "tracking_updates", "orders"
+  add_foreign_key "tracking_updates", "users", column: "updated_by_id"
   add_foreign_key "variants", "products"
   add_foreign_key "wishlist_items", "variants"
   add_foreign_key "wishlist_items", "wishlists"

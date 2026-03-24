@@ -1,0 +1,25 @@
+<h1 class="text-2xl font-bold text-gray-900">Orders</h1>
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <table class="min-w-full divide-y divide-gray-100">
+    <thead><tr class="bg-gray-50/50">
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Order</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Customer</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Total</th>
+      <th class="px-6 py-3"></th>
+    </tr></thead>
+    <tbody class="divide-y divide-gray-100">
+      <% @orders.each do |order| %>
+        <tr>
+          <td class="px-6 py-4 text-sm font-semibold"><%= order.number %></td>
+          <td class="px-6 py-4 text-sm text-gray-500"><%= order.email %></td>
+          <td class="px-6 py-4"><span class="rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize bg-gray-100 text-gray-700"><%= order.status %></span></td>
+          <td class="px-6 py-4 text-sm font-medium"><%= order.total.format %></td>
+          <td class="px-6 py-4 text-right">
+            <%= link_to "Track & Update", vendor_order_path(order), class: "text-sm font-medium", style: "color: var(--gold);" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

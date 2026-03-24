@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   # Storefront
   root "pages#home"
 
+  # Order Tracking
+  get "track", to: "storefront/tracking#search", as: :track_search
+  get "track/:tracking_number", to: "storefront/tracking#show", as: :tracking
+
   resources :products, only: %i[index show], controller: "storefront/products" do
     resources :reviews, only: %i[create], controller: "storefront/reviews"
   end
@@ -57,6 +61,13 @@ Rails.application.routes.draw do
     resource :theme, only: %i[show update], controller: "theme"
     resource :settings, only: %i[show update], controller: "settings"
     resource :setup, only: %i[show update], controller: "setup"
+  end
+
+  # Vendor Dashboard
+  namespace :vendor do
+    root "dashboard#show"
+    resources :products
+    resources :orders, only: %i[index show update]
   end
 
   # API

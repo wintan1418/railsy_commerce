@@ -5,7 +5,7 @@
     <p class="mt-4 text-sm" style="color: var(--mid-gray);">Enter your order number or tracking number to see real-time delivery updates.</p>
   </div>
 
-  <%= form_with url: tracking_path, method: :get, class: "mt-10" do |f| %>
+  <%= form_with url: track_search_path, method: :get, class: "mt-10" do |f| %>
     <div class="flex gap-3">
       <input type="text" name="tracking_number" required placeholder="Order number (e.g., RC-20260324-ABC123)" autofocus
         class="flex-1 rounded-lg border px-4 py-3.5 text-sm focus:outline-none focus:ring-2 min-h-[48px]"

@@ -17,6 +17,9 @@ module Storefront
     end
 
     def search
+      if params[:tracking_number].present?
+        redirect_to tracking_path(tracking_number: params[:tracking_number])
+      end
     end
   end
 end

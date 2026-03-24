@@ -1,0 +1,72 @@
+<!-- Chat Widget -->
+<div data-controller="chat-widget" class="fixed bottom-6 right-6 z-[90]">
+  <!-- Chat Panel -->
+  <div data-chat-widget-target="panel" class="hidden mb-4 w-[360px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-black/10" style="background: var(--warm-white);">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-5 py-4" style="background: var(--black);">
+      <div class="flex items-center gap-3">
+        <div class="flex h-9 w-9 items-center justify-center rounded-full" style="background: var(--gold);">
+          <svg class="h-5 w-5" style="color: var(--black);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-white">Customer Support</p>
+          <div class="flex items-center gap-1.5">
+            <span class="h-2 w-2 rounded-full bg-green-400"></span>
+            <span class="text-[11px] text-white/50">Online</span>
+          </div>
+        </div>
+      </div>
+      <button data-action="chat-widget#close" class="rounded-full p-1.5 text-white/50 transition-colors hover:text-white hover:bg-white/10 cursor-pointer">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div data-chat-widget-target="messages" class="h-[350px] overflow-y-auto px-4 py-4 space-y-1" id="chat-messages">
+      <!-- Welcome message -->
+      <div class="flex justify-start mb-3">
+        <div class="max-w-[80%] rounded-2xl rounded-bl-md px-4 py-2.5 text-sm" style="background: var(--cream); color: var(--text-body);">
+          Hi there! 👋 How can I help you today? Ask me about shipping, returns, payments, orders, or anything else!
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="px-4 pb-2 flex flex-wrap gap-1.5">
+      <% %w[Shipping Returns Payment Track\ Order Solar].each do |topic| %>
+        <button type="button"
+          onclick="document.querySelector('[data-chat-widget-target=input]').value='Tell me about <%= topic.downcase %>'; document.querySelector('[data-chat-widget-target=input]').form.requestSubmit()"
+          class="rounded-full px-3 py-1 text-[11px] font-medium transition-colors cursor-pointer"
+          style="background: var(--cream); color: var(--text-body);">
+          <%= topic %>
+        </button>
+      <% end %>
+    </div>
+
+    <!-- Input -->
+    <div class="border-t px-4 py-3" style="border-color: var(--cream);">
+      <form data-action="chat-widget#send" class="flex gap-2">
+        <input data-chat-widget-target="input" type="text" name="message" placeholder="Type a message..."
+          autocomplete="off"
+          class="flex-1 rounded-full border px-4 py-2.5 text-sm focus:outline-none min-h-[44px]"
+          style="border-color: var(--cream); color: var(--black);">
+        <button type="submit" class="flex h-[44px] w-[44px] items-center justify-center rounded-full transition-all duration-200 hover:opacity-80 cursor-pointer" style="background: var(--gold);">
+          <svg class="h-5 w-5" style="color: var(--black);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating Button -->
+  <button data-action="chat-widget#toggle"
+    class="flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"
+    style="background: var(--gold);">
+    <svg class="h-6 w-6" style="color: var(--black);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+    </svg>
+  </button>
+</div>

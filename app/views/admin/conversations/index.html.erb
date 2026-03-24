@@ -1,0 +1,40 @@
+<div class="flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Customer Conversations</h1>
+    <p class="mt-1 text-sm text-gray-500"><%= @unread_count %> unread messages</p>
+  </div>
+</div>
+
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <div class="divide-y divide-gray-100">
+    <% @conversations.each do |conv| %>
+      <% last_msg = ChatMessage.where(conversation_id: conv.conversation_id).order(created_at: :desc).first %>
+      <% unread = ChatMessage.where(conversation_id: conv.conversation_id, sender_type: "customer").unread.count %>
+      <%= link_to admin_conversation_path(conv.conversation_id), class: "flex items-center justify-between px-6 py-4 hover:bg-gray-50/50 transition-colors" do %>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2">
+            <p class="text-sm font-semibold text-gray-900">
+              <% if conv.conversation_id.start_with?("user_") %>
+                <% user = User.find_by(id: conv.conversation_id.delete_prefix("user_")) %>
+                <%= user&.full_name || "Customer" %>
+              <% else %>
+                Guest
+              <% end %>
+            </p>
+            <% if unread > 0 %>
+              <span class="flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white" style="background: var(--gold);"><%= unread %></span>
+            <% end %>
+          </div>
+          <p class="mt-0.5 truncate text-sm text-gray-500"><%= last_msg&.body&.truncate(60) %></p>
+        </div>
+        <div class="ml-4 text-right flex-shrink-0">
+          <p class="text-xs text-gray-400"><%= conv.last_at&.strftime("%b %d, %I:%M %p") %></p>
+          <p class="mt-0.5 text-xs text-gray-400"><%= conv.msg_count %> messages</p>
+        </div>
+      <% end %>
+    <% end %>
+    <% if @conversations.empty? %>
+      <div class="px-6 py-12 text-center text-sm text-gray-400">No conversations yet.</div>
+    <% end %>
+  </div>
+</div>

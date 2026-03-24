@@ -27,3 +27,6 @@ application.register("stripe-payment", StripePaymentController)
 
 import ToastController from "./toast_controller"
 application.register("toast", ToastController)
+
+import ChatWidgetController from "./chat_widget_controller"
+application.register("chat-widget", ChatWidgetController)

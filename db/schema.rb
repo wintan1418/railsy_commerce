@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_24_152803) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_24_170629) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -91,6 +91,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_24_152803) do
     t.index ["parent_id"], name: "index_categories_on_parent_id"
     t.index ["position"], name: "index_categories_on_position"
     t.index ["slug"], name: "index_categories_on_slug", unique: true
+  end
+
+  create_table "chat_messages", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "guest_token"
+    t.string "sender_type", default: "customer", null: false
+    t.text "body", null: false
+    t.datetime "read_at"
+    t.string "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id"], name: "index_chat_messages_on_conversation_id"
+    t.index ["guest_token"], name: "index_chat_messages_on_guest_token"
+    t.index ["user_id"], name: "index_chat_messages_on_user_id"
   end
 
   create_table "discounts", force: :cascade do |t|
@@ -475,6 +489,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_24_152803) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "variants"
   add_foreign_key "carts", "users"
+  add_foreign_key "chat_messages", "users"
   add_foreign_key "option_value_variants", "option_values"
   add_foreign_key "option_value_variants", "variants"
   add_foreign_key "option_values", "option_types"

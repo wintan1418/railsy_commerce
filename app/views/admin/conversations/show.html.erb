@@ -1,0 +1,62 @@
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Conversation</h1>
+    <p class="mt-1 text-sm text-gray-500">
+      <% if @conversation_id.start_with?("user_") %>
+        <% user = User.find_by(id: @conversation_id.delete_prefix("user_")) %>
+        <%= user&.full_name %> (<%= user&.email_address %>)
+      <% else %>
+        Guest visitor
+      <% end %>
+    </p>
+  </div>
+  <%= link_to "← All Conversations", admin_conversations_path, class: "text-sm font-medium", style: "color: var(--gold);" %>
+</div>
+
+<!-- Messages -->
+<div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <div class="h-[500px] overflow-y-auto p-6 space-y-1" id="admin-chat-messages">
+    <% @messages.each do |msg| %>
+      <% if msg.sender_type == "customer" %>
+        <div class="flex justify-start mb-3">
+          <div class="max-w-[70%] rounded-2xl rounded-bl-md px-4 py-2.5 text-sm bg-gray-100">
+            <p><%= msg.body %></p>
+            <p class="mt-1 text-[10px] text-gray-400"><%= msg.created_at.strftime("%b %d, %I:%M %p") %></p>
+          </div>
+        </div>
+      <% elsif msg.sender_type == "bot" %>
+        <div class="flex justify-end mb-3">
+          <div class="max-w-[70%] rounded-2xl rounded-br-md px-4 py-2.5 text-sm bg-blue-50 text-blue-900">
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-blue-500">Bot</span>
+            <p class="mt-0.5"><%= msg.body %></p>
+            <p class="mt-1 text-[10px] text-blue-400"><%= msg.created_at.strftime("%b %d, %I:%M %p") %></p>
+          </div>
+        </div>
+      <% else %>
+        <div class="flex justify-end mb-3">
+          <div class="max-w-[70%] rounded-2xl rounded-br-md px-4 py-2.5 text-sm" style="background: var(--gold); color: var(--black);">
+            <span class="text-[10px] font-semibold uppercase tracking-wider" style="color: rgba(0,0,0,0.5);">Agent: <%= msg.user&.full_name %></span>
+            <p class="mt-0.5"><%= msg.body %></p>
+            <p class="mt-1 text-[10px]" style="color: rgba(0,0,0,0.4);"><%= msg.created_at.strftime("%b %d, %I:%M %p") %></p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <!-- Reply Form -->
+  <div class="border-t p-4" style="border-color: var(--cream);">
+    <%= form_with url: reply_admin_conversation_path(@conversation_id), method: :post, class: "flex gap-3" do |f| %>
+      <input type="text" name="message" required placeholder="Type your reply..." autofocus
+        class="flex-1 rounded-lg border px-4 py-2.5 text-sm focus:outline-none focus:ring-1"
+        style="border-color: var(--light-gray);">
+      <button type="submit" class="rounded-lg px-6 py-2.5 text-sm font-semibold text-white cursor-pointer" style="background: var(--gold); color: var(--black);">
+        Send Reply
+      </button>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.getElementById('admin-chat-messages').scrollTop = document.getElementById('admin-chat-messages').scrollHeight
+</script>

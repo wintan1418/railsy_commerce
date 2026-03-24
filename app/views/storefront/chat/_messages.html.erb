@@ -1,0 +1,22 @@
+<% messages.each do |msg| %>
+  <% if msg.sender_type == "customer" %>
+    <div class="flex justify-end mb-3">
+      <div class="max-w-[80%] rounded-2xl rounded-br-md px-4 py-2.5 text-sm" style="background: var(--gold); color: var(--black);">
+        <%= msg.body %>
+      </div>
+    </div>
+  <% elsif msg.sender_type == "bot" %>
+    <div class="flex justify-start mb-3">
+      <div class="max-w-[80%] rounded-2xl rounded-bl-md px-4 py-2.5 text-sm" style="background: var(--cream); color: var(--text-body);">
+        🤖 <%= msg.body %>
+      </div>
+    </div>
+  <% else %>
+    <div class="flex justify-start mb-3">
+      <div class="max-w-[80%] rounded-2xl rounded-bl-md px-4 py-2.5 text-sm border" style="background: white; border-color: var(--gold); color: var(--text-body);">
+        <span class="text-[10px] font-semibold uppercase tracking-wider block mb-1" style="color: var(--gold);">Support Agent</span>
+        <%= msg.body %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

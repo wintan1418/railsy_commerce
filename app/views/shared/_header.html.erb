@@ -96,6 +96,16 @@
                     <p class="text-sm font-medium" style="color: var(--black);"><%= current_user&.first_name %> <%= current_user&.last_name %></p>
                     <p class="text-xs truncate" style="color: var(--mid-gray);"><%= current_user&.email_address %></p>
                   </div>
+                  <%= link_to "My Account", account_root_path,
+                    class: "block rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150",
+                    style: "color: var(--black);" %>
+                  <%= link_to "My Orders", account_orders_path,
+                    class: "block rounded-md px-3 py-2 text-sm transition-colors duration-150",
+                    style: "color: var(--text-body);" %>
+                  <%= link_to "Wishlist", account_wishlist_path,
+                    class: "block rounded-md px-3 py-2 text-sm transition-colors duration-150",
+                    style: "color: var(--text-body);" %>
+                  <div class="border-t my-1" style="border-color: var(--cream);"></div>
                   <%= button_to "Sign out", session_path, method: :delete,
                     class: "w-full text-left rounded-md px-3 py-2 text-sm transition-colors duration-150 cursor-pointer",
                     style: "color: var(--red);" %>

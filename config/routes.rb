@@ -31,7 +31,7 @@ Rails.application.routes.draw do
 
   # Customer Account
   namespace :account do
-    root "orders#index"
+    root "dashboard#show"
     resources :orders, only: %i[index show] do
       resources :returns, only: %i[new create]
     end

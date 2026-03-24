@@ -1687,6 +1687,85 @@ puts "  #{ThemeSetting.count} theme settings created"
 
 puts ""
 puts "Seeding complete!"
+# ─── Vendor User ──────────────────────────────────────────────────
+vendor = User.find_or_create_by!(email_address: "vendor@example.com") do |u|
+  u.password = "password"
+  u.first_name = "Solar"
+  u.last_name = "Solutions"
+  u.role = :vendor
+  u.vendor_name = "GreenPower Solar"
+  u.vendor_description = "Nigeria's leading solar energy provider. We supply panels, batteries, inverters, and complete installation services."
+  u.phone = "+234 800 123 4567"
+  u.vendor_verified = true
+end
+puts "  Vendor: vendor@example.com / password (GreenPower Solar)"
+
+# Assign solar products to vendor
+Category.find_by(name: "Solar & Renewable Energy")&.children&.each do |cat|
+  cat.products.update_all(vendor_id: vendor.id)
+end
+
+# ─── Demo Customer Data (customer@example.com) ──────────────────
+demo_customer = User.find_by(email_address: "customer@example.com")
+if demo_customer
+  # Wishlist
+  wishlist = demo_customer.wishlist || demo_customer.create_wishlist
+  if wishlist.wishlist_items.empty?
+    popular = Variant.where(is_master: true).limit(5)
+    popular.each { |v| wishlist.wishlist_items.find_or_create_by!(variant: v) }
+    puts "  Added #{wishlist.wishlist_items.count} items to demo customer wishlist"
+  end
+
+  # Ensure demo customer has an address
+  if demo_customer.addresses.empty?
+    demo_customer.addresses.create!(
+      first_name: "Alex", last_name: "Taylor",
+      address_line_1: "42 Commerce Street", city: "Lagos",
+      state: "LA", postal_code: "100001", country_code: "NG",
+      phone: "+234 812 345 6789"
+    )
+  end
+
+  # Tracking updates for demo customer orders
+  demo_customer.orders.limit(3).each_with_index do |order, idx|
+    next if order.tracking_updates.any?
+
+    order.update!(tracking_number: "TRK#{SecureRandom.alphanumeric(10).upcase}")
+
+    base_time = order.created_at
+    updates = [
+      { status: "order_placed", description: "Your order has been received and is being processed.", location: "Online", created_at: base_time },
+      { status: "confirmed", description: "Payment confirmed. Your order is being prepared.", location: "Lagos Fulfillment Center", created_at: base_time + 2.hours }
+    ]
+
+    if idx > 0
+      updates += [
+        { status: "processing", description: "Your items have been picked and packed.", location: "Lagos Fulfillment Center", created_at: base_time + 1.day },
+        { status: "picked_up", description: "Package picked up by courier.", location: "Lagos Hub", created_at: base_time + 1.day + 4.hours }
+      ]
+    end
+
+    if idx > 1
+      updates += [
+        { status: "in_transit", description: "Package in transit to your city.", location: "National Sorting Center", created_at: base_time + 2.days },
+        { status: "out_for_delivery", description: "Your package is out for delivery. Estimated arrival today.", location: "Local Delivery Station", created_at: base_time + 3.days, estimated_delivery: base_time + 3.days + 6.hours }
+      ]
+    end
+
+    updates.each do |data|
+      order.tracking_updates.find_or_create_by!(status: data[:status]) do |tu|
+        tu.description = data[:description]
+        tu.location = data[:location]
+        tu.estimated_delivery = data[:estimated_delivery]
+        tu.created_at = data[:created_at]
+      end
+    end
+  end
+  puts "  Added tracking updates for demo customer orders"
+end
+
+puts ""
+puts "Seeding complete!"
 puts "  Products: #{Product.count}"
 puts "  Categories: #{Category.count} (#{Category.roots.count} root)"
 puts "  Variants: #{Variant.count}"

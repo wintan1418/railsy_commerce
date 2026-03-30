@@ -1,0 +1,28 @@
+<h1 class="text-lg font-bold" style="color: var(--black);"><%= @filter.capitalize %> Deliveries</h1>
+
+<div class="mt-4 space-y-3">
+  <% @deliveries.each do |delivery| %>
+    <div class="rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-900/5">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-semibold" style="color: var(--black);"><%= delivery.order.number %></p>
+          <p class="text-xs mt-0.5" style="color: var(--mid-gray);"><%= delivery.delivery_address || "TBD" %></p>
+        </div>
+        <div class="text-right">
+          <span class="rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase capitalize" style="background: var(--cream); color: var(--text-body);"><%= delivery.status.humanize %></span>
+          <% if delivery.delivery_fee_cents > 0 %>
+            <p class="mt-1 text-xs font-bold" style="color: var(--gold);"><%= Money.new(delivery.delivery_fee_cents, "USD").format %></p>
+          <% end %>
+        </div>
+      </div>
+      <div class="mt-3">
+        <%= link_to "View", rider_delivery_path(delivery), class: "block w-full rounded-lg py-2.5 text-center text-xs font-semibold uppercase tracking-wider min-h-[44px] flex items-center justify-center", style: "background: var(--cream); color: var(--black);" %>
+      </div>
+    </div>
+  <% end %>
+  <% if @deliveries.empty? %>
+    <div class="rounded-xl bg-white p-8 text-center shadow-sm ring-1 ring-gray-900/5">
+      <p class="text-sm" style="color: var(--mid-gray);">No deliveries here.</p>
+    </div>
+  <% end %>
+</div>

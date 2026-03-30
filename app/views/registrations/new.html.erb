@@ -123,21 +123,29 @@
         <!-- Role Selection -->
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-body);">I want to</label>
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-3 gap-3">
             <label class="relative cursor-pointer">
               <%= form.radio_button :role, "customer", class: "peer sr-only", checked: true %>
-              <div class="rounded-lg border-2 p-4 text-center transition-all duration-200 peer-checked:border-[var(--gold)] peer-checked:bg-[rgba(201,169,110,0.05)]" style="border-color: var(--cream);">
-                <svg class="mx-auto h-6 w-6 mb-2" style="color: var(--mid-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" /></svg>
+              <div class="rounded-lg border-2 p-3 sm:p-4 text-center transition-all duration-200 peer-checked:border-[var(--gold)] peer-checked:bg-[rgba(201,169,110,0.05)]" style="border-color: var(--cream);">
+                <svg class="mx-auto h-6 w-6 mb-1.5" style="color: var(--mid-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" /></svg>
                 <p class="text-sm font-semibold" style="color: var(--black);">Shop</p>
-                <p class="text-[11px] mt-0.5" style="color: var(--mid-gray);">Buy products</p>
+                <p class="text-[10px] mt-0.5" style="color: var(--mid-gray);">Buy products</p>
               </div>
             </label>
             <label class="relative cursor-pointer">
               <%= form.radio_button :role, "vendor", class: "peer sr-only" %>
-              <div class="rounded-lg border-2 p-4 text-center transition-all duration-200 peer-checked:border-[var(--gold)] peer-checked:bg-[rgba(201,169,110,0.05)]" style="border-color: var(--cream);">
-                <svg class="mx-auto h-6 w-6 mb-2" style="color: var(--mid-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016A3.001 3.001 0 0021 9.349m-18 0a2.999 2.999 0 00.75-1.974V5.25A2.25 2.25 0 016 3h12a2.25 2.25 0 012.25 2.25v2.125a3 3 0 01-.75 1.974" /></svg>
+              <div class="rounded-lg border-2 p-3 sm:p-4 text-center transition-all duration-200 peer-checked:border-[var(--gold)] peer-checked:bg-[rgba(201,169,110,0.05)]" style="border-color: var(--cream);">
+                <svg class="mx-auto h-6 w-6 mb-1.5" style="color: var(--mid-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35" /></svg>
                 <p class="text-sm font-semibold" style="color: var(--black);">Sell</p>
-                <p class="text-[11px] mt-0.5" style="color: var(--mid-gray);">List & sell products</p>
+                <p class="text-[10px] mt-0.5" style="color: var(--mid-gray);">List products</p>
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <%= form.radio_button :role, "rider", class: "peer sr-only" %>
+              <div class="rounded-lg border-2 p-3 sm:p-4 text-center transition-all duration-200 peer-checked:border-[var(--gold)] peer-checked:bg-[rgba(201,169,110,0.05)]" style="border-color: var(--cream);">
+                <svg class="mx-auto h-6 w-6 mb-1.5" style="color: var(--mid-gray);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg>
+                <p class="text-sm font-semibold" style="color: var(--black);">Deliver</p>
+                <p class="text-[10px] mt-0.5" style="color: var(--mid-gray);">Ride & earn</p>
               </div>
             </label>
           </div>
@@ -184,11 +192,11 @@
             placeholder: "Repeat your password" %>
         </div>
 
-        <!-- Vendor Fields (shown via JS when vendor role selected) -->
+        <!-- Extra Fields (shown via JS for vendor/rider) -->
         <div id="vendor-fields" class="space-y-4 hidden">
           <div class="rounded-lg p-4" style="background: rgba(201,169,110,0.05); border: 1px solid rgba(201,169,110,0.2);">
-            <p class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--gold);">Business Details</p>
-            <div>
+            <p id="extra-fields-title" class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--gold);">Business Details</p>
+            <div id="vendor-name-field">
               <%= form.label :vendor_name, "Business / Store Name", class: "block text-xs font-semibold uppercase tracking-wider", style: "color: var(--text-body);" %>
               <%= form.text_field :vendor_name,
                 class: "mt-2 block w-full rounded-lg border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2",
@@ -197,7 +205,7 @@
             </div>
             <div class="mt-3">
               <%= form.label :phone, "Phone Number", class: "block text-xs font-semibold uppercase tracking-wider", style: "color: var(--text-body);" %>
-              <%= form.telephone_field :phone,
+              <%= form.telephone_field :phone, required: false,
                 class: "mt-2 block w-full rounded-lg border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2",
                 style: "border-color: var(--cream); color: var(--black); background: white; --tw-ring-color: var(--gold);",
                 placeholder: "+234 800 000 0000" %>
@@ -208,7 +216,11 @@
         <script>
           document.querySelectorAll('input[name="user[role]"]').forEach(radio => {
             radio.addEventListener('change', () => {
-              document.getElementById('vendor-fields').classList.toggle('hidden', radio.value !== 'vendor')
+              const isVendor = radio.value === 'vendor'
+              const isRider = radio.value === 'rider'
+              document.getElementById('vendor-fields').classList.toggle('hidden', !isVendor && !isRider)
+              document.getElementById('vendor-name-field').classList.toggle('hidden', isRider)
+              document.getElementById('extra-fields-title').textContent = isRider ? 'Rider Details' : 'Business Details'
             })
           })
         </script>

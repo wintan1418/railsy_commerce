@@ -73,6 +73,7 @@ Rails.application.routes.draw do
     resources :conversations, only: %i[index show] do
       post :reply, on: :member
     end
+    resources :deliveries, only: %i[index create]
     resource :import, only: %i[new create], controller: "imports"
     resource :theme, only: %i[show update], controller: "theme"
     resource :settings, only: %i[show update], controller: "settings"
@@ -84,6 +85,19 @@ Rails.application.routes.draw do
     root "dashboard#show"
     resources :products
     resources :orders, only: %i[index show update]
+  end
+
+  # Rider Dashboard
+  namespace :rider do
+    root "dashboard#show"
+    resources :deliveries, only: %i[index show] do
+      member do
+        post :accept
+        post :pick_up
+        post :in_transit
+        post :complete
+      end
+    end
   end
 
   # API

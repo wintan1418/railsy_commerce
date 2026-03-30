@@ -1,0 +1,34 @@
+<div class="flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-gray-900">Deliveries</h1>
+</div>
+<div class="mt-4 flex gap-2">
+  <%= link_to "All", admin_deliveries_path, class: "rounded-full px-4 py-2 text-sm font-medium #{params[:status].blank? ? 'bg-gray-900 text-white' : 'bg-white text-gray-700 ring-1 ring-gray-200'}" %>
+  <% %w[pending assigned accepted picked_up in_transit delivered].each do |s| %>
+    <%= link_to s.humanize, admin_deliveries_path(status: s), class: "rounded-full px-4 py-2 text-sm font-medium #{params[:status] == s ? 'bg-gray-900 text-white' : 'bg-white text-gray-700 ring-1 ring-gray-200'}" %>
+  <% end %>
+</div>
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <table class="min-w-full divide-y divide-gray-100">
+    <thead><tr class="bg-gray-50/50">
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Order</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Rider</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Status</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Fee</th>
+      <th class="px-6 py-3 text-left text-xs font-semibold uppercase text-gray-500">Date</th>
+    </tr></thead>
+    <tbody class="divide-y divide-gray-100">
+      <% @deliveries.each do |d| %>
+        <tr>
+          <td class="px-6 py-4 text-sm font-semibold"><%= link_to d.order.number, admin_order_path(d.order), style: "color: var(--gold);" %></td>
+          <td class="px-6 py-4 text-sm text-gray-500"><%= d.rider&.full_name || "Unassigned" %></td>
+          <td class="px-6 py-4"><span class="rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize bg-gray-100 text-gray-700"><%= d.status.humanize %></span></td>
+          <td class="px-6 py-4 text-sm"><%= Money.new(d.delivery_fee_cents, "USD").format %></td>
+          <td class="px-6 py-4 text-xs text-gray-400"><%= d.created_at.strftime("%b %d, %Y") %></td>
+        </tr>
+      <% end %>
+      <% if @deliveries.empty? %>
+        <tr><td colspan="5" class="px-6 py-12 text-center text-sm text-gray-400">No deliveries.</td></tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

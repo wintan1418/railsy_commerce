@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_30_120133) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_30_143734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -105,6 +105,29 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_30_120133) do
     t.index ["conversation_id"], name: "index_chat_messages_on_conversation_id"
     t.index ["guest_token"], name: "index_chat_messages_on_guest_token"
     t.index ["user_id"], name: "index_chat_messages_on_user_id"
+  end
+
+  create_table "deliveries", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "rider_id"
+    t.bigint "assigned_by_id"
+    t.string "status", default: "pending", null: false
+    t.string "pickup_address"
+    t.string "delivery_address"
+    t.string "rider_phone"
+    t.datetime "accepted_at"
+    t.datetime "picked_up_at"
+    t.datetime "delivered_at"
+    t.text "rider_notes"
+    t.integer "delivery_fee_cents", default: 0
+    t.string "current_location"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assigned_by_id"], name: "index_deliveries_on_assigned_by_id"
+    t.index ["order_id"], name: "index_deliveries_on_order_id"
+    t.index ["rider_id", "status"], name: "index_deliveries_on_rider_id_and_status"
+    t.index ["rider_id"], name: "index_deliveries_on_rider_id"
+    t.index ["status"], name: "index_deliveries_on_status"
   end
 
   create_table "discounts", force: :cascade do |t|
@@ -504,6 +527,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_30_120133) do
   add_foreign_key "cart_items", "variants"
   add_foreign_key "carts", "users"
   add_foreign_key "chat_messages", "users"
+  add_foreign_key "deliveries", "orders"
+  add_foreign_key "deliveries", "users", column: "assigned_by_id"
+  add_foreign_key "deliveries", "users", column: "rider_id"
   add_foreign_key "notifications", "users"
   add_foreign_key "option_value_variants", "option_values"
   add_foreign_key "option_value_variants", "variants"

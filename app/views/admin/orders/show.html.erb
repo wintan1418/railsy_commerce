@@ -104,3 +104,61 @@
     </div>
   </div>
 </div>
+
+<!-- Delivery Assignment -->
+<div class="mt-8">
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-lg font-semibold text-gray-900">Delivery</h2>
+    <% if @order.delivery %>
+      <div class="mt-4 grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-xs uppercase tracking-wider text-gray-500">Status</p>
+          <p class="mt-1 text-sm font-semibold capitalize"><%= @order.delivery.status.humanize %></p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-wider text-gray-500">Rider</p>
+          <p class="mt-1 text-sm"><%= @order.delivery.rider&.full_name || "Unassigned (waiting for rider)" %></p>
+        </div>
+        <% if @order.delivery.rider_phone.present? %>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-gray-500">Rider Phone</p>
+            <p class="mt-1 text-sm"><%= @order.delivery.rider_phone %></p>
+          </div>
+        <% end %>
+        <% if @order.delivery.delivery_fee_cents > 0 %>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-gray-500">Delivery Fee</p>
+            <p class="mt-1 text-sm"><%= Money.new(@order.delivery.delivery_fee_cents, "USD").format %></p>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="mt-2 text-sm text-gray-500">No delivery assigned yet.</p>
+      <%= form_with url: admin_deliveries_path, method: :post, class: "mt-4 space-y-4" do |f| %>
+        <%= f.hidden_field :order_id, value: @order.id %>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Assign Rider (optional)</label>
+            <select name="rider_id" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm">
+              <option value="">Leave for riders to accept</option>
+              <% User.rider.each do |rider| %>
+                <option value="<%= rider.id %>"><%= rider.full_name %> (<%= rider.phone %>)</option>
+              <% end %>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Delivery Fee ($)</label>
+            <input type="number" name="delivery_fee" step="0.01" value="5.00" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Pickup Address</label>
+            <input type="text" name="pickup_address" value="Main Warehouse" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm">
+          </div>
+        </div>
+        <button type="submit" class="rounded-lg px-6 py-2.5 text-sm font-semibold text-white cursor-pointer" style="background: var(--gold); color: var(--black);">
+          Create Delivery
+        </button>
+      <% end %>
+    <% end %>
+  </div>
+</div>

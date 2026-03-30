@@ -15,10 +15,13 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  enum :role, { customer: "customer", vendor: "vendor", admin: "admin" }
+  enum :role, { customer: "customer", vendor: "vendor", rider: "rider", admin: "admin" }
 
   # Vendor products
   has_many :vendor_products, class_name: "Product", foreign_key: :vendor_id, dependent: :nullify
+
+  # Rider deliveries
+  has_many :deliveries, foreign_key: :rider_id, dependent: :nullify
 
   validates :email_address, presence: true, uniqueness: true,
     format: { with: URI::MailTo::EMAIL_REGEXP }

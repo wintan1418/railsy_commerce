@@ -5,6 +5,6 @@ class CreateWishlistItems < ActiveRecord::Migration[8.0]
       t.references :variant, null: false, foreign_key: true
       t.timestamps
     end
-    add_index :wishlist_items, [:wishlist_id, :variant_id], unique: true
+    add_index :wishlist_items, [ :wishlist_id, :variant_id ], unique: true
   end
 end

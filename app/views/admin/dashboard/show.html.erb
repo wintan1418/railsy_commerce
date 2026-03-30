@@ -26,12 +26,35 @@
   </div>
 </div>
 
-<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
-  <!-- Orders by Status -->
+<!-- Charts -->
+<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3"
+     data-controller="admin-chart"
+     data-admin-chart-revenue-data-value="<%= @data[:revenue_by_day].to_json %>"
+     data-admin-chart-status-data-value="<%= @data[:orders_by_status].to_json %>">
+  <!-- Revenue Chart -->
   <div class="lg:col-span-2 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+    <div class="border-b border-gray-100 px-6 py-4">
+      <h2 class="text-base font-semibold text-gray-900">Revenue (Last 30 Days)</h2>
+    </div>
+    <div class="p-6" style="height: 300px;">
+      <canvas data-admin-chart-target="revenueCanvas"></canvas>
+    </div>
+  </div>
+
+  <!-- Orders by Status Doughnut -->
+  <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
     <div class="border-b border-gray-100 px-6 py-4">
       <h2 class="text-base font-semibold text-gray-900">Orders by Status</h2>
     </div>
+    <div class="p-6" style="height: 300px;">
+      <canvas data-admin-chart-target="statusCanvas"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Orders by Status Counts -->
+<div class="mt-8">
+  <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
     <div class="grid grid-cols-3 gap-4 p-6 sm:grid-cols-6">
       <% @data[:orders_by_status].each do |status, count| %>
         <div class="text-center">
@@ -41,7 +64,9 @@
       <% end %>
     </div>
   </div>
+</div>
 
+<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
   <!-- Top Products -->
   <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
     <div class="border-b border-gray-100 px-6 py-4">
@@ -62,10 +87,8 @@
       <% end %>
     </div>
   </div>
-</div>
 
-<!-- Recent Orders & Low Stock -->
-<div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+  <!-- Recent Orders -->
   <div class="lg:col-span-2 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
     <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
       <h2 class="text-base font-semibold text-gray-900">Recent Orders</h2>
@@ -92,8 +115,10 @@
       </table>
     </div>
   </div>
+</div>
 
-  <!-- Low Stock -->
+<!-- Low Stock -->
+<div class="mt-8">
   <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
     <div class="border-b border-gray-100 px-6 py-4">
       <h2 class="text-base font-semibold text-gray-900">Low Stock Alerts</h2>

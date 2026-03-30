@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_one :wishlist, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :return_requests, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 

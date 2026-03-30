@@ -16,6 +16,8 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem "cssbundling-rails"
+# CSV parsing (removed from default gems in Ruby 3.4)
+gem "csv"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
@@ -46,7 +48,7 @@ gem "image_processing", "~> 1.2"
 gem "aws-sdk-s3", require: false
 
 # Environment variables
-gem "dotenv-rails", groups: [:development, :test]
+gem "dotenv-rails", groups: [ :development, :test ]
 
 # OAuth / Google Sign-In
 gem "omniauth"

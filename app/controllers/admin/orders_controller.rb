@@ -29,6 +29,17 @@ module Admin
             data: { from: old_status, to: @order.status },
             user: current_user
           )
+
+          # Create notification for the customer
+          if @order.user
+            Notification.create!(
+              user: @order.user,
+              title: "Order #{@order.number} #{@order.status}",
+              body: "Your order status has been updated to #{@order.status}.",
+              notification_type: "order",
+              url: "/account/orders/#{@order.id}"
+            )
+          end
         end
         redirect_to admin_order_path(@order), notice: "Order updated."
       else

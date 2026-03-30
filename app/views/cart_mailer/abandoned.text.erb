@@ -1,0 +1,14 @@
+Hi <%= @user.first_name %>,
+
+You left items in your cart at RailsyCommerce!
+
+Your cart items:
+<% @cart_items.each do |item| %>
+- <%= item.variant.product.name %> (Qty: <%= item.quantity %>) - <%= item.subtotal.format %>
+<% end %>
+
+Complete your purchase: <%= cart_url %>
+
+If you have any questions, just reply to this email.
+
+RailsyCommerce

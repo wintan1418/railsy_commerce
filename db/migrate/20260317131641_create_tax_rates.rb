@@ -8,6 +8,6 @@ class CreateTaxRates < ActiveRecord::Migration[8.0]
       t.boolean :active, default: true
       t.timestamps
     end
-    add_index :tax_rates, [:country_code, :state]
+    add_index :tax_rates, [ :country_code, :state ]
   end
 end

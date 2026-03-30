@@ -9,7 +9,7 @@ class CreateTrackingUpdates < ActiveRecord::Migration[8.0]
       t.references :updated_by, foreign_key: { to_table: :users }
       t.timestamps
     end
-    add_index :tracking_updates, [:order_id, :created_at]
+    add_index :tracking_updates, [ :order_id, :created_at ]
 
     add_column :orders, :tracking_number, :string
     add_index :orders, :tracking_number

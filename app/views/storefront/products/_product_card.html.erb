@@ -106,5 +106,15 @@
         <% end %>
       </div>
     <% end %>
+
+    <!-- Compare Checkbox -->
+    <div class="mt-2 flex items-center gap-1.5">
+      <input type="checkbox"
+        data-compare-target="checkbox"
+        data-action="compare#toggle"
+        data-product-id="<%= product.id %>"
+        class="h-3.5 w-3.5 rounded border-gray-300 cursor-pointer accent-[var(--gold)]">
+      <label class="text-[11px]" style="color: var(--mid-gray);">Compare</label>
+    </div>
   </div>
 </div>

@@ -66,21 +66,21 @@ puts "  #{root_categories.count} root categories created"
 
 # ─── Subcategories ─────────────────────────────────────────────────
 subcategories_map = {
-  "Fashion & Clothing" => ["T-Shirts", "Hoodies & Sweaters", "Pants & Jeans", "Jackets & Coats", "Dresses", "Activewear"],
-  "Electronics" => ["Laptops", "Smartphones", "Headphones & Audio", "Wearables", "Cameras"],
-  "Home & Kitchen" => ["Cookware", "Furniture", "Bedding", "Lighting", "Organization"],
-  "Sports & Fitness" => ["Running", "Yoga & Fitness", "Hiking & Camping", "Cycling"],
-  "Accessories" => ["Bags & Backpacks", "Watches", "Sunglasses", "Jewelry"],
-  "Beauty & Wellness" => ["Skincare", "Fragrances", "Hair Care", "Supplements"],
-  "Food & Groceries" => ["Fresh Produce", "Snacks", "Beverages", "Pantry Essentials"],
-  "Restaurant & Meals" => ["Pizza", "Burgers", "Sushi", "Desserts", "Coffee & Tea"],
-  "Drinks" => ["Wine", "Craft Beer", "Spirits", "Smoothies & Juice"],
-  "Baby & Kids" => ["Baby Clothing", "Toys", "Baby Care", "Kids Education"],
-  "Pet Supplies" => ["Dogs", "Cats", "Fish & Aquarium"],
-  "Books & Stationery" => ["Fiction", "Non-Fiction", "Journals", "Art Supplies"],
-  "Automotive" => ["Car Accessories", "Car Care", "Tools"],
-  "Solar & Renewable Energy" => ["Solar Panels", "Lithium Batteries", "Tubular Batteries", "Inverters", "Solar Accessories", "Installation Services"],
-  "Gaming" => ["Consoles", "PC Gaming", "Gaming Accessories"]
+  "Fashion & Clothing" => [ "T-Shirts", "Hoodies & Sweaters", "Pants & Jeans", "Jackets & Coats", "Dresses", "Activewear" ],
+  "Electronics" => [ "Laptops", "Smartphones", "Headphones & Audio", "Wearables", "Cameras" ],
+  "Home & Kitchen" => [ "Cookware", "Furniture", "Bedding", "Lighting", "Organization" ],
+  "Sports & Fitness" => [ "Running", "Yoga & Fitness", "Hiking & Camping", "Cycling" ],
+  "Accessories" => [ "Bags & Backpacks", "Watches", "Sunglasses", "Jewelry" ],
+  "Beauty & Wellness" => [ "Skincare", "Fragrances", "Hair Care", "Supplements" ],
+  "Food & Groceries" => [ "Fresh Produce", "Snacks", "Beverages", "Pantry Essentials" ],
+  "Restaurant & Meals" => [ "Pizza", "Burgers", "Sushi", "Desserts", "Coffee & Tea" ],
+  "Drinks" => [ "Wine", "Craft Beer", "Spirits", "Smoothies & Juice" ],
+  "Baby & Kids" => [ "Baby Clothing", "Toys", "Baby Care", "Kids Education" ],
+  "Pet Supplies" => [ "Dogs", "Cats", "Fish & Aquarium" ],
+  "Books & Stationery" => [ "Fiction", "Non-Fiction", "Journals", "Art Supplies" ],
+  "Automotive" => [ "Car Accessories", "Car Care", "Tools" ],
+  "Solar & Renewable Energy" => [ "Solar Panels", "Lithium Batteries", "Tubular Batteries", "Inverters", "Solar Accessories", "Installation Services" ],
+  "Gaming" => [ "Consoles", "PC Gaming", "Gaming Accessories" ]
 }
 
 subcategories_map.each do |parent_name, children|
@@ -1491,7 +1491,7 @@ if Order.count == 0
       billing_address: address,
       status: statuses.sample,
       subtotal_cents: 0,
-      shipping_total_cents: [0, 999, 2499].sample,
+      shipping_total_cents: [ 0, 999, 2499 ].sample,
       tax_total_cents: 0,
       currency: "USD",
       created_at: rand(60).days.ago
@@ -1599,10 +1599,10 @@ if ProductRelation.count == 0
     same_category = products_list.select { |p| p.category_id == product.category_id && p.id != product.id }
     other_products = products_list.select { |p| p.category_id != product.category_id && p.id != product.id }
 
-    related = same_category.sample([2, same_category.size].min) + other_products.sample(1)
+    related = same_category.sample([ 2, same_category.size ].min) + other_products.sample(1)
     related.compact.each_with_index do |rel, i|
       ProductRelation.find_or_create_by!(product: product, related_product: rel) do |pr|
-        pr.relation_type = i == 0 ? :related : [:cross_sell, :up_sell].sample
+        pr.relation_type = i == 0 ? :related : [ :cross_sell, :up_sell ].sample
         pr.position = i
       end
     end

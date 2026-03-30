@@ -1,6 +1,6 @@
 module Account
   class ReturnsController < BaseController
-    before_action :set_order, only: [:new, :create]
+    before_action :set_order, only: [ :new, :create ]
 
     def new
       @return_request = @order.return_requests.build
@@ -33,7 +33,7 @@ module Account
     def return_params
       params.require(:return_request).permit(
         :reason, :notes,
-        return_items_attributes: [:order_item_id, :quantity, :reason]
+        return_items_attributes: [ :order_item_id, :quantity, :reason ]
       )
     end
   end

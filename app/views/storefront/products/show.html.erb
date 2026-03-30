@@ -317,6 +317,11 @@
     <% end %>
   </section>
 
+  <!-- Social Sharing -->
+  <section class="mt-16 border-t pt-8" style="border-color: var(--cream);">
+    <%= render "shared/social_share", product: @product %>
+  </section>
+
   <!-- You May Also Like -->
   <% related = @product.related(limit: 4) %>
   <% if related.any? %>
@@ -325,6 +330,19 @@
       <h2 class="mt-2 font-display text-2xl font-light tracking-tight" style="color: var(--black);">You May Also <em class="italic">Like</em></h2>
       <div class="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
         <% related.each do |product| %>
+          <%= render "storefront/products/product_card", product: product %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- Recently Viewed -->
+  <% if @recently_viewed.any? %>
+    <section class="mt-20 border-t pt-16" style="border-color: var(--cream);">
+      <p class="text-xs font-semibold uppercase tracking-[0.25em]" style="color: var(--gold);">Your History</p>
+      <h2 class="mt-2 font-display text-2xl font-light tracking-tight" style="color: var(--black);">Recently <em class="italic">Viewed</em></h2>
+      <div class="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+        <% @recently_viewed.first(4).each do |product| %>
           <%= render "storefront/products/product_card", product: product %>
         <% end %>
       </div>

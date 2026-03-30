@@ -6,6 +6,11 @@ class ExpireAbandonedCartsJob < ApplicationJob
     count = abandoned_carts.count
 
     abandoned_carts.find_each do |cart|
+      # Send abandoned cart email if user has email and cart has items
+      if cart.user&.email_address.present? && cart.cart_items.any?
+        CartMailer.abandoned(cart).deliver_later
+      end
+
       cart.cart_items.includes(:variant).each do |item|
         Inventory::ReleaseStockService.call(
           variant: item.variant,

@@ -33,17 +33,25 @@ Rails.application.routes.draw do
     get :confirm
   end
 
+  # Product Comparison
+  get "compare", to: "storefront/compare#show", as: :compare
+
   # Customer Account
   namespace :account do
     root "dashboard#show"
     resources :orders, only: %i[index show] do
       resources :returns, only: %i[new create]
+      resource :receipt, only: %i[show], controller: "receipts"
     end
     resources :returns, only: %i[show]
     resources :addresses
     resource :profile, only: %i[show update], controller: "profile"
     resource :wishlist, only: %i[show] do
       post :toggle, on: :member
+    end
+    resources :notifications, only: %i[index] do
+      post :mark_read, on: :member
+      post :mark_all_read, on: :collection
     end
   end
 
@@ -65,6 +73,7 @@ Rails.application.routes.draw do
     resources :conversations, only: %i[index show] do
       post :reply, on: :member
     end
+    resource :import, only: %i[new create], controller: "imports"
     resource :theme, only: %i[show update], controller: "theme"
     resource :settings, only: %i[show update], controller: "settings"
     resource :setup, only: %i[show update], controller: "setup"
@@ -80,9 +89,9 @@ Rails.application.routes.draw do
   # API
   namespace :api do
     namespace :v1 do
-      resources :products, only: [:index, :show]
-      resources :orders, only: [:index, :show]
-      resource :cart, only: [:show], controller: "cart" do
+      resources :products, only: [ :index, :show ]
+      resources :orders, only: [ :index, :show ]
+      resource :cart, only: [ :show ], controller: "cart" do
         post :add_item
         patch :update_item
         delete :remove_item

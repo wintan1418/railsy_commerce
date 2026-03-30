@@ -1,6 +1,6 @@
 module Admin
   class PagesController < BaseController
-    before_action :set_page, only: [:show, :edit, :update, :destroy]
+    before_action :set_page, only: [ :show, :edit, :update, :destroy ]
 
     def index
       @pages = Page.ordered

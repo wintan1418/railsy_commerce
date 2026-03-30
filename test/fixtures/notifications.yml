@@ -1,0 +1,25 @@
+order_notification:
+  user: customer
+  title: "Order RC-20260317-ABC123 confirmed"
+  body: "Your order status has been updated to confirmed."
+  notification_type: order
+  url: "/account/orders/1"
+
+unread_notification:
+  user: customer
+  title: "Welcome to RailsyCommerce"
+  body: "Thank you for creating an account!"
+  notification_type: info
+
+read_notification:
+  user: customer
+  title: "Your review was approved"
+  body: "Your review for Classic T-Shirt is now live."
+  notification_type: info
+  read_at: <%= 1.day.ago.to_fs(:db) %>
+
+admin_notification:
+  user: admin
+  title: "System update complete"
+  body: "The platform has been updated successfully."
+  notification_type: system

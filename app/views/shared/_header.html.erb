@@ -69,6 +69,8 @@
         <!-- User -->
         <% if authenticated? %>
           <div class="hidden sm:flex items-center gap-2">
+            <!-- Notification Bell -->
+            <%= render "shared/notification_bell" %>
             <% if current_user&.vendor? %>
               <%= link_to vendor_root_path, class: "rounded-full p-2 transition-colors duration-200 hover:opacity-70", style: "color: var(--gold);", title: "Vendor Dashboard" do %>
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">

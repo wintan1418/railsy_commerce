@@ -1,0 +1,159 @@
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <!-- Print-only header -->
+  <div class="hidden print:block mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold" style="font-family: 'Cormorant Garamond', serif;">RailsyCommerce</h1>
+      </div>
+      <div class="text-right text-sm text-gray-500">
+        <p>Invoice / Receipt</p>
+        <p><%= Date.current.strftime("%B %d, %Y") %></p>
+      </div>
+    </div>
+    <hr class="mt-4 border-gray-300">
+  </div>
+
+  <!-- Screen-only back link & print button -->
+  <div class="print:hidden flex items-center justify-between mb-8">
+    <%= link_to account_order_path(@order), class: "flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-70", style: "color: var(--gold);" do %>
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+      Back to Order
+    <% end %>
+    <button onclick="window.print()" class="flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-all duration-200 cursor-pointer hover:opacity-90" style="background: var(--gold); color: var(--black);">
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
+      </svg>
+      Print Receipt
+    </button>
+  </div>
+
+  <!-- Receipt Card -->
+  <div class="rounded-2xl bg-white p-8 sm:p-10 shadow-sm ring-1 ring-gray-900/5 print:shadow-none print:ring-0 print:p-0">
+    <!-- Store & Order Info -->
+    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
+      <div>
+        <h2 class="font-display text-2xl font-semibold print:text-xl" style="color: var(--black);">Receipt</h2>
+        <p class="mt-1 text-sm" style="color: var(--mid-gray);">Order #<%= @order.number %></p>
+        <p class="text-sm" style="color: var(--mid-gray);"><%= @order.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+      </div>
+      <div class="sm:text-right">
+        <p class="text-sm font-semibold" style="color: var(--black);">RailsyCommerce</p>
+        <p class="text-sm" style="color: var(--mid-gray);"><%= @order.email %></p>
+        <div class="mt-2">
+          <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold capitalize" style="background: rgba(201,169,110,0.15); color: var(--gold);">
+            <%= @order.status %>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-8" style="border-color: var(--cream);">
+
+    <!-- Addresses -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <% if @order.shipping_address %>
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wider" style="color: var(--gold);">Ship To</h3>
+          <div class="mt-2 text-sm" style="color: var(--text-body);">
+            <p><%= @order.shipping_address.full_name %></p>
+            <p><%= @order.shipping_address.address_line_1 %></p>
+            <% if @order.shipping_address.address_line_2.present? %><p><%= @order.shipping_address.address_line_2 %></p><% end %>
+            <p><%= @order.shipping_address.city %>, <%= @order.shipping_address.state %> <%= @order.shipping_address.postal_code %></p>
+          </div>
+        </div>
+      <% end %>
+      <% if @order.billing_address %>
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wider" style="color: var(--gold);">Bill To</h3>
+          <div class="mt-2 text-sm" style="color: var(--text-body);">
+            <p><%= @order.billing_address.full_name %></p>
+            <p><%= @order.billing_address.address_line_1 %></p>
+            <% if @order.billing_address.address_line_2.present? %><p><%= @order.billing_address.address_line_2 %></p><% end %>
+            <p><%= @order.billing_address.city %>, <%= @order.billing_address.state %> <%= @order.billing_address.postal_code %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <hr class="my-8" style="border-color: var(--cream);">
+
+    <!-- Items Table -->
+    <table class="w-full">
+      <thead>
+        <tr class="border-b" style="border-color: var(--cream);">
+          <th class="pb-3 text-left text-xs font-semibold uppercase tracking-wider" style="color: var(--mid-gray);">Item</th>
+          <th class="pb-3 text-center text-xs font-semibold uppercase tracking-wider" style="color: var(--mid-gray);">Qty</th>
+          <th class="pb-3 text-right text-xs font-semibold uppercase tracking-wider" style="color: var(--mid-gray);">Price</th>
+          <th class="pb-3 text-right text-xs font-semibold uppercase tracking-wider" style="color: var(--mid-gray);">Total</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y" style="border-color: var(--cream);">
+        <% @order_items.each do |item| %>
+          <tr>
+            <td class="py-4">
+              <div class="flex items-center gap-3">
+                <div class="print:hidden h-12 w-12 flex-shrink-0 rounded-lg overflow-hidden" style="background: var(--cream);">
+                  <% if item.variant.product.images.attached? %>
+                    <%= image_tag item.variant.product.images.first, class: "h-full w-full object-cover" %>
+                  <% end %>
+                </div>
+                <div>
+                  <p class="text-sm font-medium" style="color: var(--black);"><%= item.variant.product.name %></p>
+                  <p class="text-xs" style="color: var(--mid-gray);">SKU: <%= item.variant.sku %></p>
+                </div>
+              </div>
+            </td>
+            <td class="py-4 text-center text-sm" style="color: var(--text-body);"><%= item.quantity %></td>
+            <td class="py-4 text-right text-sm" style="color: var(--text-body);"><%= item.unit_price.format %></td>
+            <td class="py-4 text-right text-sm font-medium" style="color: var(--black);"><%= item.total.format %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <!-- Totals -->
+    <div class="mt-6 border-t pt-6 space-y-2" style="border-color: var(--cream);">
+      <div class="flex justify-between text-sm">
+        <span style="color: var(--mid-gray);">Subtotal</span>
+        <span style="color: var(--text-body);"><%= @order.subtotal.format %></span>
+      </div>
+      <div class="flex justify-between text-sm">
+        <span style="color: var(--mid-gray);">Shipping</span>
+        <span style="color: var(--text-body);"><%= @order.shipping_total.format %></span>
+      </div>
+      <div class="flex justify-between text-sm">
+        <span style="color: var(--mid-gray);">Tax</span>
+        <span style="color: var(--text-body);"><%= @order.tax_total.format %></span>
+      </div>
+      <% if @order.discount_total_cents > 0 %>
+        <div class="flex justify-between text-sm">
+          <span style="color: var(--mid-gray);">Discount</span>
+          <span style="color: var(--red);">-<%= @order.discount_total.format %></span>
+        </div>
+      <% end %>
+      <div class="flex justify-between border-t pt-3" style="border-color: var(--cream);">
+        <span class="font-display text-lg font-semibold" style="color: var(--black);">Total</span>
+        <span class="font-display text-lg font-semibold" style="color: var(--black);"><%= @order.total.format %></span>
+      </div>
+    </div>
+
+    <!-- Footer Note -->
+    <div class="mt-10 text-center">
+      <p class="text-xs" style="color: var(--mid-gray);">Thank you for your purchase. If you have any questions, please contact us.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media print {
+    body * { visibility: hidden; }
+    .print\:block { display: block !important; visibility: visible !important; }
+    .print\:hidden { display: none !important; }
+    .print\:shadow-none { box-shadow: none !important; }
+    .print\:ring-0 { --tw-ring-shadow: none !important; box-shadow: none !important; }
+    .print\:p-0 { padding: 0 !important; }
+    .mx-auto.max-w-3xl, .mx-auto.max-w-3xl * { visibility: visible; }
+    .mx-auto.max-w-3xl { position: absolute; left: 0; top: 0; width: 100%; }
+    header, footer, nav, .print\\:hidden { display: none !important; }
+  }
+</style>

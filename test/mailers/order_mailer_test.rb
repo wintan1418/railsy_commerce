@@ -5,7 +5,7 @@ class OrderMailerTest < ActionMailer::TestCase
     order = orders(:pending_order)
     email = OrderMailer.confirmation(order)
 
-    assert_equal [order.email], email.to
+    assert_equal [ order.email ], email.to
     assert_includes email.subject, order.number
   end
 
@@ -14,7 +14,7 @@ class OrderMailerTest < ActionMailer::TestCase
     shipment = shipments(:pending_shipment)
     email = OrderMailer.shipped(order, shipment)
 
-    assert_equal [order.email], email.to
+    assert_equal [ order.email ], email.to
     assert_includes email.subject, "Shipped"
   end
 end

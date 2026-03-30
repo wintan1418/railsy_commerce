@@ -45,7 +45,7 @@ module Vendor
     def product_params
       params.require(:product).permit(
         :name, :description, :status, :category_id, :meta_title, :meta_description, images: [],
-        variants_attributes: [:id, :sku, :price_cents, :compare_at_price_cents, :is_master, :_destroy]
+        variants_attributes: [ :id, :sku, :price_cents, :compare_at_price_cents, :is_master, :_destroy ]
       )
     end
   end

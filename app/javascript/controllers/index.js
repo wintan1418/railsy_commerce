@@ -30,3 +30,12 @@ application.register("toast", ToastController)
 
 import ChatWidgetController from "./chat_widget_controller"
 application.register("chat-widget", ChatWidgetController)
+
+import NotificationDropdownController from "./notification_dropdown_controller"
+application.register("notification-dropdown", NotificationDropdownController)
+
+import CompareController from "./compare_controller"
+application.register("compare", CompareController)
+
+import AdminChartController from "./admin_chart_controller"
+application.register("admin-chart", AdminChartController)

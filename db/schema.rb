@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_24_170629) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_30_120133) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -122,6 +122,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_24_170629) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_discounts_on_code", unique: true
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title", null: false
+    t.text "body"
+    t.string "notification_type", default: "info", null: false
+    t.string "url"
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_notifications_on_created_at"
+    t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "option_types", force: :cascade do |t|
@@ -490,6 +504,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_24_170629) do
   add_foreign_key "cart_items", "variants"
   add_foreign_key "carts", "users"
   add_foreign_key "chat_messages", "users"
+  add_foreign_key "notifications", "users"
   add_foreign_key "option_value_variants", "option_values"
   add_foreign_key "option_value_variants", "variants"
   add_foreign_key "option_values", "option_types"

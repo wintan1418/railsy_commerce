@@ -1,0 +1,79 @@
+<div class="relative" data-controller="notification-dropdown">
+  <button type="button" data-action="click->notification-dropdown#toggle" data-notification-dropdown-target="button"
+    class="relative rounded-full p-2 transition-colors duration-200 hover:opacity-70 cursor-pointer" style="color: var(--black);">
+    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+    </svg>
+    <% unread_count = current_user.notifications.unread.count %>
+    <% if unread_count > 0 %>
+      <span class="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold text-white" style="background: var(--red);">
+        <%= unread_count > 9 ? "9+" : unread_count %>
+      </span>
+    <% end %>
+  </button>
+
+  <!-- Dropdown -->
+  <div data-notification-dropdown-target="menu"
+    class="invisible opacity-0 absolute right-0 top-full mt-2 w-80 rounded-xl shadow-xl ring-1 ring-black/5 transition-all duration-200 z-50"
+    style="background: var(--warm-white);">
+    <div class="flex items-center justify-between border-b px-4 py-3" style="border-color: var(--cream);">
+      <h3 class="text-sm font-semibold" style="color: var(--black);">Notifications</h3>
+      <% if unread_count > 0 %>
+        <span class="rounded-full px-2 py-0.5 text-xs font-bold" style="background: rgba(201,169,110,0.15); color: var(--gold);">
+          <%= unread_count %> new
+        </span>
+      <% end %>
+    </div>
+    <div class="max-h-80 overflow-y-auto divide-y" style="border-color: var(--cream);">
+      <% recent_notifications = current_user.notifications.recent.limit(5) %>
+      <% if recent_notifications.any? %>
+        <% recent_notifications.each do |notification| %>
+          <% if notification.url.present? %>
+            <%= link_to notification.url, class: "block px-4 py-3 transition-colors duration-150 hover:bg-[var(--cream)] #{notification.read? ? '' : 'bg-[var(--cream)]/50'}" do %>
+              <div class="flex items-start gap-3">
+                <% unless notification.read? %>
+                  <span class="mt-1.5 flex-shrink-0 inline-block h-2 w-2 rounded-full" style="background: var(--gold);"></span>
+                <% else %>
+                  <span class="mt-1.5 flex-shrink-0 inline-block h-2 w-2"></span>
+                <% end %>
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-medium truncate" style="color: var(--black);"><%= notification.title %></p>
+                  <% if notification.body.present? %>
+                    <p class="mt-0.5 text-xs truncate" style="color: var(--mid-gray);"><%= notification.body %></p>
+                  <% end %>
+                  <p class="mt-1 text-xs" style="color: var(--mid-gray);"><%= time_ago_in_words(notification.created_at) %> ago</p>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="px-4 py-3 <%= notification.read? ? '' : 'bg-[var(--cream)]/50' %>">
+              <div class="flex items-start gap-3">
+                <% unless notification.read? %>
+                  <span class="mt-1.5 flex-shrink-0 inline-block h-2 w-2 rounded-full" style="background: var(--gold);"></span>
+                <% else %>
+                  <span class="mt-1.5 flex-shrink-0 inline-block h-2 w-2"></span>
+                <% end %>
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-medium truncate" style="color: var(--black);"><%= notification.title %></p>
+                  <% if notification.body.present? %>
+                    <p class="mt-0.5 text-xs truncate" style="color: var(--mid-gray);"><%= notification.body %></p>
+                  <% end %>
+                  <p class="mt-1 text-xs" style="color: var(--mid-gray);"><%= time_ago_in_words(notification.created_at) %> ago</p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="px-4 py-8 text-center">
+          <p class="text-sm" style="color: var(--mid-gray);">No notifications yet.</p>
+        </div>
+      <% end %>
+    </div>
+    <div class="border-t px-4 py-3" style="border-color: var(--cream);">
+      <%= link_to "View all notifications", account_notifications_path,
+        class: "block text-center text-sm font-medium transition-colors hover:opacity-70",
+        style: "color: var(--gold);" %>
+    </div>
+  </div>
+</div>

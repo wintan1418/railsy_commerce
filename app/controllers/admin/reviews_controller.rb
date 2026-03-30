@@ -8,6 +8,17 @@ module Admin
     def update
       @review = Review.find(params[:id])
       @review.update!(status: params[:review][:status])
+
+      if @review.approved?
+        Notification.create!(
+          user: @review.user,
+          title: "Your review was approved",
+          body: "Your review for #{@review.product.name} is now live.",
+          notification_type: "info",
+          url: "/products/#{@review.product.slug}"
+        )
+      end
+
       redirect_to admin_reviews_path, notice: "Review #{@review.status}."
     end
 

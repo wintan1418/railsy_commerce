@@ -2,7 +2,7 @@ module Vendor
   class BaseController < ApplicationController
     before_action :require_vendor
 
-    layout "admin"
+    layout "vendor"
 
     private
 

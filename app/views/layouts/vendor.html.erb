@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html class="h-full">
+  <head>
+    <title><%= content_for(:title) || "Vendor Dashboard - RailsyCommerce" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="h-full bg-gray-50 antialiased">
+    <div class="flex h-full">
+      <!-- Mobile sidebar overlay -->
+      <div id="vendor-sidebar-overlay" class="fixed inset-0 z-40 bg-black/50 hidden lg:hidden" onclick="document.getElementById('vendor-sidebar').classList.add('hidden'); document.getElementById('vendor-sidebar').classList.remove('flex'); document.getElementById('vendor-sidebar-overlay').classList.add('hidden');"></div>
+
+      <!-- Sidebar -->
+      <aside id="vendor-sidebar" class="hidden w-64 flex-shrink-0 flex-col lg:flex fixed inset-y-0 left-0 z-50 lg:relative" style="background: var(--black);">
+        <!-- Logo -->
+        <div class="flex h-16 items-center justify-between gap-2 px-6 border-b" style="border-color: rgba(255,255,255,0.1);">
+          <div class="flex items-center gap-2">
+            <div class="flex h-8 w-8 items-center justify-center rounded" style="background: rgba(201,169,110,0.2);">
+              <svg class="h-5 w-5" style="color: var(--gold);" viewBox="0 0 20 20" fill="none">
+                <rect x="2" y="2" width="7" height="7" rx="1" fill="currentColor"/>
+                <rect x="11" y="2" width="7" height="7" rx="1" fill="currentColor" opacity="0.7"/>
+                <rect x="2" y="11" width="7" height="7" rx="1" fill="currentColor" opacity="0.7"/>
+                <rect x="11" y="11" width="7" height="7" rx="1" fill="currentColor" opacity="0.4"/>
+              </svg>
+            </div>
+            <div>
+              <span class="text-sm font-bold text-white">Vendor Portal</span>
+              <p class="text-[10px]" style="color: var(--gold);"><%= current_user&.vendor_name %></p>
+            </div>
+          </div>
+          <button type="button" class="flex h-10 w-10 items-center justify-center rounded-lg text-gray-400 hover:text-white transition-colors lg:hidden"
+            onclick="document.getElementById('vendor-sidebar').classList.add('hidden'); document.getElementById('vendor-sidebar').classList.remove('flex'); document.getElementById('vendor-sidebar-overlay').classList.add('hidden');">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+          <%= link_to vendor_root_path,
+            class: "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200 #{request.path == vendor_root_path ? 'bg-white/10 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white'}" do %>
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+            </svg>
+            Dashboard
+          <% end %>
+
+          <%= link_to vendor_products_path,
+            class: "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200 #{request.path.start_with?('/vendor/products') ? 'bg-white/10 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white'}" do %>
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+            </svg>
+            My Products
+          <% end %>
+
+          <%= link_to vendor_orders_path,
+            class: "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200 #{request.path.start_with?('/vendor/orders') ? 'bg-white/10 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white'}" do %>
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+            </svg>
+            Orders
+          <% end %>
+
+          <div class="pt-4 mt-4 border-t" style="border-color: rgba(255,255,255,0.08);">
+            <p class="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Quick Links</p>
+
+            <%= link_to root_path, target: "_blank",
+              class: "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-colors duration-200" do %>
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+              View Store
+            <% end %>
+
+            <%= link_to account_root_path,
+              class: "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-colors duration-200" do %>
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+              My Account
+            <% end %>
+          </div>
+        </nav>
+
+        <!-- User Info -->
+        <div class="border-t px-4 py-4" style="border-color: rgba(255,255,255,0.08);">
+          <div class="flex items-center gap-3">
+            <div class="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold" style="background: var(--gold); color: var(--black);">
+              <%= current_user&.first_name&.first %><%= current_user&.last_name&.first %>
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-medium text-white"><%= current_user&.full_name %></p>
+              <p class="truncate text-xs text-gray-500"><%= current_user&.email_address %></p>
+            </div>
+          </div>
+          <div class="mt-3">
+            <%= button_to "Sign out", session_path, method: :delete,
+              class: "w-full text-left rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors cursor-pointer" %>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="flex flex-1 flex-col overflow-hidden">
+        <!-- Mobile header -->
+        <div class="flex h-16 items-center justify-between border-b bg-white px-4 lg:hidden" style="border-color: var(--cream);">
+          <button type="button" class="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100"
+            onclick="document.getElementById('vendor-sidebar').classList.remove('hidden'); document.getElementById('vendor-sidebar').classList.add('flex'); document.getElementById('vendor-sidebar-overlay').classList.remove('hidden');">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+          <span class="text-sm font-bold" style="color: var(--black);">Vendor Portal</span>
+          <div class="w-11"></div>
+        </div>
+
+        <!-- Flash Messages -->
+        <% if flash[:notice] %>
+          <div class="mx-4 mt-4 rounded-lg px-4 py-3" style="background: rgba(201,169,110,0.1); border: 1px solid rgba(201,169,110,0.2);">
+            <p class="text-sm" style="color: var(--gold);"><%= flash[:notice] %></p>
+          </div>
+        <% end %>
+        <% if flash[:alert] %>
+          <div class="mx-4 mt-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3">
+            <p class="text-sm text-red-800"><%= flash[:alert] %></p>
+          </div>
+        <% end %>
+
+        <!-- Page Content -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+          <%= yield %>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

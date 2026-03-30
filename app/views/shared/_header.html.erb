@@ -98,6 +98,11 @@
                     <p class="text-sm font-medium" style="color: var(--black);"><%= current_user&.first_name %> <%= current_user&.last_name %></p>
                     <p class="text-xs truncate" style="color: var(--mid-gray);"><%= current_user&.email_address %></p>
                   </div>
+                  <% if current_user&.vendor? %>
+                    <%= link_to "Vendor Dashboard", vendor_root_path,
+                      class: "block rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150",
+                      style: "color: var(--gold);" %>
+                  <% end %>
                   <%= link_to "My Account", account_root_path,
                     class: "block rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150",
                     style: "color: var(--black);" %>

@@ -37,6 +37,13 @@
           { include_blank: "No category" },
           class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" %>
       </div>
+
+      <div>
+        <%= form.label :brand_id, "Brand", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.select :brand_id, Brand.active.ordered.pluck(:name, :id),
+          { include_blank: "No brand" },
+          class: "mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
     </div>
 
     <div>

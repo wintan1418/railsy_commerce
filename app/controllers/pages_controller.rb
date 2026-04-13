@@ -4,6 +4,7 @@ class PagesController < ApplicationController
 
   def home
     @banners = Banner.live.includes(image_attachment: :blob)
+    @featured_brands = Brand.active.featured.ordered.includes(logo_attachment: :blob).limit(12)
     @running_flash_sale = FlashSale.running.first
     @running_flash_sale_products = @running_flash_sale&.products&.active&.includes(:category, variants: :stock_items) || []
     @upcoming_flash_sale = FlashSale.upcoming.first

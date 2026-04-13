@@ -7,6 +7,11 @@ module Storefront
       result = Products::FilterService.call(params: params)
       @products = result.payload[:products]
       @categories = Category.active.roots.ordered.includes(:children)
+      @brand_facets = Brand.active.ordered
+        .left_joins(:products)
+        .where("products.status = ? OR products.id IS NULL", "active")
+        .group("brands.id").select("brands.*, COUNT(products.id) AS products_count")
+      @selected_brand = params[:brand].present? ? (Brand.friendly.find(params[:brand]) rescue nil) : nil
       @recently_viewed = recently_viewed_products
     end
 

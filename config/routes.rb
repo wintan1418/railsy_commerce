@@ -77,6 +77,9 @@ Rails.application.routes.draw do
     resources :flash_sales do
       member { post :toggle }
     end
+    resources :brands do
+      member { post :toggle_featured }
+    end
     resources :conversations, only: %i[index show] do
       post :reply, on: :member
     end

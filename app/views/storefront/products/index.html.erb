@@ -68,11 +68,35 @@
           </div>
         </div>
 
+        <!-- Brand Filter -->
+        <% if @brand_facets.any? %>
+          <div>
+            <h3 class="text-sm font-semibold uppercase tracking-wider" style="color: var(--black);">Brands</h3>
+            <ul class="mt-4 space-y-2 max-h-64 overflow-y-auto pr-2">
+              <li>
+                <%= link_to "All Brands", products_path(params.permit(:q, :sort, :on_sale, :category_id)),
+                  class: "block text-sm transition-colors duration-200 hover:text-[var(--gold)]",
+                  style: params[:brand].blank? ? "color: var(--gold); font-weight: 600;" : "color: var(--mid-gray);" %>
+              </li>
+              <% @brand_facets.each do |brand| %>
+                <li class="flex items-center justify-between">
+                  <%= link_to products_path(params.permit(:q, :sort, :on_sale, :category_id).merge(brand: brand.slug)),
+                    class: "block text-sm transition-colors duration-200 hover:text-[var(--gold)] truncate",
+                    style: params[:brand].to_s == brand.slug ? "color: var(--gold); font-weight: 600;" : "color: var(--mid-gray);" do %>
+                    <%= brand.name %>
+                  <% end %>
+                  <span class="text-xs tabular-nums" style="color: var(--light-gray);">(<%= brand.products_count %>)</span>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
         <!-- Sale Filter -->
         <div>
           <h3 class="text-sm font-semibold uppercase tracking-wider" style="color: var(--black);">Deals</h3>
           <div class="mt-4">
-            <%= link_to "On Sale", products_path(params.permit(:q, :sort, :category_id).merge(on_sale: true)),
+            <%= link_to "On Sale", products_path(params.permit(:q, :sort, :category_id, :brand).merge(on_sale: true)),
               class: "inline-flex items-center gap-2 text-sm transition-colors duration-200",
               style: params[:on_sale] ? "color: var(--red); font-weight: 600;" : "color: var(--mid-gray);" %>
           </div>
@@ -97,8 +121,16 @@
               <% end %>
             <% end %>
           <% end %>
+          <% if @selected_brand %>
+            <%= link_to products_path(params.permit(:q, :sort, :on_sale, :category_id)),
+              class: "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-colors duration-200",
+              style: "background: var(--gold-light); color: var(--black);" do %>
+              <%= @selected_brand.name %>
+              <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            <% end %>
+          <% end %>
           <% if params[:on_sale] %>
-            <%= link_to products_path(params.permit(:q, :sort, :category_id)),
+            <%= link_to products_path(params.permit(:q, :sort, :category_id, :brand)),
               class: "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-white transition-colors duration-200",
               style: "background: var(--red);" do %>
               On Sale

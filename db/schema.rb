@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_13_130000) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_13_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -71,6 +71,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_130000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["active", "position"], name: "index_banners_on_active_and_position"
+  end
+
+  create_table "brands", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.text "description"
+    t.string "website"
+    t.boolean "active", default: true, null: false
+    t.boolean "featured", default: false, null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active", "featured", "position"], name: "index_brands_on_active_and_featured_and_position"
+    t.index ["slug"], name: "index_brands_on_slug", unique: true
   end
 
   create_table "cart_items", force: :cascade do |t|
@@ -341,6 +355,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_130000) do
     t.datetime "updated_at", null: false
     t.integer "reviews_count", default: 0, null: false
     t.bigint "vendor_id"
+    t.bigint "brand_id"
+    t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["slug"], name: "index_products_on_slug", unique: true
     t.index ["status"], name: "index_products_on_status"
@@ -591,6 +607,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_130000) do
   add_foreign_key "product_option_types", "products"
   add_foreign_key "product_relations", "products"
   add_foreign_key "product_relations", "products", column: "related_product_id"
+  add_foreign_key "products", "brands"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "users", column: "vendor_id"
   add_foreign_key "return_items", "order_items"

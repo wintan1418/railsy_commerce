@@ -1,0 +1,22 @@
+sony:
+  name: Sony
+  slug: sony
+  description: Japanese electronics
+  active: true
+  featured: true
+  position: 0
+
+apple:
+  name: Apple
+  slug: apple
+  description: Design-led consumer tech
+  active: true
+  featured: true
+  position: 1
+
+disabled_brand:
+  name: Old Co
+  slug: old-co
+  active: false
+  featured: false
+  position: 99

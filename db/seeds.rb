@@ -145,22 +145,29 @@ ShippingMethod.find_or_create_by!(name: "Free Shipping") do |sm|
   sm.active = true
 end
 
-# ─── Helper: Attach image from URL ────────────────────────────────
+# ─── Helper: Attach image from URL (with picsum fallback on 404) ──
 def attach_product_image(product, url, index = 1)
   # Skip if product already has enough images
   return if product.images.attached? && product.images.count >= index
 
-  begin
-    image = URI.open(url)
-    product.images.attach(
-      io: image,
-      filename: "#{product.slug}-#{index}.jpg",
-      content_type: "image/jpeg"
-    )
-    puts "    Attached image #{index} for #{product.name}"
-  rescue => e
-    puts "    Could not attach image #{index} for #{product.name}: #{e.message}"
+  image = begin
+    URI.open(url)
+  rescue OpenURI::HTTPError, Errno::ENOENT, SocketError => e
+    fallback = "https://picsum.photos/seed/#{product.slug}-#{index}/800/800"
+    warn "    Primary image 404 for #{product.name} — falling back to picsum"
+    URI.open(fallback) rescue nil
   end
+
+  return unless image
+
+  product.images.attach(
+    io: image,
+    filename: "#{product.slug}-#{index}.jpg",
+    content_type: "image/jpeg"
+  )
+  puts "    Attached image #{index} for #{product.name}"
+rescue => e
+  puts "    Could not attach image #{index} for #{product.name}: #{e.message}"
 end
 
 # ─── Products ──────────────────────────────────────────────────────
@@ -1812,6 +1819,46 @@ if Banner.count.zero?
 end
 
 # ============================================================
+# Brands with logos
+# ============================================================
+if Brand.count.zero?
+  puts "Seeding brands..."
+  brand_data = [
+    { name: "Sony",    description: "Japanese electronics and audio innovator.", featured: true,  position: 0 },
+    { name: "Apple",   description: "Design-led consumer tech.",                  featured: true,  position: 1 },
+    { name: "Samsung", description: "Global electronics leader.",                  featured: true,  position: 2 },
+    { name: "LG",      description: "Life's good with home electronics.",          featured: true,  position: 3 },
+    { name: "Dell",    description: "Computing and peripherals.",                  featured: true,  position: 4 },
+    { name: "Nike",    description: "Just do it.",                                 featured: true,  position: 5 },
+    { name: "Adidas",  description: "Sports and lifestyle gear.",                  featured: false, position: 6 },
+    { name: "Bose",    description: "Premium audio.",                              featured: false, position: 7 }
+  ]
+
+  logo_colors = %w[000000 1e293b 0f172a 7c2d12 365314 155e75 4a044e 831843]
+  brand_data.each_with_index do |attrs, i|
+    brand = Brand.create!(attrs.merge(active: true))
+    print "  · #{brand.name}... "
+    begin
+      url = "https://dummyimage.com/400x200/#{logo_colors[i % logo_colors.length]}/ffffff.png&text=#{URI.encode_www_form_component(brand.name)}"
+      io = URI.open(url)
+      brand.logo.attach(io: io, filename: "#{brand.slug}.png", content_type: "image/png")
+      puts "✓"
+    rescue => e
+      puts "(no logo: #{e.message[0, 40]})"
+    end
+  end
+
+  # Randomly assign brands to existing products
+  brand_ids = Brand.pluck(:id)
+  if brand_ids.any?
+    Product.where(brand_id: nil).find_each do |product|
+      product.update_column(:brand_id, brand_ids.sample)
+    end
+    puts "  Assigned brands to #{Product.count} products"
+  end
+end
+
+# ============================================================
 # Flash Sale (demo running sale)
 # ============================================================
 if FlashSale.count.zero?
@@ -1843,3 +1890,4 @@ puts "  Product Relations: #{ProductRelation.count}"
 puts "  Promotions: #{Promotion.count}"
 puts "  Banners: #{Banner.count}"
 puts "  Flash Sales: #{FlashSale.count}"
+puts "  Brands: #{Brand.count}"

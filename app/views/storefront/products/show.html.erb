@@ -47,9 +47,20 @@
 
     <!-- Product Info -->
     <div class="mt-8 lg:mt-0">
-      <% if @product.category %>
-        <p class="text-sm font-semibold uppercase tracking-wider" style="color: var(--gold);"><%= @product.category.name %></p>
-      <% end %>
+      <div class="flex items-center gap-3">
+        <% if @product.category %>
+          <p class="text-sm font-semibold uppercase tracking-wider" style="color: var(--gold);"><%= @product.category.name %></p>
+        <% end %>
+        <% if @product.brand %>
+          <span class="text-xs" style="color: var(--mid-gray);">·</span>
+          <%= link_to products_path(brand: @product.brand.slug), class: "inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider hover:opacity-80", style: "color: var(--mid-gray);" do %>
+            <% if @product.brand.logo.attached? %>
+              <%= image_tag @product.brand.logo, class: "h-4 w-auto object-contain" %>
+            <% end %>
+            <%= @product.brand.name %>
+          <% end %>
+        <% end %>
+      </div>
 
       <h1 class="mt-2 font-display text-3xl font-light tracking-tight sm:text-4xl" style="color: var(--black);"><%= @product.name %></h1>
 

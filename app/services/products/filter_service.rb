@@ -5,9 +5,10 @@ module Products
     end
 
     def call
-      products = Product.active.includes(:category, variants: :stock_items)
+      products = Product.active.includes(:category, :brand, variants: :stock_items)
 
       products = filter_by_category(products)
+      products = filter_by_brand(products)
       products = filter_by_search(products)
       products = filter_by_price(products)
       products = filter_by_sale(products)
@@ -26,6 +27,14 @@ module Products
 
       child_ids = category.children.pluck(:id)
       products.where(category_id: [ category.id ] + child_ids)
+    end
+
+    def filter_by_brand(products)
+      return products unless @params[:brand].present?
+
+      brand = Brand.friendly.find(@params[:brand]) rescue nil
+      return products unless brand
+      products.where(brand_id: brand.id)
     end
 
     def filter_by_search(products)

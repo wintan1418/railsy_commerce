@@ -5,6 +5,7 @@ class Product < ApplicationRecord
   friendly_id :name, use: :slugged
 
   belongs_to :category, optional: true
+  belongs_to :brand, optional: true
   belongs_to :vendor, class_name: "User", optional: true
   has_many :variants, -> { order(:position) }, dependent: :destroy
   has_many :product_option_types, -> { order(:position) }, dependent: :destroy

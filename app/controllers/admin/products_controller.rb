@@ -50,8 +50,8 @@ module Admin
 
     def product_params
       params.require(:product).permit(
-        :name, :description, :status, :category_id, :brand_id,
-        :meta_title, :meta_description, images: [],
+        :name, :description, :status, :category_id, :brand_id, :is_digital,
+        :meta_title, :meta_description, images: [], digital_files: [],
         variants_attributes: [
           :id, :sku, :price_cents, :compare_at_price_cents,
           :cost_price_cents, :weight, :is_master, :_destroy,

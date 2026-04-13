@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_13_180000) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_13_190100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -171,6 +171,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_180000) do
     t.index ["rider_id", "status"], name: "index_deliveries_on_rider_id_and_status"
     t.index ["rider_id"], name: "index_deliveries_on_rider_id"
     t.index ["status"], name: "index_deliveries_on_status"
+  end
+
+  create_table "digital_downloads", force: :cascade do |t|
+    t.bigint "order_item_id", null: false
+    t.string "access_token", null: false
+    t.integer "download_count", default: 0, null: false
+    t.datetime "last_downloaded_at"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["access_token"], name: "index_digital_downloads_on_access_token", unique: true
+    t.index ["order_item_id"], name: "index_digital_downloads_on_order_item_id"
   end
 
   create_table "discount_usages", force: :cascade do |t|
@@ -383,8 +395,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_180000) do
     t.integer "reviews_count", default: 0, null: false
     t.bigint "vendor_id"
     t.bigint "brand_id"
+    t.boolean "is_digital", default: false, null: false
     t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["category_id"], name: "index_products_on_category_id"
+    t.index ["is_digital"], name: "index_products_on_is_digital"
     t.index ["slug"], name: "index_products_on_slug", unique: true
     t.index ["status"], name: "index_products_on_status"
     t.index ["vendor_id"], name: "index_products_on_vendor_id"
@@ -615,6 +629,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_180000) do
   add_foreign_key "deliveries", "orders"
   add_foreign_key "deliveries", "users", column: "assigned_by_id"
   add_foreign_key "deliveries", "users", column: "rider_id"
+  add_foreign_key "digital_downloads", "order_items"
   add_foreign_key "discount_usages", "discounts"
   add_foreign_key "discount_usages", "orders"
   add_foreign_key "discount_usages", "users"

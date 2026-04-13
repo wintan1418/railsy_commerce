@@ -55,6 +55,7 @@ Rails.application.routes.draw do
       post :mark_read, on: :member
       post :mark_all_read, on: :collection
     end
+    resources :digital_downloads, only: %i[index show]
   end
 
   # Admin

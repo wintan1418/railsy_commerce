@@ -17,6 +17,10 @@ class Product < ApplicationRecord
   has_many :flash_sale_products, dependent: :destroy
   has_many :flash_sales, through: :flash_sale_products
   has_many_attached :images
+  has_many_attached :digital_files
+
+  scope :digital, -> { where(is_digital: true) }
+  scope :physical, -> { where(is_digital: false) }
 
   enum :status, { draft: "draft", active: "active", archived: "archived" }
 

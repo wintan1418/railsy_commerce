@@ -27,12 +27,13 @@ module Orders
 
         @cart.cart_items.includes(variant: :product).each do |cart_item|
           unit_price_cents = cart_item.variant.current_price_cents
-          order.order_items.create!(
+          item = order.order_items.create!(
             variant: cart_item.variant,
             quantity: cart_item.quantity,
             unit_price_cents: unit_price_cents,
             total_cents: unit_price_cents * cart_item.quantity
           )
+          DigitalDownload.create!(order_item: item) if item.digital?
         end
 
         if @shipping_method

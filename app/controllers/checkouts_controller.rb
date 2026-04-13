@@ -89,6 +89,16 @@ class CheckoutsController < ApplicationController
       session[:checkout_billing_address_id] = @address.id
       session[:checkout_email] = params[:email].presence || current_user&.email_address || @address.user&.email_address
 
+      if current_cart.digital_only?
+        session.delete(:checkout_shipping_method_id)
+        @step = "payment"
+        respond_to do |format|
+          format.turbo_stream { render turbo_stream: turbo_stream.replace("checkout_steps", partial: "checkouts/steps/payment", locals: { shipping_method: nil }) }
+          format.html { render :show }
+        end
+        return
+      end
+
       @shipping_methods = ShippingMethod.active
       @step = "shipping"
 

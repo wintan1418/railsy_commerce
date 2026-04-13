@@ -29,6 +29,7 @@ class Variant < ApplicationRecord
   end
 
   def in_stock?
+    return true if product&.is_digital?
     stock_items.any? { |si| si.available_quantity > 0 || si.backorderable? }
   end
 

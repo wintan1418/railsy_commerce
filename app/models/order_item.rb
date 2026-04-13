@@ -3,6 +3,10 @@ class OrderItem < ApplicationRecord
 
   belongs_to :order
   belongs_to :variant
+  has_one :digital_download, dependent: :destroy
+
+  delegate :product, to: :variant
+  def digital? = product.is_digital?
 
   monetize :unit_price_cents
   monetize :total_cents

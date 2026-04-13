@@ -85,6 +85,14 @@ if defined?(Ad) && Ad.count == 0
   puts "  created #{Ad.count} ads"
 end
 
+if defined?(Product) && Product.column_names.include?("is_digital") && Product.digital.count.zero?
+  puts "Marking some products as digital..."
+  [ "Keyboard", "Headphones", "Cable" ].each do |name|
+    Product.where("name ILIKE ?", "%#{name}%").first&.update(is_digital: true)
+  end
+  puts "  #{Product.digital.count} digital products"
+end
+
 if FlashSale.running.none?
   puts "Seeding flash sale..."
   sale = FlashSale.create!(

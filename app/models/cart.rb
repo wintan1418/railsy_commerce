@@ -20,6 +20,11 @@ class Cart < ApplicationRecord
     cart_items.empty?
   end
 
+  def digital_only?
+    return false if empty?
+    cart_items.includes(variant: :product).all? { |ci| ci.variant.product.is_digital? }
+  end
+
   def complete!
     update!(completed_at: Time.current)
   end

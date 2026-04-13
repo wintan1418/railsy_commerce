@@ -1859,6 +1859,17 @@ if Brand.count.zero?
 end
 
 # ============================================================
+# Mark a few products as digital (no seeded file content)
+# ============================================================
+if Product.digital.count.zero?
+  digital_names = [ "Wireless Keyboard", "Headphones", "USB Cable" ]
+  digital_names.each do |name|
+    Product.where("name ILIKE ?", "%#{name}%").first&.update(is_digital: true)
+  end
+  puts "Marked #{Product.digital.count} products as digital"
+end
+
+# ============================================================
 # Ads (homepage promo tiles)
 # ============================================================
 if Ad.count.zero?
@@ -1923,3 +1934,4 @@ puts "  Banners: #{Banner.count}"
 puts "  Flash Sales: #{FlashSale.count}"
 puts "  Brands: #{Brand.count}"
 puts "  Ads: #{Ad.count}"
+puts "  Digital products: #{Product.digital.count}"

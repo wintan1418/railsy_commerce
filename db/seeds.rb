@@ -1765,21 +1765,69 @@ if demo_customer
 end
 
 # ============================================================
-# Banners (homepage hero slideshow)
+# Banners (homepage hero slideshow) with Unsplash images
 # ============================================================
+require "open-uri"
+
+def attach_remote_image(record, url, filename)
+  io = URI.open(url)
+  record.image.attach(io: io, filename: filename, content_type: "image/jpeg")
+rescue => e
+  puts "  ! Failed to attach image for #{record.class.name}##{record.id}: #{e.message}"
+end
+
 if Banner.count.zero?
   puts "Seeding banners..."
-  [
+  banner_data = [
     { eyebrow: "Premium Marketplace", title: "Discover What's Next",
       subtitle: "From cutting-edge tech to timeless home essentials — everything you need, beautifully curated and delivered to your door.",
-      link_text: "Shop Now", link_url: "/products", position: 0 },
+      link_text: "Shop Now", link_url: "/products", position: 0,
+      image_url: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1920&q=80",
+      image_filename: "discover-whats-next.jpg" },
     { eyebrow: "New Arrivals", title: "Sound Redefined",
       subtitle: "Premium audio gear from the brands audiophiles trust.",
-      link_text: "Explore Audio", link_url: "/products", position: 1 },
+      link_text: "Explore Audio", link_url: "/products", position: 1,
+      image_url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1920&q=80",
+      image_filename: "sound-redefined.jpg" },
     { eyebrow: "Home & Living", title: "Light Up Your Space",
       subtitle: "Modern lamps, decor, and essentials for every room.",
-      link_text: "Shop Home", link_url: "/products", position: 2 }
-  ].each { |attrs| Banner.create!(attrs.merge(active: true)) }
+      link_text: "Shop Home", link_url: "/products", position: 2,
+      image_url: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&q=80",
+      image_filename: "light-up-your-space.jpg" },
+    { eyebrow: "Editor's Pick", title: "Crafted For You",
+      subtitle: "Handpicked pieces that blend style and everyday utility.",
+      link_text: "See Picks", link_url: "/products", position: 3,
+      image_url: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=1920&q=80",
+      image_filename: "crafted-for-you.jpg" }
+  ]
+
+  banner_data.each do |attrs|
+    image_url = attrs.delete(:image_url)
+    image_filename = attrs.delete(:image_filename)
+    banner = Banner.create!(attrs.merge(active: true))
+    print "  · #{banner.title}... "
+    attach_remote_image(banner, image_url, image_filename)
+    puts "✓"
+  end
+end
+
+# ============================================================
+# Flash Sale (demo running sale)
+# ============================================================
+if FlashSale.count.zero?
+  puts "Seeding flash sale..."
+  sale = FlashSale.create!(
+    name: "Weekend Mega Sale",
+    description: "48 hours of deep discounts across our most popular picks. Don't miss out.",
+    starts_at: 1.hour.ago,
+    ends_at: 2.days.from_now,
+    discount_percentage: 30,
+    active: true
+  )
+  Product.active.order("RANDOM()").limit(10).each do |product|
+    sale.flash_sale_products.create!(product: product)
+  end
+  puts "  · #{sale.name}: #{sale.products.count} products"
 end
 
 puts ""
@@ -1794,3 +1842,4 @@ puts "  Pages: #{Page.count}"
 puts "  Product Relations: #{ProductRelation.count}"
 puts "  Promotions: #{Promotion.count}"
 puts "  Banners: #{Banner.count}"
+puts "  Flash Sales: #{FlashSale.count}"

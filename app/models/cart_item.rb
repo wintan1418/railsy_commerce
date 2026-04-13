@@ -6,6 +6,6 @@ class CartItem < ApplicationRecord
   validates :variant_id, uniqueness: { scope: :cart_id }
 
   def subtotal
-    variant.price * quantity
+    variant.current_price * quantity
   end
 end

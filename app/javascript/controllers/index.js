@@ -39,3 +39,6 @@ application.register("compare", CompareController)
 
 import AdminChartController from "./admin_chart_controller"
 application.register("admin-chart", AdminChartController)
+
+import CountdownController from "./countdown_controller"
+application.register("countdown", CountdownController)

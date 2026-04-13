@@ -13,6 +13,8 @@ class Product < ApplicationRecord
   has_many :reviews, dependent: :destroy
   has_many :product_relations, dependent: :destroy
   has_many :related_products, through: :product_relations
+  has_many :flash_sale_products, dependent: :destroy
+  has_many :flash_sales, through: :flash_sale_products
   has_many_attached :images
 
   enum :status, { draft: "draft", active: "active", archived: "archived" }
@@ -39,6 +41,14 @@ class Product < ApplicationRecord
 
   def display_price
     master_variant&.price&.format
+  end
+
+  def running_flash_sale
+    FlashSale.running.joins(:flash_sale_products).find_by(flash_sale_products: { product_id: id })
+  end
+
+  def on_flash_sale?
+    running_flash_sale.present?
   end
 
   def in_stock?

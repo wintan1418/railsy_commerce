@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_13_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_13_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -160,6 +160,33 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_120000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_discounts_on_code", unique: true
+  end
+
+  create_table "flash_sale_products", force: :cascade do |t|
+    t.bigint "flash_sale_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "sale_price_cents"
+    t.integer "stock_limit"
+    t.integer "sold_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["flash_sale_id", "product_id"], name: "index_flash_sale_products_on_flash_sale_id_and_product_id", unique: true
+    t.index ["flash_sale_id"], name: "index_flash_sale_products_on_flash_sale_id"
+    t.index ["product_id"], name: "index_flash_sale_products_on_product_id"
+  end
+
+  create_table "flash_sales", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.text "description"
+    t.datetime "starts_at", null: false
+    t.datetime "ends_at", null: false
+    t.integer "discount_percentage", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active", "starts_at", "ends_at"], name: "index_flash_sales_on_active_and_starts_at_and_ends_at"
+    t.index ["slug"], name: "index_flash_sales_on_slug", unique: true
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -545,6 +572,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_120000) do
   add_foreign_key "deliveries", "orders"
   add_foreign_key "deliveries", "users", column: "assigned_by_id"
   add_foreign_key "deliveries", "users", column: "rider_id"
+  add_foreign_key "flash_sale_products", "flash_sales"
+  add_foreign_key "flash_sale_products", "products"
   add_foreign_key "notifications", "users"
   add_foreign_key "option_value_variants", "option_values"
   add_foreign_key "option_value_variants", "variants"

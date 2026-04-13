@@ -83,7 +83,11 @@
     <!-- Price -->
     <div class="mt-2 flex items-center gap-2">
       <% if variant %>
-        <% if variant.on_sale? %>
+        <% if variant.on_flash_sale? %>
+          <span class="font-display text-lg font-semibold" style="color: var(--red);"><%= variant.current_price.format %></span>
+          <span class="text-xs line-through" style="color: var(--mid-gray);"><%= variant.price.format %></span>
+          <span class="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white" style="background: var(--red);">Flash</span>
+        <% elsif variant.on_sale? %>
           <span class="font-display text-lg font-semibold" style="color: var(--red);"><%= variant.price.format %></span>
           <span class="text-xs line-through" style="color: var(--mid-gray);"><%= variant.compare_at_price.format %></span>
         <% else %>

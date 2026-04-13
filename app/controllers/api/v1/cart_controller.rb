@@ -69,7 +69,7 @@ module Api
           product_name: item.variant.product.name,
           variant_sku: item.variant.sku,
           quantity: item.quantity,
-          unit_price_cents: item.variant.price_cents,
+          unit_price_cents: item.variant.current_price_cents,
           subtotal_cents: item.subtotal.cents
         }
       end

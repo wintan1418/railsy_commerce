@@ -35,4 +35,22 @@ class Variant < ApplicationRecord
   def on_sale?
     compare_at_price_cents.present? && compare_at_price_cents > price_cents
   end
+
+  def sale_price_cents
+    sale = product.running_flash_sale
+    return nil unless sale
+    sale.sale_price_cents_for(product)
+  end
+
+  def current_price_cents
+    sale_price_cents || price_cents
+  end
+
+  def current_price
+    Money.new(current_price_cents, price.currency)
+  end
+
+  def on_flash_sale?
+    sale_price_cents.present? && sale_price_cents < price_cents
+  end
 end

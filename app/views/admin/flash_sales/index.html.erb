@@ -1,0 +1,74 @@
+<div class="flex items-center justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Flash Sales</h1>
+    <p class="mt-1 text-sm text-gray-500"><%= @flash_sales.count %> total · time-boxed discounts shown on the homepage</p>
+  </div>
+  <%= link_to "New Flash Sale", new_admin_flash_sale_path,
+    class: "rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors duration-200" %>
+</div>
+
+<div class="mt-6 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-100">
+      <thead>
+        <tr class="bg-gray-50/50">
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Name</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Window</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Discount</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Products</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
+          <th class="px-6 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @flash_sales.each do |sale| %>
+          <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+            <td class="px-6 py-4 text-sm font-semibold text-gray-900">
+              <%= sale.name %>
+              <% if sale.description.present? %>
+                <div class="text-xs font-normal text-gray-500 mt-0.5"><%= truncate(sale.description, length: 60) %></div>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 text-xs text-gray-500">
+              <div><%= sale.starts_at.strftime("%b %-d, %H:%M") %></div>
+              <div class="text-gray-400">to <%= sale.ends_at.strftime("%b %-d, %H:%M") %></div>
+            </td>
+            <td class="px-6 py-4 text-sm font-semibold" style="color: #e11d48;"><%= sale.discount_percentage %>%</td>
+            <td class="px-6 py-4 text-sm text-gray-500"><%= sale.products.size %></td>
+            <td class="px-6 py-4">
+              <%
+                badge_class = case sale.status
+                when "running"  then "bg-red-50 text-red-700 ring-red-600/20"
+                when "upcoming" then "bg-blue-50 text-blue-700 ring-blue-600/20"
+                when "ended"    then "bg-gray-100 text-gray-600 ring-gray-500/20"
+                else "bg-gray-50 text-gray-500 ring-gray-400/20"
+                end
+              %>
+              <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 <%= badge_class %>">
+                <% if sale.running? %>
+                  <span class="mr-1.5 h-1.5 w-1.5 animate-pulse rounded-full bg-red-500"></span>
+                <% end %>
+                <%= sale.status.capitalize %>
+              </span>
+            </td>
+            <td class="whitespace-nowrap px-6 py-4 text-right space-x-3">
+              <%= button_to (sale.active? ? "Disable" : "Enable"), toggle_admin_flash_sale_path(sale),
+                method: :post, form: { class: "inline" },
+                class: "text-sm font-medium text-gray-600 hover:text-gray-900 cursor-pointer bg-transparent" %>
+              <%= link_to "Edit", edit_admin_flash_sale_path(sale), class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+              <%= link_to "Delete", admin_flash_sale_path(sale), data: { turbo_method: :delete, turbo_confirm: "Delete this flash sale?" },
+                class: "text-sm font-medium text-red-600 hover:text-red-500" %>
+            </td>
+          </tr>
+        <% end %>
+        <% if @flash_sales.empty? %>
+          <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-sm text-gray-400">
+              No flash sales yet. <%= link_to "Create your first flash sale", new_admin_flash_sale_path, class: "text-indigo-600 font-medium hover:underline" %>.
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

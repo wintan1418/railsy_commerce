@@ -74,6 +74,9 @@ Rails.application.routes.draw do
       member { post :toggle }
       collection { post :reorder }
     end
+    resources :flash_sales do
+      member { post :toggle }
+    end
     resources :conversations, only: %i[index show] do
       post :reply, on: :member
     end

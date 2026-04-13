@@ -73,11 +73,50 @@
         <% end %>
       </div>
 
-      <div class="space-y-3 text-sm">
+      <!-- Coupon form -->
+      <div class="mt-4 pt-4" style="border-top: 1px solid var(--warm-gray);">
+        <% if applied_coupon && coupon_discount_cents > 0 %>
+          <div class="flex items-center justify-between rounded-lg px-3 py-2.5" style="background: #fef3c7;">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider" style="color: #92400e;"><%= applied_coupon.code %></p>
+              <p class="text-[11px]" style="color: #92400e;">−<%= Money.new(coupon_discount_cents, "USD").format %> applied</p>
+            </div>
+            <%= button_to "Remove", remove_coupon_checkout_path, method: :delete,
+              form: { class: "inline" },
+              class: "text-xs font-semibold cursor-pointer bg-transparent",
+              style: "color: #92400e;" %>
+          </div>
+        <% else %>
+          <%= form_with url: apply_coupon_checkout_path, method: :post, class: "flex gap-2" do |f| %>
+            <%= f.text_field :code, placeholder: "Discount code",
+              value: params[:code],
+              class: "flex-1 rounded-lg border-gray-300 text-xs",
+              style: "border: 1px solid var(--warm-gray);" %>
+            <%= f.submit "Apply",
+              class: "rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wider cursor-pointer",
+              style: "background: var(--black); color: white;" %>
+          <% end %>
+          <% if coupon_error.present? %>
+            <p class="mt-1.5 text-xs" style="color: #b91c1c;"><%= coupon_error %></p>
+          <% end %>
+        <% end %>
+      </div>
+
+      <% discount = coupon_discount_cents %>
+      <% shipping_cents = session[:checkout_shipping_method_id] ? ShippingMethod.find(session[:checkout_shipping_method_id]).price_cents : 0 %>
+      <% total_cents = current_cart.subtotal.cents - discount + shipping_cents %>
+
+      <div class="mt-4 space-y-3 text-sm">
         <div class="flex justify-between">
           <span style="color: var(--medium-gray);">Subtotal</span>
           <span class="font-medium" style="color: var(--black);"><%= current_cart.subtotal.format %></span>
         </div>
+        <% if discount > 0 %>
+          <div class="flex justify-between">
+            <span style="color: #b91c1c;">Discount</span>
+            <span class="font-medium" style="color: #b91c1c;">−<%= Money.new(discount, "USD").format %></span>
+          </div>
+        <% end %>
         <div class="flex justify-between">
           <span style="color: var(--medium-gray);">Shipping</span>
           <span class="font-medium" style="color: var(--black);">
@@ -96,7 +135,7 @@
 
       <div class="mt-4 pt-4 flex justify-between" style="border-top: 1px solid var(--warm-gray);">
         <span class="font-display text-lg font-semibold" style="color: var(--black);">Total</span>
-        <span class="font-display text-lg font-semibold" style="color: var(--black);"><%= current_cart.subtotal.format %></span>
+        <span class="font-display text-lg font-semibold" style="color: var(--black);"><%= Money.new(total_cents, "USD").format %></span>
       </div>
     </div>
   </div>

@@ -1,12 +1,13 @@
 module Orders
   class CreateOrderService < ApplicationService
-    def initialize(cart:, email:, shipping_address:, billing_address: nil, shipping_method: nil, user: nil)
+    def initialize(cart:, email:, shipping_address:, billing_address: nil, shipping_method: nil, user: nil, coupon_code: nil)
       @cart = cart
       @email = email
       @shipping_address = shipping_address
       @billing_address = billing_address || shipping_address
       @shipping_method = shipping_method
       @user = user
+      @coupon_code = coupon_code
     end
 
     def call
@@ -39,6 +40,8 @@ module Orders
           order.shipments.create!(shipping_method: @shipping_method, status: :pending)
         end
 
+        apply_coupon_to(order)
+
         order.recalculate_totals!
         @cart.complete!
       end
@@ -48,6 +51,28 @@ module Orders
       success(order: order)
     rescue ActiveRecord::RecordInvalid => e
       failure(e.message)
+    end
+
+    private
+
+    def apply_coupon_to(order)
+      return if @coupon_code.blank?
+
+      subtotal_cents = order.order_items.sum(:total_cents)
+      result = Discounts::ValidateCodeService.call(
+        code: @coupon_code,
+        subtotal_cents: subtotal_cents,
+        user: @user
+      )
+      return unless result.success?
+
+      discount = result.payload[:discount]
+      order.update!(
+        discount: discount,
+        discount_total_cents: result.payload[:discount_cents]
+      )
+      discount.discount_usages.create!(user: @user, order: order, used_at: Time.current)
+      Discount.where(id: discount.id).update_all("usage_count = usage_count + 1")
     end
   end
 end

@@ -30,4 +30,28 @@ class CheckoutsControllerTest < ActionDispatch::IntegrationTest
     get confirm_checkout_url(order_number: orders(:pending_order).number)
     assert_response :success
   end
+
+  test "apply valid coupon stores in session" do
+    post cart_items_url, params: { variant_id: variants(:tshirt_master).id, quantity: 2 }
+    post apply_coupon_checkout_url, params: { code: "SAVE20" }
+    assert_redirected_to checkout_url
+    follow_redirect!
+    assert_match(/SAVE20/, response.body)
+  end
+
+  test "apply invalid coupon shows error" do
+    post cart_items_url, params: { variant_id: variants(:tshirt_master).id, quantity: 1 }
+    post apply_coupon_checkout_url, params: { code: "NOPE" }
+    follow_redirect!
+    assert_match(/Invalid discount code/, response.body)
+  end
+
+  test "remove coupon clears session" do
+    post cart_items_url, params: { variant_id: variants(:tshirt_master).id, quantity: 2 }
+    post apply_coupon_checkout_url, params: { code: "SAVE20" }
+    delete remove_coupon_checkout_url
+    assert_redirected_to checkout_url
+    follow_redirect!
+    assert_no_match(/SAVE20 applied/, response.body)
+  end
 end

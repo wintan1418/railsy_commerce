@@ -4,12 +4,38 @@ class CheckoutsController < ApplicationController
   allow_unauthenticated_access
   layout "checkout"
 
-  before_action :ensure_cart_has_items, only: %i[show update]
+  before_action :ensure_cart_has_items, only: %i[show update apply_coupon remove_coupon]
+  helper_method :applied_coupon, :coupon_discount_cents, :coupon_error
 
   def show
     @step = "address"
     @shipping_methods = ShippingMethod.active
     @address = current_user&.addresses&.last || Address.new
+  end
+
+  def apply_coupon
+    code = params[:code].to_s.strip.upcase
+    result = Discounts::ValidateCodeService.call(
+      code: code,
+      subtotal_cents: current_cart.subtotal.cents,
+      user: current_user
+    )
+
+    if result.success?
+      session[:checkout_coupon_code] = code
+      session.delete(:checkout_coupon_error)
+    else
+      session.delete(:checkout_coupon_code)
+      session[:checkout_coupon_error] = result.errors.first
+    end
+
+    redirect_to checkout_path
+  end
+
+  def remove_coupon
+    session.delete(:checkout_coupon_code)
+    session.delete(:checkout_coupon_error)
+    redirect_to checkout_path
   end
 
   def update
@@ -30,6 +56,25 @@ class CheckoutsController < ApplicationController
   end
 
   private
+
+  def applied_coupon
+    return nil unless session[:checkout_coupon_code].present?
+    @applied_coupon ||= Discount.active.find_by(code: session[:checkout_coupon_code])
+  end
+
+  def coupon_discount_cents
+    return 0 unless applied_coupon
+    result = Discounts::ValidateCodeService.call(
+      code: applied_coupon.code,
+      subtotal_cents: current_cart.subtotal.cents,
+      user: current_user
+    )
+    result.success? ? result.payload[:discount_cents] : 0
+  end
+
+  def coupon_error
+    session[:checkout_coupon_error]
+  end
 
   def ensure_cart_has_items
     redirect_to cart_path, alert: "Your cart is empty." if current_cart.empty?
@@ -86,7 +131,8 @@ class CheckoutsController < ApplicationController
       shipping_address: shipping_address,
       billing_address: shipping_address,
       shipping_method: shipping_method,
-      user: current_user
+      user: current_user,
+      coupon_code: session[:checkout_coupon_code]
     )
 
     unless order_result.success?
@@ -125,5 +171,7 @@ class CheckoutsController < ApplicationController
     session.delete(:checkout_billing_address_id)
     session.delete(:checkout_shipping_method_id)
     session.delete(:checkout_email)
+    session.delete(:checkout_coupon_code)
+    session.delete(:checkout_coupon_error)
   end
 end

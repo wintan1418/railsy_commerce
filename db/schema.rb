@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_13_170000) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_13_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -171,6 +171,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_170000) do
     t.index ["rider_id", "status"], name: "index_deliveries_on_rider_id_and_status"
     t.index ["rider_id"], name: "index_deliveries_on_rider_id"
     t.index ["status"], name: "index_deliveries_on_status"
+  end
+
+  create_table "discount_usages", force: :cascade do |t|
+    t.bigint "discount_id", null: false
+    t.bigint "user_id"
+    t.bigint "order_id", null: false
+    t.datetime "used_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["discount_id", "user_id"], name: "index_discount_usages_on_discount_id_and_user_id"
+    t.index ["discount_id"], name: "index_discount_usages_on_discount_id"
+    t.index ["order_id"], name: "index_discount_usages_on_order_id"
+    t.index ["user_id"], name: "index_discount_usages_on_user_id"
   end
 
   create_table "discounts", force: :cascade do |t|
@@ -602,6 +615,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_170000) do
   add_foreign_key "deliveries", "orders"
   add_foreign_key "deliveries", "users", column: "assigned_by_id"
   add_foreign_key "deliveries", "users", column: "rider_id"
+  add_foreign_key "discount_usages", "discounts"
+  add_foreign_key "discount_usages", "orders"
+  add_foreign_key "discount_usages", "users"
   add_foreign_key "flash_sale_products", "flash_sales"
   add_foreign_key "flash_sale_products", "products"
   add_foreign_key "notifications", "users"

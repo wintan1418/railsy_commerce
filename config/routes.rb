@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   # Checkout
   resource :checkout, only: %i[show update], controller: "checkouts" do
     get :confirm
+    post :apply_coupon
+    delete :remove_coupon
   end
 
   # Product Comparison

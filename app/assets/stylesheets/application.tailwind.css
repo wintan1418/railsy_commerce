@@ -3,14 +3,17 @@
 /* ─── Design System Custom Properties ────────────────────────────── */
 :root {
   --black: #0a0a0a;
+  --white: #ffffff;
   --off-white: #f7f5f2;
   --warm-white: #faf9f7;
   --cream: #ede8e0;
+  --warm-gray: #d6d1c7;
   --gold: #c9a96e;
   --gold-light: #e8d5b0;
   --gold-dark: #a8884d;
   --red: #c0392b;
   --mid-gray: #6b6b6b;
+  --medium-gray: #6b6b6b;
   --light-gray: #d4d4d4;
   --text-body: #3a3a3a;
   --font-display: 'Cormorant Garamond', Georgia, serif;

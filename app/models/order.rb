@@ -7,6 +7,7 @@ class Order < ApplicationRecord
   has_many :order_items, dependent: :destroy
   has_many :variants, through: :order_items
   belongs_to :discount, optional: true
+  belongs_to :gift_card, optional: true
   has_many :payments, dependent: :destroy
   has_many :shipments, dependent: :destroy
   has_many :order_events, dependent: :destroy
@@ -27,6 +28,7 @@ class Order < ApplicationRecord
   monetize :shipping_total_cents
   monetize :tax_total_cents
   monetize :discount_total_cents
+  monetize :gift_card_total_cents
   monetize :total_cents
 
   validates :number, presence: true, uniqueness: true
@@ -39,7 +41,8 @@ class Order < ApplicationRecord
 
   def recalculate_totals!
     self.subtotal_cents = order_items.sum(:total_cents)
-    self.total_cents = subtotal_cents + shipping_total_cents + tax_total_cents - discount_total_cents
+    self.total_cents = subtotal_cents + shipping_total_cents + tax_total_cents -
+                       discount_total_cents - gift_card_total_cents
     save!
   end
 

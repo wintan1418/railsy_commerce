@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_13_190100) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_13_200100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -242,6 +242,33 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_190100) do
     t.index ["slug"], name: "index_flash_sales_on_slug", unique: true
   end
 
+  create_table "gift_card_transactions", force: :cascade do |t|
+    t.bigint "gift_card_id", null: false
+    t.bigint "order_id"
+    t.integer "amount_cents", null: false
+    t.string "kind", null: false
+    t.datetime "occurred_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gift_card_id"], name: "index_gift_card_transactions_on_gift_card_id"
+    t.index ["order_id"], name: "index_gift_card_transactions_on_order_id"
+  end
+
+  create_table "gift_cards", force: :cascade do |t|
+    t.string "code", null: false
+    t.integer "initial_balance_cents", null: false
+    t.integer "balance_cents", null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "expires_at"
+    t.bigint "purchaser_id"
+    t.string "recipient_email"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_gift_cards_on_code", unique: true
+    t.index ["purchaser_id"], name: "index_gift_cards_on_purchaser_id"
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", null: false
@@ -326,7 +353,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_190100) do
     t.datetime "updated_at", null: false
     t.bigint "discount_id"
     t.string "tracking_number"
+    t.integer "gift_card_total_cents", default: 0, null: false
+    t.bigint "gift_card_id"
     t.index ["discount_id"], name: "index_orders_on_discount_id"
+    t.index ["gift_card_id"], name: "index_orders_on_gift_card_id"
     t.index ["number"], name: "index_orders_on_number", unique: true
     t.index ["status"], name: "index_orders_on_status"
     t.index ["tracking_number"], name: "index_orders_on_tracking_number"
@@ -635,6 +665,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_190100) do
   add_foreign_key "discount_usages", "users"
   add_foreign_key "flash_sale_products", "flash_sales"
   add_foreign_key "flash_sale_products", "products"
+  add_foreign_key "gift_card_transactions", "gift_cards"
+  add_foreign_key "gift_card_transactions", "orders"
+  add_foreign_key "gift_cards", "users", column: "purchaser_id"
   add_foreign_key "notifications", "users"
   add_foreign_key "option_value_variants", "option_values"
   add_foreign_key "option_value_variants", "variants"
@@ -646,6 +679,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_190100) do
   add_foreign_key "orders", "addresses", column: "billing_address_id"
   add_foreign_key "orders", "addresses", column: "shipping_address_id"
   add_foreign_key "orders", "discounts"
+  add_foreign_key "orders", "gift_cards"
   add_foreign_key "orders", "users"
   add_foreign_key "payments", "orders"
   add_foreign_key "product_option_types", "option_types"

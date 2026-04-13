@@ -4,8 +4,9 @@ class CheckoutsController < ApplicationController
   allow_unauthenticated_access
   layout "checkout"
 
-  before_action :ensure_cart_has_items, only: %i[show update apply_coupon remove_coupon]
-  helper_method :applied_coupon, :coupon_discount_cents, :coupon_error
+  before_action :ensure_cart_has_items, only: %i[show update apply_coupon remove_coupon apply_gift_card remove_gift_card]
+  helper_method :applied_coupon, :coupon_discount_cents, :coupon_error,
+                :applied_gift_card, :gift_card_discount_cents, :gift_card_error
 
   def show
     @step = "address"
@@ -35,6 +36,36 @@ class CheckoutsController < ApplicationController
   def remove_coupon
     session.delete(:checkout_coupon_code)
     session.delete(:checkout_coupon_error)
+    redirect_to checkout_path
+  end
+
+  def apply_gift_card
+    code = params[:code].to_s.strip.upcase
+    card = GiftCard.active.find_by(code: code)
+
+    if card.nil?
+      session.delete(:checkout_gift_card_code)
+      session[:checkout_gift_card_error] = "Invalid gift card code"
+    elsif !card.available?
+      session.delete(:checkout_gift_card_code)
+      session[:checkout_gift_card_error] = if card.expired?
+        "This gift card has expired"
+      elsif card.depleted?
+        "This gift card has no remaining balance"
+      else
+        "This gift card isn't active"
+      end
+    else
+      session[:checkout_gift_card_code] = code
+      session.delete(:checkout_gift_card_error)
+    end
+
+    redirect_to checkout_path
+  end
+
+  def remove_gift_card
+    session.delete(:checkout_gift_card_code)
+    session.delete(:checkout_gift_card_error)
     redirect_to checkout_path
   end
 
@@ -74,6 +105,21 @@ class CheckoutsController < ApplicationController
 
   def coupon_error
     session[:checkout_coupon_error]
+  end
+
+  def applied_gift_card
+    return nil unless session[:checkout_gift_card_code].present?
+    @applied_gift_card ||= GiftCard.active.find_by(code: session[:checkout_gift_card_code])
+  end
+
+  def gift_card_discount_cents
+    return 0 unless applied_gift_card&.available?
+    subtotal_after_coupon = current_cart.subtotal.cents - coupon_discount_cents
+    applied_gift_card.usable_amount_cents(subtotal_after_coupon)
+  end
+
+  def gift_card_error
+    session[:checkout_gift_card_error]
   end
 
   def ensure_cart_has_items
@@ -142,7 +188,8 @@ class CheckoutsController < ApplicationController
       billing_address: shipping_address,
       shipping_method: shipping_method,
       user: current_user,
-      coupon_code: session[:checkout_coupon_code]
+      coupon_code: session[:checkout_coupon_code],
+      gift_card_code: session[:checkout_gift_card_code]
     )
 
     unless order_result.success?
@@ -183,5 +230,7 @@ class CheckoutsController < ApplicationController
     session.delete(:checkout_email)
     session.delete(:checkout_coupon_code)
     session.delete(:checkout_coupon_error)
+    session.delete(:checkout_gift_card_code)
+    session.delete(:checkout_gift_card_error)
   end
 end

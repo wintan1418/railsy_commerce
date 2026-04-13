@@ -1,0 +1,52 @@
+<div class="mb-6 flex items-start justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Gift Card</h1>
+    <p class="mt-1 text-lg font-mono text-indigo-600"><%= @gift_card.code %></p>
+  </div>
+  <%= link_to "Edit", edit_admin_gift_card_path(@gift_card), class: "rounded-lg bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50" %>
+</div>
+
+<div class="grid grid-cols-4 gap-4">
+  <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-900/5">
+    <p class="text-xs font-medium uppercase tracking-wider text-gray-500">Initial</p>
+    <p class="mt-1 text-2xl font-bold text-gray-900"><%= @gift_card.initial_balance.format %></p>
+  </div>
+  <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-900/5">
+    <p class="text-xs font-medium uppercase tracking-wider text-gray-500">Balance</p>
+    <p class="mt-1 text-2xl font-bold text-indigo-600"><%= @gift_card.balance.format %></p>
+  </div>
+  <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-900/5">
+    <p class="text-xs font-medium uppercase tracking-wider text-gray-500">Used</p>
+    <p class="mt-1 text-2xl font-bold text-gray-900"><%= Money.new(@gift_card.initial_balance_cents - @gift_card.balance_cents, "USD").format %></p>
+  </div>
+  <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-900/5">
+    <p class="text-xs font-medium uppercase tracking-wider text-gray-500">Expires</p>
+    <p class="mt-1 text-sm font-semibold text-gray-900"><%= @gift_card.expires_at&.strftime("%b %-d, %Y") || "Never" %></p>
+  </div>
+</div>
+
+<div class="mt-8 rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+  <div class="border-b border-gray-100 px-6 py-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-700">Transaction History</h2>
+  </div>
+  <% if @transactions.any? %>
+    <table class="min-w-full divide-y divide-gray-100">
+      <tbody class="divide-y divide-gray-100">
+        <% @transactions.each do |tx| %>
+          <tr>
+            <td class="px-6 py-3 text-sm text-gray-900"><%= tx.kind.capitalize %></td>
+            <td class="px-6 py-3 text-sm text-gray-500">Order <%= tx.order&.number || "—" %></td>
+            <td class="px-6 py-3 text-sm font-medium text-gray-900 text-right">−<%= tx.amount.format %></td>
+            <td class="px-6 py-3 text-xs text-gray-500 text-right"><%= tx.occurred_at.strftime("%b %-d, %Y %H:%M") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="px-6 py-8 text-center text-sm text-gray-400">No transactions yet.</p>
+  <% end %>
+</div>
+
+<div class="mt-6">
+  <%= link_to "← Back to gift cards", admin_gift_cards_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+</div>

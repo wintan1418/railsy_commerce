@@ -33,6 +33,8 @@ Rails.application.routes.draw do
     get :confirm
     post :apply_coupon
     delete :remove_coupon
+    post :apply_gift_card
+    delete :remove_gift_card
   end
 
   # Product Comparison
@@ -86,6 +88,7 @@ Rails.application.routes.draw do
     resources :ads do
       member { post :toggle }
     end
+    resources :gift_cards
     resources :conversations, only: %i[index show] do
       post :reply, on: :member
     end

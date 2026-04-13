@@ -1,0 +1,30 @@
+active_50:
+  code: GC-ACTIVE50
+  initial_balance_cents: 5000
+  balance_cents: 5000
+  active: true
+
+partially_used:
+  code: GC-HALF
+  initial_balance_cents: 10000
+  balance_cents: 4000
+  active: true
+
+expired_card:
+  code: GC-EXPIRED
+  initial_balance_cents: 5000
+  balance_cents: 5000
+  active: true
+  expires_at: <%= 1.day.ago.iso8601 %>
+
+depleted_card:
+  code: GC-ZERO
+  initial_balance_cents: 5000
+  balance_cents: 0
+  active: true
+
+disabled_card:
+  code: GC-DISABLED
+  initial_balance_cents: 5000
+  balance_cents: 5000
+  active: false

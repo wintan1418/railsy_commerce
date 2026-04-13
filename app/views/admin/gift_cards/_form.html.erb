@@ -1,0 +1,52 @@
+<%= form_with model: [:admin, gift_card], class: "space-y-6" do |form| %>
+  <% if gift_card.errors.any? %>
+    <div class="rounded-lg bg-red-50 border border-red-200 px-4 py-3">
+      <ul class="text-sm text-red-800">
+        <% gift_card.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5 space-y-4">
+    <% unless gift_card.persisted? %>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Initial balance (cents) <span class="text-red-500">*</span></label>
+        <%= form.number_field :initial_balance_cents, min: 1, required: true, class: "mt-1 block w-full rounded-lg border-gray-300 shadow-sm text-sm" %>
+        <p class="mt-1 text-xs text-gray-400">e.g. 5000 = $50.00</p>
+      </div>
+    <% else %>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Current balance (cents)</label>
+        <%= form.number_field :balance_cents, min: 0, class: "mt-1 block w-full rounded-lg border-gray-300 shadow-sm text-sm" %>
+      </div>
+    <% end %>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Recipient email</label>
+      <%= form.email_field :recipient_email, class: "mt-1 block w-full rounded-lg border-gray-300 shadow-sm text-sm" %>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Expires at</label>
+      <%= form.datetime_local_field :expires_at, value: gift_card.expires_at&.strftime("%Y-%m-%dT%H:%M"), class: "mt-1 block w-full rounded-lg border-gray-300 shadow-sm text-sm" %>
+      <p class="mt-1 text-xs text-gray-400">Leave blank for no expiry</p>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Notes (internal)</label>
+      <%= form.text_area :notes, rows: 2, class: "mt-1 block w-full rounded-lg border-gray-300 shadow-sm text-sm" %>
+    </div>
+
+    <div class="flex items-center">
+      <%= form.check_box :active, class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" %>
+      <label class="ml-2 text-sm font-medium text-gray-700">Active</label>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-3">
+    <%= link_to "Cancel", admin_gift_cards_path, class: "rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50" %>
+    <%= form.submit class: "rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer" %>
+  </div>
+<% end %>

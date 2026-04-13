@@ -1859,6 +1859,37 @@ if Brand.count.zero?
 end
 
 # ============================================================
+# Ads (homepage promo tiles)
+# ============================================================
+if Ad.count.zero?
+  puts "Seeding ads..."
+  ad_data = [
+    { title: "Summer Collection", subtitle: "Up to 40% off new arrivals",
+      link_url: "/products", placement: "home_mid", position: 0,
+      image_url: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600&q=80" },
+    { title: "Tech Essentials", subtitle: "Gadgets that make life easier",
+      link_url: "/products", placement: "home_mid", position: 1,
+      image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80" },
+    { title: "Clearance Event",
+      subtitle: "Final markdowns on last-season styles — while they last.",
+      link_url: "/products?on_sale=true", placement: "home_bottom", position: 0,
+      image_url: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1600&q=80" }
+  ]
+
+  ad_data.each do |attrs|
+    image_url = attrs.delete(:image_url)
+    ad = Ad.create!(attrs.merge(active: true))
+    begin
+      io = URI.open(image_url)
+      ad.image.attach(io: io, filename: "ad-#{ad.id}.jpg", content_type: "image/jpeg")
+      puts "  · #{ad.title} (#{ad.placement}) ✓"
+    rescue => e
+      puts "  · #{ad.title} (no image: #{e.message[0, 40]})"
+    end
+  end
+end
+
+# ============================================================
 # Flash Sale (demo running sale)
 # ============================================================
 if FlashSale.count.zero?
@@ -1891,3 +1922,4 @@ puts "  Promotions: #{Promotion.count}"
 puts "  Banners: #{Banner.count}"
 puts "  Flash Sales: #{FlashSale.count}"
 puts "  Brands: #{Brand.count}"
+puts "  Ads: #{Ad.count}"

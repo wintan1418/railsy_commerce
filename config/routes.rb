@@ -80,6 +80,9 @@ Rails.application.routes.draw do
     resources :brands do
       member { post :toggle_featured }
     end
+    resources :ads do
+      member { post :toggle }
+    end
     resources :conversations, only: %i[index show] do
       post :reply, on: :member
     end

@@ -4,6 +4,8 @@ class PagesController < ApplicationController
 
   def home
     @banners = Banner.live.includes(image_attachment: :blob)
+    @ads_mid = Ad.live.for_placement("home_mid").includes(image_attachment: :blob).limit(2)
+    @ads_bottom = Ad.live.for_placement("home_bottom").includes(image_attachment: :blob).limit(1)
     @featured_brands = Brand.active.featured.ordered.includes(logo_attachment: :blob).limit(12)
     @running_flash_sale = FlashSale.running.first
     @running_flash_sale_products = @running_flash_sale&.products&.active&.includes(:category, variants: :stock_items) || []

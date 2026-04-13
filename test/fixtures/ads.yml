@@ -1,0 +1,35 @@
+home_mid_1:
+  title: Summer Sale
+  subtitle: Up to 40% off
+  link_url: /products
+  placement: home_mid
+  position: 0
+  active: true
+
+home_mid_2:
+  title: Tech Deals
+  subtitle: Latest gadgets
+  link_url: /products
+  placement: home_mid
+  position: 1
+  active: true
+
+home_bottom:
+  title: Clearance
+  subtitle: Final markdowns
+  placement: home_bottom
+  position: 0
+  active: true
+
+disabled_ad:
+  title: Old Campaign
+  placement: home_mid
+  position: 99
+  active: false
+
+future_ad:
+  title: Holiday Teaser
+  placement: home_top
+  position: 0
+  active: true
+  starts_at: <%= 1.day.from_now.iso8601 %>

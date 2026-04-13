@@ -1,0 +1,30 @@
+spring_sale:
+  title: Spring Sale
+  subtitle: Up to 40% off new arrivals
+  eyebrow: Limited Time
+  link_text: Shop Now
+  link_url: /products
+  position: 0
+  active: true
+
+new_arrivals:
+  title: New Arrivals
+  subtitle: Fresh picks just landed
+  eyebrow: This Week
+  link_text: Discover
+  link_url: /products
+  position: 1
+  active: true
+
+disabled_banner:
+  title: Old Campaign
+  subtitle: No longer running
+  position: 2
+  active: false
+
+future_banner:
+  title: Scheduled Banner
+  position: 3
+  active: true
+  starts_at: <%= 1.day.from_now.iso8601 %>
+  ends_at: <%= 7.days.from_now.iso8601 %>

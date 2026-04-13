@@ -1,6 +1,12 @@
 require "test_helper"
 
 class PagesControllerTest < ActionDispatch::IntegrationTest
+  test "home renders with live banners" do
+    get root_url
+    assert_response :success
+    assert_select "[data-slideshow-target='slide']", minimum: 1
+  end
+
   test "show published page" do
     get page_url(slug: pages(:about_us).slug)
     assert_response :success

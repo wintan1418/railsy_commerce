@@ -1764,6 +1764,24 @@ if demo_customer
   puts "  Added tracking updates for demo customer orders"
 end
 
+# ============================================================
+# Banners (homepage hero slideshow)
+# ============================================================
+if Banner.count.zero?
+  puts "Seeding banners..."
+  [
+    { eyebrow: "Premium Marketplace", title: "Discover What's Next",
+      subtitle: "From cutting-edge tech to timeless home essentials — everything you need, beautifully curated and delivered to your door.",
+      link_text: "Shop Now", link_url: "/products", position: 0 },
+    { eyebrow: "New Arrivals", title: "Sound Redefined",
+      subtitle: "Premium audio gear from the brands audiophiles trust.",
+      link_text: "Explore Audio", link_url: "/products", position: 1 },
+    { eyebrow: "Home & Living", title: "Light Up Your Space",
+      subtitle: "Modern lamps, decor, and essentials for every room.",
+      link_text: "Shop Home", link_url: "/products", position: 2 }
+  ].each { |attrs| Banner.create!(attrs.merge(active: true)) }
+end
+
 puts ""
 puts "Seeding complete!"
 puts "  Products: #{Product.count}"
@@ -1775,3 +1793,4 @@ puts "  Users: #{User.count} (#{User.customer.count} customers)"
 puts "  Pages: #{Page.count}"
 puts "  Product Relations: #{ProductRelation.count}"
 puts "  Promotions: #{Promotion.count}"
+puts "  Banners: #{Banner.count}"

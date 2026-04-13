@@ -3,6 +3,7 @@ class PagesController < ApplicationController
   allow_unauthenticated_access
 
   def home
+    @banners = Banner.live.includes(image_attachment: :blob)
     @featured_products = Product.active.includes(:category, variants: :stock_items).ordered.limit(16)
     @categories = Category.active.roots.ordered.includes(:children)
     @category_counts = @categories.index_with { |cat|

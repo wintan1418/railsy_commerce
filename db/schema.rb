@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_30_143734) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_13_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,21 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_30_143734) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "banners", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "subtitle"
+    t.string "eyebrow"
+    t.string "link_url"
+    t.string "link_text"
+    t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active", "position"], name: "index_banners_on_active_and_position"
   end
 
   create_table "cart_items", force: :cascade do |t|

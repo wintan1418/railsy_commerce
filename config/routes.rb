@@ -70,6 +70,10 @@ Rails.application.routes.draw do
     resources :tax_rates
     resources :returns, only: %i[index show update]
     resources :pages
+    resources :banners do
+      member { post :toggle }
+      collection { post :reorder }
+    end
     resources :conversations, only: %i[index show] do
       post :reply, on: :member
     end

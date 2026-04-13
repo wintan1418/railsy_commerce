@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       post :mark_all_read, on: :collection
     end
     resources :digital_downloads, only: %i[index show]
+    resource :referral, only: %i[show], controller: "referrals"
   end
 
   # Admin

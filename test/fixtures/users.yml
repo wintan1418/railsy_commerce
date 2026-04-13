@@ -6,6 +6,7 @@ admin:
   first_name: Admin
   last_name: User
   role: admin
+  referral_code: ADMINREF
 
 customer:
   email_address: customer@example.com
@@ -13,3 +14,4 @@ customer:
   first_name: Jane
   last_name: Doe
   role: customer
+  referral_code: CUSTREF1

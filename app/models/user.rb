@@ -13,6 +13,14 @@ class User < ApplicationRecord
   has_many :return_requests, dependent: :destroy
   has_many :notifications, dependent: :destroy
 
+  # Referrals
+  belongs_to :referred_by, class_name: "User", optional: true
+  has_many :referrals_received, class_name: "User", foreign_key: :referred_by_id, dependent: :nullify
+  has_many :referrals_made, class_name: "Referral", foreign_key: :referrer_id, dependent: :destroy
+  has_one :inbound_referral, class_name: "Referral", foreign_key: :referred_user_id, dependent: :destroy
+
+  before_validation :generate_referral_code, on: :create
+
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   enum :role, { customer: "customer", vendor: "vendor", rider: "rider", admin: "admin" }
@@ -35,6 +43,22 @@ class User < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  def referral_earnings_cents
+    referrals_made.where.not(rewarded_at: nil).sum(:reward_amount_cents)
+  end
+
+  private
+
+  def generate_referral_code
+    return if referral_code.present?
+    loop do
+      self.referral_code = SecureRandom.alphanumeric(8).upcase
+      break unless User.exists?(referral_code: referral_code)
+    end
+  end
+
+  public
 
   def display_name
     vendor? ? (vendor_name.presence || full_name) : full_name

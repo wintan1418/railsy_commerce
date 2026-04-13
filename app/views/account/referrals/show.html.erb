@@ -1,0 +1,71 @@
+<div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+  <div>
+    <p class="text-xs font-semibold uppercase tracking-[0.25em]" style="color: var(--gold);">My Account</p>
+    <h1 class="mt-1 font-display text-3xl font-light tracking-tight" style="color: var(--black);">Refer &amp; Earn</h1>
+    <p class="mt-2 text-sm" style="color: var(--mid-gray);">Share your link. Every friend who signs up and places their first order earns you a <strong>$10 gift card</strong>.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-900/5">
+      <p class="text-xs font-medium uppercase tracking-wider" style="color: var(--mid-gray);">Signups via your link</p>
+      <p class="mt-2 text-2xl font-bold" style="color: var(--black);"><%= @user.referrals_received.count %></p>
+    </div>
+    <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-900/5">
+      <p class="text-xs font-medium uppercase tracking-wider" style="color: var(--mid-gray);">Successful referrals</p>
+      <p class="mt-2 text-2xl font-bold" style="color: var(--black);"><%= @referrals.count %></p>
+    </div>
+    <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-900/5">
+      <p class="text-xs font-medium uppercase tracking-wider" style="color: var(--mid-gray);">Earned</p>
+      <p class="mt-2 text-2xl font-bold" style="color: var(--gold);"><%= Money.new(@earnings_cents, "USD").format %></p>
+    </div>
+  </div>
+
+  <!-- Share box -->
+  <div class="mt-8 rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+    <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: var(--black);">Your referral link</h2>
+    <div class="mt-4 flex flex-col gap-3 sm:flex-row">
+      <input type="text" readonly value="<%= @referral_url %>"
+        onclick="this.select()"
+        class="flex-1 rounded-lg px-4 py-3 text-sm font-mono"
+        style="border: 1px solid var(--warm-gray); background: var(--cream); color: var(--black);">
+      <button type="button"
+        onclick="navigator.clipboard.writeText('<%= @referral_url %>'); this.textContent = 'Copied!'; setTimeout(() => this.textContent = 'Copy link', 2000);"
+        class="rounded-lg px-6 py-3 text-sm font-semibold uppercase tracking-wider cursor-pointer"
+        style="background: var(--black); color: var(--white);">
+        Copy link
+      </button>
+    </div>
+    <div class="mt-4 flex items-center gap-2 text-xs" style="color: var(--mid-gray);">
+      <span>Your code:</span>
+      <code class="font-mono font-bold" style="color: var(--gold);"><%= @user.referral_code %></code>
+    </div>
+  </div>
+
+  <!-- Referral history -->
+  <div class="mt-8 rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+    <div class="border-b border-gray-100 px-6 py-3">
+      <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: var(--black);">Reward History</h2>
+    </div>
+    <% if @referrals.any? %>
+      <table class="min-w-full divide-y divide-gray-100">
+        <tbody class="divide-y divide-gray-100">
+          <% @referrals.each do |r| %>
+            <tr>
+              <td class="px-6 py-3 text-sm text-gray-900"><%= r.referred_user.email_address %></td>
+              <td class="px-6 py-3 text-sm text-gray-500"><%= r.rewarded_at&.strftime("%b %-d, %Y") || "—" %></td>
+              <td class="px-6 py-3 text-sm font-semibold text-right" style="color: var(--gold);">+<%= r.reward_amount.format %></td>
+              <td class="px-6 py-3 text-xs text-right">
+                <% if r.reward_gift_card %>
+                  <span class="font-mono"><%= r.reward_gift_card.code %></span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="px-6 py-8 text-center text-sm" style="color: var(--mid-gray);">No referrals yet. Share your link to earn your first reward.</p>
+    <% end %>
+  </div>
+</div>

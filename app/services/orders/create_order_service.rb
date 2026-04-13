@@ -50,6 +50,7 @@ module Orders
       end
 
       OrderMailer.confirmation(order).deliver_later
+      Referrals::RewardService.call(order: order) if @user&.referred_by_id.present?
 
       success(order: order)
     rescue ActiveRecord::RecordInvalid => e

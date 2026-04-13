@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_13_200100) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_13_210100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -448,6 +448,23 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_200100) do
     t.index ["promotion_type"], name: "index_promotions_on_promotion_type"
   end
 
+  create_table "referrals", force: :cascade do |t|
+    t.bigint "referrer_id", null: false
+    t.bigint "referred_user_id", null: false
+    t.bigint "triggering_order_id"
+    t.bigint "reward_gift_card_id"
+    t.integer "reward_amount_cents", default: 0, null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "rewarded_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["referred_user_id"], name: "index_referrals_on_referred_user_id"
+    t.index ["referrer_id", "referred_user_id"], name: "index_referrals_on_referrer_id_and_referred_user_id", unique: true
+    t.index ["referrer_id"], name: "index_referrals_on_referrer_id"
+    t.index ["reward_gift_card_id"], name: "index_referrals_on_reward_gift_card_id"
+    t.index ["triggering_order_id"], name: "index_referrals_on_triggering_order_id"
+  end
+
   create_table "return_items", force: :cascade do |t|
     t.bigint "return_id", null: false
     t.bigint "order_item_id", null: false
@@ -609,8 +626,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_200100) do
     t.boolean "vendor_verified", default: false
     t.decimal "vendor_commission_rate", precision: 5, scale: 2, default: "10.0"
     t.string "phone"
+    t.string "referral_code"
+    t.bigint "referred_by_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
+    t.index ["referral_code"], name: "index_users_on_referral_code", unique: true
+    t.index ["referred_by_id"], name: "index_users_on_referred_by_id"
   end
 
   create_table "variants", force: :cascade do |t|
@@ -689,6 +710,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_200100) do
   add_foreign_key "products", "brands"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "users", column: "vendor_id"
+  add_foreign_key "referrals", "gift_cards", column: "reward_gift_card_id"
+  add_foreign_key "referrals", "orders", column: "triggering_order_id"
+  add_foreign_key "referrals", "users", column: "referred_user_id"
+  add_foreign_key "referrals", "users", column: "referrer_id"
   add_foreign_key "return_items", "order_items"
   add_foreign_key "return_items", "returns"
   add_foreign_key "returns", "orders"
@@ -702,6 +727,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_200100) do
   add_foreign_key "stock_items", "variants"
   add_foreign_key "tracking_updates", "orders"
   add_foreign_key "tracking_updates", "users", column: "updated_by_id"
+  add_foreign_key "users", "users", column: "referred_by_id"
   add_foreign_key "variants", "products"
   add_foreign_key "wishlist_items", "variants"
   add_foreign_key "wishlist_items", "wishlists"

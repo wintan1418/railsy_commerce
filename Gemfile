@@ -78,7 +78,7 @@ group :development, :test do
   gem "faker"
 
   # Pin minitest for Rails 8 compatibility
-  gem "minitest", "~> 5.25"
+  gem "minitest", "~> 6.0"
 end
 
 group :development do
